@@ -103,7 +103,7 @@ class Maze(object):
                 if not scaled_xy in px:
                     px[scaled_xy] = 1
                     turtle.setposition(*p.xy)
-                    turtle.setheading(90 - p.h)
+                    turtle.setheading(p.h)
                     turtle.color(self.weight_to_color(p.w))
                     turtle.stamp()
 
@@ -128,14 +128,6 @@ class Maze(object):
 
     def distance(self, x1, y1, x2, y2):
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-
-    def distance_to_nearest_beacon(self, x, y):
-        d = 99999
-        for c_x, c_y in self.beacons:
-            distance = self.distance(c_x, c_y, x, y)
-            if distance < d:
-                d = distance
-                d_x, d_y = c_x, c_y
 
         return d
     def distance_to_wall(self,x, y, h):

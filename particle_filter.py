@@ -18,13 +18,13 @@ from draw import Maze
 
 # Smaller maze
 
-maze_data = ( ( 2, 2, 2, 2, 2, 2, 2),
-              ( 2, 0, 0, 0, 0, 0, 2 ),
-              ( 2, 0, 0, 0, 0, 0, 2 ),
-              ( 2, 0, 0, 0, 0, 0, 2 ),
-              ( 2, 0, 0, 0, 0, 0, 2 ),
-              ( 2, 0, 0, 0, 0, 0, 2 ),
-              ( 2, 2, 2, 2, 2, 2, 2))
+maze_data = ( ( 1, 1, 1, 1, 1, 1, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 1, 1, 1, 1, 1, 1 ))
 
 
 # 0 - empty square
@@ -145,18 +145,15 @@ class Particle(object):
     def create_random(cls, count, maze):
         return [cls(*maze.random_free_place()) for _ in range(0, count)]
 
-    def distance_to_wall(self, maze):
-        """
-        Finds wall distance using a laser range sensor.
-        :param maze:
-        :return:
-        """
-        return maze.distance_to_wall(*self.xyh)
     def read_sensor(self, maze):
         """
-        Find distance to nearest beacon.
+        Find distance to wall with the laser range sensor at a specific orientation.
         """
-        return maze.distance_to_nearest_beacon(*self.xy)
+        return maze.distance_to_wall(*self.xyh)
+
+    def distance_to_wall(self,maze):
+
+        return maze.distance_to_wall(*self.xyh)
 
     def advance_by(self, speed, checker=None, noisy=False):
         h = self.h
@@ -166,8 +163,6 @@ class Particle(object):
         r = math.radians(h)
         dx = math.cos(r) * speed
         dy = math.sin(r) * speed
-        # dx = math.sin(r) * speed
-        # dy = math.cos(r) * speed
         if checker is None or checker(self, dx, dy):
             self.move_by(dx, dy)
             return True
@@ -190,15 +185,13 @@ class Robot(Particle):
         heading = random.uniform(0, 360)
         self.h = heading
 
-    def distance_to_wall(self, maze):
-        return super(Robot, self).distance_to_wall(maze)
     def read_sensor(self, maze):
         """
         Poor robot, it's sensors are noisy and pretty strange,
-        it only can measure the distance to the nearest beacon(!)
+        it can only know laser sensor wall distance(!)
         and is not very accurate at that too!
         """
-        return add_little_noise(super(Robot, self).read_sensor(maze))[0]
+        return add_little_noise(super(Robot, self).distance_to_wall(maze))[0]
 
     def move(self, maze):
         """
@@ -225,8 +218,6 @@ robbie = Robot(world)
 while True:
     # Read robbie's sensor
     r_d = robbie.read_sensor(world)
-    print "Distance to wall", robbie.distance_to_wall(world)
-    print robbie.xyh
 
     # Update particle weight according to how good every particle matches
     # robbie's sensor reading
