@@ -14,7 +14,7 @@ turtle.tracer(50000, delay=0)
 turtle.register_shape("dot", ((-3,-3), (-3,3), (3,3), (3,-3)))
 turtle.register_shape("tri", ((-3, -2), (0, 3), (3, -2), (0, 0)))
 turtle.speed(0)
-turtle.title("Poor robbie is lost")
+turtle.title("Find the robot")
 
 UPDATE_EVERY = 0
 DRAW_EVERY = 2
@@ -111,7 +111,7 @@ class Maze(object):
         turtle.color("green")
         turtle.shape('turtle')
         turtle.setposition(*robot.xy)
-        turtle.setheading(90 - robot.h)
+        turtle.setheading(robot.h)
         turtle.stamp()
         turtle.update()
 
@@ -138,3 +138,24 @@ class Maze(object):
                 d_x, d_y = c_x, c_y
 
         return d
+    def distance_to_wall(self,x, y, h):
+        t = math.radians(h) # Heading in radians
+        m = math.tan(t) # Slope
+        if t == 0:
+            return 6-y
+        right_y = m*(6-x) + y
+        top_x = (6-y)/m + x
+        left_y = m*(1-x) + y
+        bottom_x = (1-y)/m + x
+        right_distance = self.distance(x,y,6,right_y)
+        left_distance = self.distance(x,y,1,left_y)
+        top_distance = self.distance(x,y,top_x,6)
+        bot_distance = self.distance(x,y,bottom_x,1)
+        if t<=math.pi/2 and t>0: # Quadrant 1
+            return min(right_distance, top_distance)
+        elif t<=math.pi and t>math.pi/2: # Quadrant 2
+            return min(left_distance, top_distance)
+        elif t<=3*math.pi/2 and t>math.pi: # Quadrant 3
+            return min(left_distance, bot_distance)
+        else: # Quadrant 4
+            return min(right_distance, bot_distance)
