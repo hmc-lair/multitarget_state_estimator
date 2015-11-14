@@ -12,9 +12,13 @@ from __future__ import absolute_import
 import random
 import math
 import bisect
+import scipy.stats
 
 from draw import Maze
 
+# 0 - empty square
+# 1 - occupied square
+# 2 - occupied square with a beacon at each corner, detectable by the robot
 
 # Smaller maze
 
@@ -26,21 +30,6 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1 ),
               ( 1, 0, 0, 0, 0, 0, 1 ),
               ( 1, 1, 1, 1, 1, 1, 1 ))
 
-
-# 0 - empty square
-# 1 - occupied square
-# 2 - occupied square with a beacon at each corner, detectable by the robot
-#
-# maze_data = ( ( 1, 1, 0, 0, 2, 0, 0, 0, 0, 1 ),
-#               ( 1, 2, 0, 0, 1, 1, 0, 0, 0, 0 ),
-#               ( 0, 1, 1, 0, 0, 0, 0, 1, 0, 1 ),
-#               ( 0, 0, 0, 0, 1, 0, 0, 1, 1, 2 ),
-#               ( 1, 1, 0, 1, 1, 2, 0, 0, 1, 0 ),
-#               ( 1, 1, 1, 0, 1, 1, 1, 0, 2, 0 ),
-#               ( 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-#               ( 1, 2, 0, 1, 1, 1, 1, 0, 0, 0 ),
-#               ( 0, 0, 0, 0, 1, 0, 0, 0, 1, 0 ),
-#               ( 0, 0, 1, 0, 0, 2, 1, 1, 1, 0 ))
 
 PARTICLE_COUNT = 2000    # Total number of particles
 
@@ -63,13 +52,9 @@ def add_little_noise(*coords):
 def add_some_noise(*coords):
     return add_noise(0.1, *coords)
 
-# This is just a gaussian kernel I pulled out of my hat, to transform
-# values near to robbie's measurement => 1, further away => 0
-sigma2 = 0.9 ** 2
-def w_gauss(a, b):
-    error = a - b
-    g = math.e ** -(error ** 2 / (2 * sigma2))
-    return g
+def gauss(error):
+    # TODO: variance is derived experimentally
+    return scipy.stats.norm.pdf(error, 0, 2.0)
 
 # ------------------------------------------------------------------------
 def compute_mean_point(particles):
@@ -112,6 +97,8 @@ class WeightedDistribution(object):
 
     def pick(self):
         try:
+            # TODO: ask Chris about how to pick
+            # Pick randomly from self.distribution
             return self.state[bisect.bisect_left(self.distribution, random.uniform(0, 1))]
         except IndexError:
             # Happens when all particles are improbable w=0
@@ -161,8 +148,10 @@ class Particle(object):
             speed, h = add_little_noise(speed, h)
             h += random.uniform(-3, 3) # needs more noise to disperse better
         r = math.radians(h)
+        # Calculate cartesian distance
         dx = math.cos(r) * speed
         dy = math.sin(r) * speed
+        # Checks if, after advancing, particle is still in the box
         if checker is None or checker(self, dx, dy):
             self.move_by(dx, dy)
             return True
@@ -217,15 +206,17 @@ robbie = Robot(world)
 
 while True:
     # Read robbie's sensor
-    r_d = robbie.read_sensor(world)
+    robot_wall_dist = robbie.read_sensor(world)
 
     # Update particle weight according to how good every particle matches
     # robbie's sensor reading
     for p in particles:
         if world.is_free(*p.xy):
-            p_d = p.read_sensor(world)
-            p.w = w_gauss(r_d, p_d)
-        else:
+            particle_wall_dist = p.read_sensor(world)
+            # Calculate weight from gaussian
+            error = robot_wall_dist - particle_wall_dist
+            p.w = gauss(error)
+        else: # If particle not in boundary
             p.w = 0
 
     # ---------- Try to find current best estimate for display ----------
