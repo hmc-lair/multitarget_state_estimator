@@ -1,3 +1,4 @@
+__author__ = 'cherieho'
 # ------------------------------------------------------------------------
 # coding=utf-8
 # ------------------------------------------------------------------------
@@ -107,9 +108,17 @@ class Maze(object):
                     turtle.color(self.weight_to_color(p.w))
                     turtle.stamp()
 
-    def show_robot(self, robot):
+    def show_shark(self, shark):
         turtle.color("green")
         turtle.shape('turtle')
+        turtle.setposition(*shark.xy)
+        turtle.setheading(shark.h)
+        turtle.stamp()
+        turtle.update()
+
+    def show_robot(self, robot):
+        turtle.color("blue")
+        turtle.shape('square')
         turtle.setposition(*robot.xy)
         turtle.setheading(robot.h)
         turtle.stamp()
@@ -128,25 +137,3 @@ class Maze(object):
 
     def distance(self, x1, y1, x2, y2):
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-
-    def distance_to_wall(self,x, y, h):
-        t = math.radians(h) # Heading in radians
-        m = math.tan(t) # Slope
-        if t == 0:
-            return 6-y
-        right_y = m*(6-x) + y
-        top_x = (6-y)/m + x
-        left_y = m*(1-x) + y
-        bottom_x = (1-y)/m + x
-        right_distance = self.distance(x,y,6,right_y)
-        left_distance = self.distance(x,y,1,left_y)
-        top_distance = self.distance(x,y,top_x,6)
-        bot_distance = self.distance(x,y,bottom_x,1)
-        if t<=math.pi/2 and t>0: # Quadrant 1
-            return min(right_distance, top_distance)
-        elif t<=math.pi and t>math.pi/2: # Quadrant 2
-            return min(left_distance, top_distance)
-        elif t<=3*math.pi/2 and t>math.pi: # Quadrant 3
-            return min(left_distance, bot_distance)
-        else: # Quadrant 4
-            return min(right_distance, bot_distance)

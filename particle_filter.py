@@ -22,18 +22,29 @@ from draw import Maze
 
 # Smaller maze
 
-maze_data = ( ( 1, 1, 1, 1, 1, 1, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 1, 1, 1, 1, 1, 1 ))
+maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+              ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 
 PARTICLE_COUNT = 2000    # Total number of particles
 
-ROBOT_HAS_COMPASS = True # Does the robot know where north is? If so, it
+ROBOT_HAS_COMPASS = False # Does the robot know where north is? If so, it
 # makes orientation a lot easier since it knows which direction it is facing.
 # If not -- and that is really fascinating -- the particle filter can work
 # out its heading too, it just takes more particles and more time. Try this
@@ -54,7 +65,7 @@ def add_some_noise(*coords):
 
 def gauss(error):
     # TODO: variance is derived experimentally
-    return scipy.stats.norm.pdf(error, 0, 2.0)
+    return scipy.stats.norm.pdf(error, 0, 0.5)
 
 # ------------------------------------------------------------------------
 def compute_mean_point(particles):
@@ -132,11 +143,24 @@ class Particle(object):
     def create_random(cls, count, maze):
         return [cls(*maze.random_free_place()) for _ in range(0, count)]
 
-    def read_sensor(self, maze):
+    # def read_wall_sensor(self, maze):
+    #     """
+    #     Find distance to wall with the laser range sensor at a specific orientation.
+    #     """
+    #     return maze.distance_to_wall(*self.xyh)
+
+    def read_distance_sensor(self, robot):
         """
-        Find distance to wall with the laser range sensor at a specific orientation.
+        Returns distance between self and robot.
         """
-        return maze.distance_to_wall(*self.xyh)
+        self_x, self_y = self.xy
+        robot_x, robot_y = robot.xy
+        return math.sqrt((self_x - robot_x)**2 + (self_y - robot_y)**2)
+
+    def read_angle_sensor(self,robot):
+        self_x, self_y = self.xy
+        robot_x, robot_y = robot.xy
+        return math.degrees(math.atan2(abs(self_y - robot_y), abs(self_x - robot_x)))
 
     def distance_to_wall(self,maze):
 
@@ -166,7 +190,7 @@ class Robot(Particle):
     speed = 0.2
 
     def __init__(self, maze):
-        super(Robot, self).__init__(*maze.random_free_place(), heading=90)
+        super(Robot, self).__init__(8, 8, heading=90)
         self.chose_random_direction()
         self.step_count = 0
 
@@ -174,13 +198,58 @@ class Robot(Particle):
         heading = random.uniform(0, 360)
         self.h = heading
 
-    def read_sensor(self, maze):
+    # def read_sensor(self, robot):
+    #     """
+    #     Poor robot, it's sensors are noisy and pretty strange,
+    #     it can only know laser sensor wall distance(!)
+    #     and is not very accurate at that too!
+    #     """
+    #     return add_little_noise(super(Robot, self).read_distance_sensor(robot))
+
+    def move(self, maze):
+        """
+        Move the robot. Note that the movement is stochastic too.
+        """
+        while True:
+            self.step_count += 1
+            if self.advance_by(self.speed, noisy=True,
+                checker=lambda r, dx, dy: maze.is_free(r.x+dx, r.y+dy)):
+                break
+            # Bumped into something or too long in same direction,
+            # chose random new direction
+            self.chose_random_direction()
+
+
+
+# ------------------------------------------------------------------------
+
+class Shark(Particle):
+    speed = 0.2
+
+    def __init__(self, maze):
+        super(Shark, self).__init__(*maze.random_free_place(), heading=90)
+        self.chose_random_direction()
+        self.step_count = 0
+
+    def chose_random_direction(self):
+        heading = random.uniform(0, 360)
+        self.h = heading
+
+    def read_distance_sensor(self, robot):
         """
         Poor robot, it's sensors are noisy and pretty strange,
         it can only know laser sensor wall distance(!)
         and is not very accurate at that too!
         """
-        return add_little_noise(super(Robot, self).distance_to_wall(maze))[0]
+        return add_little_noise(super(Shark, self).read_distance_sensor(robot))
+
+    def read_distance_sensor(self, robot):
+        """
+        Poor robot, it's sensors are noisy and pretty strange,
+        it can only know laser sensor wall distance(!)
+        and is not very accurate at that too!
+        """
+        return add_little_noise(super(Shark, self).read_distance_sensor(robot))
 
     def move(self, maze):
         """
@@ -203,21 +272,26 @@ world.draw()
 # initial distribution assigns each particle an equal probability
 particles = Particle.create_random(PARTICLE_COUNT, world)
 robbie = Robot(world)
+sharkie = Shark(world)
 
 while True:
     # Read robbie's sensor
-    robot_wall_dist = robbie.read_sensor(world)
+    # robot_wall_dist = robbie.read_sensor(world)
+    shark_dist = sharkie.read_distance_sensor(robbie)[0]
+    shark_angle = sharkie.read_angle_sensor(robbie)
 
     # Update particle weight according to how good every particle matches
     # robbie's sensor reading
     for p in particles:
-        if world.is_free(*p.xy):
-            particle_wall_dist = p.read_sensor(world)
-            # Calculate weight from gaussian
-            error = robot_wall_dist - particle_wall_dist
-            p.w = gauss(error)
-        else: # If particle not in boundary
-            p.w = 0
+        # if world.is_free(*p.xy):
+        particle_dist = p.read_distance_sensor(robbie)
+        particle_angle = p.read_angle_sensor(robbie)
+        # Calculate weight from gaussian
+        error_dist = shark_dist - particle_dist
+        error_angle = shark_angle - particle_angle
+        p.w = gauss(error_dist) * gauss(error_angle)
+        # else: # If particle not in boundary
+        #     p.w = 0
 
     # ---------- Try to find current best estimate for display ----------
     m_x, m_y, m_confident = compute_mean_point(particles)
@@ -226,6 +300,7 @@ while True:
     world.show_particles(particles)
     world.show_mean(m_x, m_y, m_confident)
     world.show_robot(robbie)
+    world.show_shark(sharkie)
 
     # ---------- Shuffle particles ----------
     new_particles = []
@@ -252,14 +327,17 @@ while True:
     particles = new_particles
 
     # ---------- Move things ----------
-    old_heading = robbie.h
+    old_heading = sharkie.h
     robbie.move(world)
-    d_h = robbie.h - old_heading
+    sharkie.move(world)
+    # TODO: change to have more variance
+    d_h = sharkie.h - old_heading
 
     # Move particles according to my belief of movement (this may
     # be different than the real movement, but it's all I got)
     for p in particles:
         p.h += d_h # in case robot changed heading, swirl particle heading too
-        p.advance_by(robbie.speed)
+        p.advance_by(sharkie.speed)
 
 
+    print "Measurement: ", shark_dist, shark_angle
