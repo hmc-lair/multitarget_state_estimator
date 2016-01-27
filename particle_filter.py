@@ -42,7 +42,7 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
               ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 
-PARTICLE_COUNT = 2000    # Total number of particles
+PARTICLE_COUNT = 500    # Total number of particles
 
 ROBOT_HAS_COMPASS = False # Does the robot know where north is? If so, it
 # makes orientation a lot easier since it knows which direction it is facing.
@@ -135,7 +135,7 @@ class Particle(object):
     def xy(self):
         return self.x, self.y
 
-    @property
+
     def xyh(self):
         return self.x, self.y, self.h
 
@@ -273,23 +273,34 @@ world.draw()
 particles = Particle.create_random(PARTICLE_COUNT, world)
 robbie = Robot(world)
 sharkie = Shark(world)
+robert = Robot(world)
 
 while True:
     # Read robbie's sensor
     # robot_wall_dist = robbie.read_sensor(world)
-    shark_dist = sharkie.read_distance_sensor(robbie)[0]
-    shark_angle = sharkie.read_angle_sensor(robbie)
+    shark_dist_robot1 = sharkie.read_distance_sensor(robbie)[0]
+    shark_angle_robot1 = sharkie.read_angle_sensor(robbie)
+    shark_dist_robot2 = sharkie.read_distance_sensor(robert)[0]
+    shark_angle_robot2 = sharkie.read_angle_sensor(robert)
+
 
     # Update particle weight according to how good every particle matches
     # robbie's sensor reading
     for p in particles:
         # if world.is_free(*p.xy):
-        particle_dist = p.read_distance_sensor(robbie)
-        particle_angle = p.read_angle_sensor(robbie)
+        # p.xyh = sharkie.xyh
+        particle_dist_robot1 = p.read_distance_sensor(robbie)
+        particle_angle_robot1 = p.read_angle_sensor(robbie)
+        particle_dist_robot2 = p.read_distance_sensor(robert)
+        particle_angle_robot2 = p.read_angle_sensor(robert)
         # Calculate weight from gaussian
-        error_dist = shark_dist - particle_dist
-        error_angle = shark_angle - particle_angle
-        p.w = gauss(error_dist) * gauss(error_angle)
+        error_dist_robot1 = shark_dist_robot1 - particle_dist_robot1
+        error_angle_robot1 = shark_angle_robot1 - particle_angle_robot1
+        error_dist_robot2 = shark_dist_robot1 - particle_dist_robot1
+        error_angle_robot2 = shark_angle_robot1 - particle_angle_robot1
+
+        p.w = gauss(error_dist_robot1) * gauss(error_angle_robot1) * \
+              gauss(error_dist_robot2) * gauss(error_angle_robot2)
         # else: # If particle not in boundary
         #     p.w = 0
 
@@ -301,6 +312,7 @@ while True:
     world.show_mean(m_x, m_y, m_confident)
     world.show_robot(robbie)
     world.show_shark(sharkie)
+    world.show_robot(robert)
 
     # ---------- Shuffle particles ----------
     new_particles = []
@@ -330,6 +342,7 @@ while True:
     old_heading = sharkie.h
     robbie.move(world)
     sharkie.move(world)
+    robert.move(world)
     # TODO: change to have more variance
     d_h = sharkie.h - old_heading
 
@@ -340,4 +353,4 @@ while True:
         p.advance_by(sharkie.speed)
 
 
-    print "Measurement: ", shark_dist, shark_angle
+    print "Measurement: ", shark_dist_robot1, shark_angle_robot1
