@@ -42,14 +42,19 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
               ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 
-PARTICLE_COUNT = 2000    # Total number of particles
+PARTICLE_COUNT = 1000    # Total number of particles
+SHARK_COUNT = 3
 
-ROBOT_HAS_COMPASS = False # Does the robot know where north is? If so, it
-# makes orientation a lot easier since it knows which direction it is facing.
-# If not -- and that is really fascinating -- the particle filter can work
-# out its heading too, it just takes more particles and more time. Try this
-# with 3000+ particles, it obviously needs lots more hypotheses as a particle
-# now has to correctly match not only the position but also the heading.
+ATTRACTORS = [(5,5)]
+FISH_INTERACTION_RADIUS = 0
+
+# Simulation Constants
+
+SIGMA_RAND = 0.1
+K_CON = 0.1
+K_REP = 500000
+K_ATT = 0.0000002
+K_RAND = 0.1
 
 # ------------------------------------------------------------------------
 # Some utility functions
@@ -143,12 +148,6 @@ class Particle(object):
     def create_random(cls, count, maze):
         return [cls(*maze.random_free_place()) for _ in range(0, count)]
 
-    # def read_wall_sensor(self, maze):
-    #     """
-    #     Find distance to wall with the laser range sensor at a specific orientation.
-    #     """
-    #     return maze.distance_to_wall(*self.xyh)
-
     def read_distance_sensor(self, robot):
         """
         Returns distance between self and robot.
@@ -226,14 +225,53 @@ class Robot(Particle):
 class Shark(Particle):
     speed = 0.2
 
-    def __init__(self, maze):
-        super(Shark, self).__init__(*maze.random_free_place(), heading=90)
-        self.chose_random_direction()
+    def __init__(self, x, y, heading=None, w=1, noisy=False):
+        if heading is None:
+            heading = random.uniform(0, 360)
+        if noisy:
+            x, y, heading = add_some_noise(x, y, heading)
+
+        self.x = x
+        self.y = y
+        self.h = heading
+        self.w = w
         self.step_count = 0
+        self.color = random.random(), random.random(), random.random()
+
+    def distance(self, shark):
+        return math.sqrt((self.x - shark.x)^2 + (self.y - shark.y)^2)
 
     def chose_random_direction(self):
         heading = random.uniform(0, 360)
         self.h = heading
+
+    def find_repulsion(self, sharks):
+        """
+        :param sharks: list of sharks
+        :return: Repulsion contribution (x and y) to movement
+        """
+        x_rep = 0
+        y_rep = 0
+        for shark in sharks:
+            dist = self.distance(shark)
+            if self is not shark and dist< FISH_INTERACTION_RADIUS:
+                mag = (1/dist - 1/FISH_INTERACTION_RADIUS)^2
+                x_rep += mag * (self.x - shark.x)
+                y_rep += mag * (self.y - shark.y)
+        return x_rep, y_rep
+
+    def find_attraction(self, attractors):
+        """
+        :param attractors: List of attraction points
+        :return: Attractor contribution to shark's movement
+        """
+        x_att = 0
+        y_att = 0
+        for attractor in attractors:
+            mag = (attractor[0]-self.x)^2 + (attractor[1]-self.y)^2
+            x_att += mag * (self.x - shark.x)
+            y_att += mag * (self.y - shark.y)
+        return x_att, y_att
 
     def read_distance_sensor(self, robot):
         """
@@ -253,7 +291,7 @@ class Shark(Particle):
 
     def move(self, maze):
         """
-        Move the robot. Note that the movement is stochastic too.
+        Move the shark. Note that the movement is stochastic too.
         """
         while True:
             self.step_count += 1
@@ -269,88 +307,20 @@ class Shark(Particle):
 world = Maze(maze_data)
 world.draw()
 
-# initial distribution assigns each particle an equal probability
-particles = Particle.create_random(PARTICLE_COUNT, world)
-robbie = Robot(world)
-sharkie = Shark(world)
+# Initialize Sharks
+sharks = Shark.create_random(SHARK_COUNT, world)
 robert = Robot(world)
 
 while True:
-    # Read robbie's sensor
-    # robot_wall_dist = robbie.read_sensor(world)
-    shark_dist_robot1 = sharkie.read_distance_sensor(robbie)[0]
-    shark_angle_robot1 = sharkie.read_angle_sensor(robbie)
-    shark_dist_robot2 = sharkie.read_distance_sensor(robert)[0]
-    shark_angle_robot2 = sharkie.read_angle_sensor(robert)
 
-
-    # Update particle weight according to how good every particle matches
-    # robbie's sensor reading
-    for p in particles:
-        # if world.is_free(*p.xy):
-        # p.xyh = sharkie.xyh
-        particle_dist_robot1 = p.read_distance_sensor(robbie)
-        particle_angle_robot1 = p.read_angle_sensor(robbie)
-        particle_dist_robot2 = p.read_distance_sensor(robert)
-        particle_angle_robot2 = p.read_angle_sensor(robert)
-        # Calculate weight from gaussian
-        error_dist_robot1 = shark_dist_robot1 - particle_dist_robot1
-        error_angle_robot1 = shark_angle_robot1 - particle_angle_robot1
-        error_dist_robot2 = shark_dist_robot1 - particle_dist_robot1
-        error_angle_robot2 = shark_angle_robot1 - particle_angle_robot1
-
-        p.w = gauss(error_dist_robot1) * gauss(error_angle_robot1) * \
-              gauss(error_dist_robot2) * gauss(error_angle_robot2)
-        # else: # If particle not in boundary
-        #     p.w = 0
-
-    # ---------- Try to find current best estimate for display ----------
-    m_x, m_y, m_confident = compute_mean_point(particles)
 
     # ---------- Show current state ----------
-    world.show_particles(particles)
-    world.show_mean(m_x, m_y, m_confident)
-    world.show_robot(robbie)
-    world.show_shark(sharkie)
+    world.show_sharks(sharks)
     world.show_robot(robert)
 
-    # ---------- Shuffle particles ----------
-    new_particles = []
 
-    # Normalise weights
-    nu = sum(p.w for p in particles)
-    if nu:
-        for p in particles:
-            p.w = p.w / nu
+    # # ---------- Move things ----------
 
-    # create a weighted distribution, for fast picking
-    dist = WeightedDistribution(particles)
-
-    for _ in particles:
-        p = dist.pick()
-        if p is None:  # No pick b/c all totally improbable
-            new_particle = Particle.create_random(1, world)[0]
-        else:
-            new_particle = Particle(p.x, p.y,
-                    heading=robbie.h if ROBOT_HAS_COMPASS else p.h,
-                    noisy=True)
-        new_particles.append(new_particle)
-
-    particles = new_particles
-
-    # ---------- Move things ----------
-    old_heading = sharkie.h
-    robbie.move(world)
-    sharkie.move(world)
-    robert.move(world)
-    # TODO: change to have more variance
-    d_h = sharkie.h - old_heading
-
-    # Move particles according to my belief of movement (this may
-    # be different than the real movement, but it's all I got)
-    for p in particles:
-        p.h += d_h # in case robot changed heading, swirl particle heading too
-        p.advance_by(sharkie.speed)
-
-
-    print "Measurement: ", shark_dist_robot1, shark_angle_robot1
+    # Move sharks with shark's speed
+    for s in sharks:
+        s.move(world)

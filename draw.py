@@ -108,6 +108,33 @@ class Maze(object):
                     turtle.color(self.weight_to_color(p.w))
                     turtle.stamp()
 
+    def show_sharks(self, sharks):
+        self.update_cnt += 1
+        if UPDATE_EVERY > 0 and self.update_cnt % UPDATE_EVERY != 1:
+            return
+
+        turtle.clearstamps()
+        turtle.shape('turtle')
+        # TODO: Change turtle color randomly
+        # turtle.color(random.random(),random.random(), random.random())
+
+        draw_cnt = 0
+        px = {}
+        for shark in sharks:
+            draw_cnt += 1
+            if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 1:
+                # Keep track of which positions already have something
+                # drawn to speed up display rendering
+                scaled_x = int(shark.x * self.one_px)
+                scaled_y = int(shark.y * self.one_px)
+                scaled_xy = scaled_x * 10000 + scaled_y
+                turtle.color(shark.color)
+                if not scaled_xy in px:
+                    px[scaled_xy] = 1
+                    turtle.setposition(*shark.xy)
+                    turtle.setheading(shark.h)
+                    # turtle.color(self.weight_to_color(shark.w))
+                    turtle.stamp()
     def show_shark(self, shark):
         turtle.color("green")
         turtle.shape('turtle')
