@@ -135,7 +135,7 @@ class Maze(object):
                     turtle.stamp()
 
     def show_shark(self, shark):
-        turtle.color(shark.color)
+        # turtle.color(shark.color)
         turtle.shape('turtle')
         turtle.setposition(*shark.xy)
         turtle.setheading(shark.h)
