@@ -18,7 +18,7 @@ turtle.speed(0)
 turtle.title("Find the robot")
 
 UPDATE_EVERY = 0
-DRAW_EVERY = 1
+DRAW_EVERY = 0
 
 class Maze(object):
     def __init__(self, maze):
@@ -104,7 +104,7 @@ class Maze(object):
                 if not scaled_xy in px:
                     px[scaled_xy] = 1
                     turtle.setposition(*p.xy)
-                    turtle.setheading(p.h)
+                    turtle.setheading(math.degrees(p.h))
                     turtle.color(self.weight_to_color(p.w))
                     turtle.stamp()
 
@@ -138,16 +138,16 @@ class Maze(object):
         # turtle.color(shark.color)
         turtle.shape('turtle')
         turtle.setposition(*shark.xy)
-        turtle.setheading(shark.h)
+        turtle.setheading(math.degrees(shark.h))
         turtle.stamp()
         turtle.update()
-        turtle.clearstamps()
+        # turtle.clearstamps()
 
     def show_robot(self, robot):
         turtle.color("blue")
         turtle.shape('square')
         turtle.setposition(*robot.xy)
-        turtle.setheading(robot.h)
+        turtle.setheading(math.degrees(robot.h))
         turtle.stamp()
         turtle.update()
 

@@ -119,7 +119,7 @@ class WeightedDistribution(object):
 class Particle(object):
     def __init__(self, x, y, heading=None, w=1, noisy=False):
         if heading is None:
-            heading = random.uniform(0, 360)
+            heading = random.uniform(0,math.pi)
         if noisy:
             x, y, heading = add_some_noise(x, y, heading)
 
@@ -170,8 +170,8 @@ class Particle(object):
         h = self.h
         if noisy:
             speed, h = add_little_noise(speed, h)
-            h += random.uniform(-3, 3) # needs more noise to disperse better
-        r = math.radians(h)
+            h += random.uniform(-0.25, 0.25) # needs more noise to disperse better
+        r = h
         # Calculate cartesian distance
         dx = math.cos(r) * speed
         dy = math.sin(r) * speed
@@ -195,7 +195,7 @@ class Robot(Particle):
         self.step_count = 0
 
     def chose_random_direction(self):
-        heading = random.uniform(0, 360)
+        heading = random.uniform(0, math.pi)
         self.h = heading
 
     # def read_sensor(self, robot):
@@ -232,7 +232,7 @@ class Shark(Particle):
         self.step_count = 0
 
     def chose_random_direction(self):
-        heading = random.uniform(0, 360)
+        heading = random.uniform(0, math.pi)
         self.h = heading
 
     def read_distance_sensor(self, robot):
@@ -349,7 +349,8 @@ while True:
     # Move particles according to my belief of movement (this may
     # be different than the real movement, but it's all I got)
     for p in particles:
-        p.h += d_h # in case robot changed heading, swirl particle heading too
+        # TODO: find a better way to disperse this
+        p.h += random.uniform(d_h, 0.02)  # in case robot changed heading, swirl particle heading too
         p.advance_by(sharkie.speed)
 
 
