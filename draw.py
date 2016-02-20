@@ -18,7 +18,7 @@ turtle.speed(0)
 turtle.title("Find the robot")
 
 UPDATE_EVERY = 0
-DRAW_EVERY = 2
+DRAW_EVERY = 1
 
 class Maze(object):
     def __init__(self, maze):
@@ -115,14 +115,12 @@ class Maze(object):
 
         turtle.clearstamps()
         turtle.shape('turtle')
-        # TODO: Change turtle color randomly
-        # turtle.color(random.random(),random.random(), random.random())
 
         draw_cnt = 0
         px = {}
         for shark in sharks:
             draw_cnt += 1
-            if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 1:
+            if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 0:
                 # Keep track of which positions already have something
                 # drawn to speed up display rendering
                 scaled_x = int(shark.x * self.one_px)
@@ -132,16 +130,18 @@ class Maze(object):
                 if not scaled_xy in px:
                     px[scaled_xy] = 1
                     turtle.setposition(*shark.xy)
-                    turtle.setheading(shark.h)
-                    # turtle.color(self.weight_to_color(shark.w))
+                    turtle.setheading(math.degrees(shark.h))
+                    turtle.color(shark.color)
                     turtle.stamp()
+
     def show_shark(self, shark):
-        turtle.color("green")
+        turtle.color(shark.color)
         turtle.shape('turtle')
         turtle.setposition(*shark.xy)
         turtle.setheading(shark.h)
         turtle.stamp()
         turtle.update()
+        turtle.clearstamps()
 
     def show_robot(self, robot):
         turtle.color("blue")
