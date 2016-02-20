@@ -13,6 +13,8 @@ import random
 import math
 import bisect
 import scipy.stats
+import numpy as np
+import time
 
 from draw import Maze
 
@@ -43,9 +45,9 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 
 
 PARTICLE_COUNT = 1000    # Total number of particles
-SHARK_COUNT = 3
+SHARK_COUNT = 1
 
-ATTRACTORS = [(5,5)]
+ATTRACTORS = [(8,8)]
 FISH_INTERACTION_RADIUS = 0
 
 # Simulation Constants
@@ -55,6 +57,9 @@ K_CON = 0.1
 K_REP = 500000
 K_ATT = 0.0000002
 K_RAND = 0.1
+
+# Yaw Control
+MAX_CONTROL = 20 * math.pi/180
 
 # ------------------------------------------------------------------------
 # Some utility functions
@@ -147,7 +152,7 @@ class Particle(object):
     @classmethod
     def create_random(cls, count, maze):
         return [cls(*maze.random_free_place()) for _ in range(0, count)]
-
+        # return [cls(12,8) for _ in range(0, count)]
     def read_distance_sensor(self, robot):
         """
         Returns distance between self and robot.
@@ -225,7 +230,7 @@ class Robot(Particle):
 class Shark(Particle):
     speed = 0.2
 
-    def __init__(self, x, y, heading=None, w=1, noisy=False):
+    def __init__(self, x, y, r,heading=None, w=1, noisy=False):
         if heading is None:
             heading = random.uniform(0, 360)
         if noisy:
@@ -237,6 +242,7 @@ class Shark(Particle):
         self.w = w
         self.step_count = 0
         self.color = random.random(), random.random(), random.random()
+        self.r = r
 
     def distance(self, shark):
         return math.sqrt((self.x - shark.x)^2 + (self.y - shark.y)^2)
@@ -255,7 +261,7 @@ class Shark(Particle):
         for shark in sharks:
             dist = self.distance(shark)
             if self is not shark and dist< FISH_INTERACTION_RADIUS:
-                mag = (1/dist - 1/FISH_INTERACTION_RADIUS)^2
+                mag = (1/dist - 1/FISH_INTERACTION_RADIUS)**2
                 x_rep += mag * (self.x - shark.x)
                 y_rep += mag * (self.y - shark.y)
         return x_rep, y_rep
@@ -268,9 +274,10 @@ class Shark(Particle):
         x_att = 0
         y_att = 0
         for attractor in attractors:
-            mag = (attractor[0]-self.x)^2 + (attractor[1]-self.y)^2
-            x_att += mag * (self.x - shark.x)
-            y_att += mag * (self.y - shark.y)
+            mag = (attractor[0]-self.x)**2 + (attractor[1]-self.y)**2
+            print "mag",mag
+            x_att += mag * (attractor[0] - self.x)
+            y_att += mag * (attractor[1] - self.y)
         return x_att, y_att
 
     def read_distance_sensor(self, robot):
@@ -295,12 +302,60 @@ class Shark(Particle):
         """
         while True:
             self.step_count += 1
-            if self.advance_by(self.speed, noisy=True,
+            # TODO : change noisy to True
+            if self.advance_by(self.speed, noisy=False,
                 checker=lambda r, dx, dy: maze.is_free(r.x+dx, r.y+dy)):
                 break
             # Bumped into something or too long in same direction,
             # chose random new direction
             self.chose_random_direction()
+
+    def angle_diff(self, desired_theta):
+        h = self.h
+        a = desired_theta - h
+        if a > math.pi:
+            a -= 2 * math.pi
+        if a < -math.pi:
+            a += 2 * math.pi
+        return a
+
+    def advance(self, speed, checker=None, noisy=False):
+        # Get attributes
+        x_att, y_att = self.find_attraction(ATTRACTORS)
+        x_rep, y_rep = 0, 0 # TODO: check repulsion
+
+        # Sum all potentials
+        x_tot = K_ATT * x_att + K_REP * x_rep
+        y_tot = K_ATT * y_att + K_REP * y_rep
+        desired_theta = math.degrees(math.atan2(y_tot, x_tot))
+        print "x_tot", x_tot
+        print "y_tot", y_tot
+
+
+        # if noisy:
+        #     speed, h = add_little_noise(speed, h)
+        #     h += random.uniform(-3, 3) # needs more noise to disperse better
+
+        # Set yaw control
+        control_theta = K_CON * (self.angle_diff(desired_theta)) + SIGMA_RAND * np.random.randn(1)
+        # control_theta = min(max(control_theta, - MAX_CONTROL), MAX_CONTROL)
+        print "desired_theta", desired_theta
+        print "control_theta", control_theta
+        # print type(control_theta)
+        self.h += control_theta
+        print "self.h", self.h
+        r = math.radians(self.h)
+        print "r", r
+        # Calculate cartesian distance
+        dx = math.cos(r) * speed
+        print "dx", dx
+        dy = math.sin(r) * speed
+        print "dy", dy
+        # Checks if, after advancing, particle is still in the box
+        if checker is None or checker(self, dx, dy):
+            self.move_by(dx, dy)
+            return True
+        return False
 
 # ------------------------------------------------------------------------
 
@@ -323,4 +378,5 @@ while True:
 
     # Move sharks with shark's speed
     for s in sharks:
-        s.move(world)
+        s.advance(s.speed)
+    time.sleep(0.5)
