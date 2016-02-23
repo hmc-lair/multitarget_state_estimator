@@ -13,6 +13,7 @@ import random
 import math
 import bisect
 import scipy.stats
+import matplotlib.pyplot as plt
 
 from draw import Maze
 
@@ -42,15 +43,12 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
               ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 
-PARTICLE_COUNT = 2000    # Total number of particles
+PARTICLE_COUNT = 500    # Total number of particles
+TIME_STEPS = 50 # Number of steps before simulation ends
 
-ROBOT_HAS_COMPASS = False # Does the robot know where north is? If so, it
-# makes orientation a lot easier since it knows which direction it is facing.
-# If not -- and that is really fascinating -- the particle filter can work
-# out its heading too, it just takes more particles and more time. Try this
-# with 3000+ particles, it obviously needs lots more hypotheses as a particle
-# now has to correctly match not only the position but also the heading.
+SHOW_VISUALIZATION = False # Whether to have visualization
 
+ROBOT_HAS_COMPASS = False
 # ------------------------------------------------------------------------
 # Some utility functions
 
@@ -265,9 +263,10 @@ class Shark(Particle):
             self.chose_random_direction()
 
 # ------------------------------------------------------------------------
-
 world = Maze(maze_data)
-world.draw()
+
+if SHOW_VISUALIZATION:
+    world.draw()
 
 # initial distribution assigns each particle an equal probability
 particles = Particle.create_random(PARTICLE_COUNT, world)
@@ -275,7 +274,11 @@ robbie = Robot(world)
 sharkie = Shark(world)
 robert = Robot(world)
 
-while True:
+# Initialize list for plotting
+error_x = []
+error_y = []
+
+for timestep in range(TIME_STEPS):
     # Read robbie's sensor
     # robot_wall_dist = robbie.read_sensor(world)
     shark_dist_robot1 = sharkie.read_distance_sensor(robbie)[0]
@@ -307,12 +310,18 @@ while True:
     # ---------- Try to find current best estimate for display ----------
     m_x, m_y, m_confident = compute_mean_point(particles)
 
+    # Append difference between current and estimated state to lists
+    error_x.append(m_x - sharkie.x)
+    error_y.append(m_y - sharkie.y)
+
+
     # ---------- Show current state ----------
-    world.show_particles(particles)
-    world.show_mean(m_x, m_y, m_confident)
-    world.show_robot(robbie)
-    world.show_shark(sharkie)
-    world.show_robot(robert)
+    if SHOW_VISUALIZATION:
+        world.show_particles(particles)
+        world.show_mean(m_x, m_y, m_confident)
+        world.show_robot(robbie)
+        world.show_shark(sharkie)
+        world.show_robot(robert)
 
     # ---------- Shuffle particles ----------
     new_particles = []
@@ -353,5 +362,18 @@ while True:
         p.h += random.uniform(d_h, 0.02)  # in case robot changed heading, swirl particle heading too
         p.advance_by(sharkie.speed)
 
+    print timestep
 
-    print "Measurement: ", shark_dist_robot1, shark_angle_robot1
+
+
+# Plot actual vs. estimated into graph
+
+fig, axes = plt.subplots(nrows=2, ncols=1)
+
+axes[0].plot(error_x)
+axes[0].set_ylabel('Error in x')
+axes[0].set_title('No. of Particle: ' + str(PARTICLE_COUNT))
+axes[1].plot(error_y)
+axes[1].set_ylabel('Error in y')
+
+plt.show()
