@@ -51,7 +51,7 @@ FISH_INTERACTION_RADIUS = 1.5
 SIGMA_RAND = 0.1
 K_CON = 0.1
 # TODO: ask Chris about constants
-K_REP = 5
+K_REP = 500000000
 K_ATT = 0.0000002
 K_RAND = 0.1
 
