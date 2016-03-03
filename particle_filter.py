@@ -72,7 +72,6 @@ def compute_mean_point(particles, world):
     This is not part of the particle filter algorithm but rather an
     addition to show the "best belief" for current position.
     """
-
     m_x, m_y, m_count = 0, 0, 0
     for p in particles:
         m_count += p.w
@@ -196,14 +195,6 @@ class Robot(Particle):
         heading = random.uniform(0, math.pi)
         self.h = heading
 
-    # def read_sensor(self, robot):
-    #     """
-    #     Poor robot, it's sensors are noisy and pretty strange,
-    #     it can only know laser sensor wall distance(!)
-    #     and is not very accurate at that too!
-    #     """
-    #     return add_little_noise(super(Robot, self).read_distance_sensor(robot))
-
     def move(self, maze):
         """
         Move the robot. Note that the movement is stochastic too.
@@ -247,7 +238,7 @@ class Shark(Particle):
         it can only know laser sensor wall distance(!)
         and is not very accurate at that too!
         """
-        return add_little_noise(super(Shark, self).read_distance_sensor(robot))
+        return add_little_noise(super(Shark, self).read_distance_sensor(robot))[0]
 
     def move(self, maze):
         """
@@ -263,96 +254,85 @@ class Shark(Particle):
             self.chose_random_direction()
 
 
-def estimate(time_steps, robot1, robot2, shark, particles, world):
-
-    error_x = []
-    error_y = []
-    for timestep in range(time_steps):
-        # Read robbie's sensor
-        # robot_wall_dist = robbie.read_sensor(world)
-        shark_dist_robot1 = shark.read_distance_sensor(robot1)[0]
-        shark_angle_robot1 = shark.read_angle_sensor(robot1)
-        shark_dist_robot2 = shark.read_distance_sensor(robot2)[0]
-        shark_angle_robot2 = shark.read_angle_sensor(robot2)
+def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
+    # Read sensors
+    shark_dist_robot1 = shark.read_distance_sensor(robot1)
+    shark_angle_robot1 = shark.read_angle_sensor(robot1)
+    shark_dist_robot2 = shark.read_distance_sensor(robot2)
+    shark_angle_robot2 = shark.read_angle_sensor(robot2)
 
 
-        # Update particle weight according to how good every particle matches
-        # robbie's sensor reading
+    # Update particle weight according to how good every particle matches
+    # robbie's sensor reading
+    for p in particles:
+        particle_dist_robot1 = p.read_distance_sensor(robot1)
+        particle_angle_robot1 = p.read_angle_sensor(robot1)
+        particle_dist_robot2 = p.read_distance_sensor(robot2)
+        particle_angle_robot2 = p.read_angle_sensor(robot2)
+
+        # Calculate weight from gaussian
+        error_dist_robot1 = shark_dist_robot1 - particle_dist_robot1
+        error_angle_robot1 = shark_angle_robot1 - particle_angle_robot1
+        error_dist_robot2 = shark_dist_robot2 - particle_dist_robot2
+        error_angle_robot2 = shark_angle_robot2 - particle_angle_robot2
+
+        p.w = gauss(error_dist_robot1) * gauss(error_angle_robot1) * \
+              gauss(error_dist_robot2) * gauss(error_angle_robot2)
+
+    # ---------- Try to find current best estimate for display ----------
+    m_x, m_y, m_confident = compute_mean_point(particles, world)
+
+    # Append difference between current and estimated state to lists
+    error_x.append(m_x - shark.x)
+    error_y.append(m_y - shark.y)
+
+
+    # ---------- Show current state ----------
+    if SHOW_VISUALIZATION:
+        world.show_particles(particles)
+        world.show_mean(m_x, m_y, m_confident)
+        world.show_robot(robot1)
+        world.show_shark(shark)
+        world.show_robot(robot2)
+
+    # ---------- Shuffle particles ----------
+    new_particles = []
+
+    # Normalise weights
+    nu = sum(p.w for p in particles)
+    if nu:
         for p in particles:
-            # if world.is_free(*p.xy):
-            # p.xyh = sharkie.xyh
-            particle_dist_robot1 = p.read_distance_sensor(robot1)
-            particle_angle_robot1 = p.read_angle_sensor(robot1)
-            particle_dist_robot2 = p.read_distance_sensor(robot2)
-            particle_angle_robot2 = p.read_angle_sensor(robot2)
-            # Calculate weight from gaussian
-            error_dist_robot1 = shark_dist_robot1 - particle_dist_robot1
-            error_angle_robot1 = shark_angle_robot1 - particle_angle_robot1
-            error_dist_robot2 = shark_dist_robot2 - particle_dist_robot2
-            error_angle_robot2 = shark_angle_robot2 - particle_angle_robot2
+            p.w = p.w / nu
 
-            p.w = gauss(error_dist_robot1) * gauss(error_angle_robot1) * \
-                  gauss(error_dist_robot2) * gauss(error_angle_robot2)
-            # else: # If particle not in boundary
-            #     p.w = 0
+    # create a weighted distribution, for fast picking
+    dist = WeightedDistribution(particles)
 
-        # ---------- Try to find current best estimate for display ----------
-        m_x, m_y, m_confident = compute_mean_point(particles, world)
+    for _ in particles:
+        p = dist.pick()
+        if p is None:  # No pick b/c all totally improbable
+            new_particle = Particle.create_random(1, world)[0]
+        else:
+            new_particle = Particle(p.x, p.y,
+                    heading=robot1.h if ROBOT_HAS_COMPASS else p.h,
+                    noisy=True)
+        new_particles.append(new_particle)
+    particles = new_particles
+    # ---------- Move things ----------
+    old_heading = shark.h
+    robot1.move(world)
+    shark.move(world)
+    robot2.move(world)
+    # TODO: change to have more variance
+    d_h = shark.h - old_heading
 
-        # Append difference between current and estimated state to lists
-        error_x.append(m_x - shark.x)
-        error_y.append(m_y - shark.y)
+    # Move particles according to my belief of movement (this may
+    # be different than the real movement, but it's all I got)
+    for p in particles:
+        # TODO: find a better way to disperse this (currently: 5 degree)
+        p.h += random.uniform(d_h, 0.1)  # in case robot changed heading, swirl particle heading too
+        p.advance_by(shark.speed)
+    return particles
 
-
-        # ---------- Show current state ----------
-        if SHOW_VISUALIZATION:
-            world.show_particles(particles)
-            world.show_mean(m_x, m_y, m_confident)
-            world.show_robot(robot1)
-            world.show_shark(shark)
-            world.show_robot(robot2)
-
-        # ---------- Shuffle particles ----------
-        new_particles = []
-
-        # Normalise weights
-        nu = sum(p.w for p in particles)
-        if nu:
-            for p in particles:
-                p.w = p.w / nu
-
-        # create a weighted distribution, for fast picking
-        dist = WeightedDistribution(particles)
-
-        for _ in particles:
-            p = dist.pick()
-            if p is None:  # No pick b/c all totally improbable
-                new_particle = Particle.create_random(1, world)[0]
-            else:
-                new_particle = Particle(p.x, p.y,
-                        heading=robot1.h if ROBOT_HAS_COMPASS else p.h,
-                        noisy=True)
-            new_particles.append(new_particle)
-
-        particles = new_particles
-
-        # ---------- Move things ----------
-        old_heading = shark.h
-        robot1.move(world)
-        shark.move(world)
-        robot2.move(world)
-        # TODO: change to have more variance
-        d_h = shark.h - old_heading
-
-        # Move particles according to my belief of movement (this may
-        # be different than the real movement, but it's all I got)
-        for p in particles:
-            # TODO: find a better way to disperse this (currently: 5 degree)
-            p.h += random.uniform(d_h, 0.1)  # in case robot changed heading, swirl particle heading too
-            p.advance_by(shark.speed)
-
-        print timestep
-    return error_x, error_y
 def errorPlot(error_x, error_y):
     fig, axes = plt.subplots(nrows=2, ncols=1)
 
@@ -372,16 +352,29 @@ def main():
         world.draw()
 
     # initial distribution assigns each particle an equal probability
-    particles = Particle.create_random(PARTICLE_COUNT, world)
+    particles1 = Particle.create_random(PARTICLE_COUNT, world)
+    particles2 = Particle.create_random(PARTICLE_COUNT, world)
     robbie = Robot(world)
     sharkie = Shark(world)
     robert = Robot(world)
+    sharkette = Shark(world)
 
-    # Obtain error list for plotting
-    error_x, error_y = estimate(TIME_STEPS, robert, robbie, sharkie, particles, world)
+    # Initialize error lists
+    error_x1 = []
+    error_y1 = []
+    error_x2 = []
+    error_y2 = []
+
+    # Filter for time step
+    for _ in range(TIME_STEPS):
+        # TODO: consider better syntax... (make into class)
+        particles1 = estimate(robbie, robert, sharkie, particles1, world, error_x1, error_y1)
+
+        particles2 = estimate(robbie, robert, sharkette, particles2, world, error_x2, error_y2)
 
     # Plot actual vs. estimated into graph
-    errorPlot(error_x, error_y)
+    errorPlot(error_x1, error_y1)
+    errorPlot(error_x2, error_y2)
 
 
 if __name__ == "__main__":
