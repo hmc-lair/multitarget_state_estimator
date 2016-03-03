@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="111e7042-3d97-4691-9a08-d028719a3cbb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/draw.py" afterPath="$PROJECT_DIR$/draw.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/particle_filter.py" afterPath="$PROJECT_DIR$/particle_filter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shark_particle.py" afterPath="$PROJECT_DIR$/shark_particle.py" />
     </list>
     <ignored path="particle_filter_demo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -17,8 +17,8 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/particle_filter_demo$shark_particle.coverage" NAME="shark_particle Coverage Results" MODIFIED="1456972856298" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/particle_filter_demo$particle_filter.coverage" NAME="particle_filter Coverage Results" MODIFIED="1456984957675" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/particle_filter_demo$shark_particle.coverage" NAME="shark_particle Coverage Results" MODIFIED="1456988177720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/particle_filter_demo$particle_filter.coverage" NAME="particle_filter Coverage Results" MODIFIED="1456988135067" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -33,7 +33,7 @@
         <entry file="file://$PROJECT_DIR$/shark_particle.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="353" column="45" selection-start-line="353" selection-start-column="45" selection-end-line="353" selection-end-column="45" />
+              <caret line="211" column="0" selection-start-line="211" selection-start-column="0" selection-end-line="222" selection-end-column="70" />
               <folding>
                 <element signature="e#369#407#0" expanded="true" />
               </folding>
@@ -44,8 +44,8 @@
       <file leaf-file-name="particle_filter.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/particle_filter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.12436548">
-              <caret line="423" column="53" selection-start-line="423" selection-start-column="53" selection-end-line="423" selection-end-column="53" />
+            <state vertical-scroll-proportion="0.33248731">
+              <caret line="409" column="87" selection-start-line="409" selection-start-column="87" selection-end-line="409" selection-end-column="87" />
               <folding>
                 <element signature="e#330#368#0" expanded="true" />
               </folding>
@@ -73,8 +73,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/shark_particle.py" />
         <option value="$PROJECT_DIR$/draw.py" />
+        <option value="$PROJECT_DIR$/shark_particle.py" />
         <option value="$PROJECT_DIR$/particle_filter.py" />
       </list>
     </option>
@@ -87,8 +87,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="124" />
-    <option name="y" value="27" />
+    <option name="x" value="244" />
+    <option name="y" value="107" />
     <option name="width" value="1150" />
     <option name="height" value="783" />
   </component>
@@ -154,7 +154,7 @@
       </console-settings>
     </option>
   </component>
-  <component name="RunManager" selected="Python.particle_filter">
+  <component name="RunManager" selected="Python.shark_particle">
     <configuration default="false" name="shark_particle" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -385,8 +385,8 @@
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.particle_filter" />
-        <item index="1" class="java.lang.String" itemvalue="Python.shark_particle" />
+        <item index="0" class="java.lang.String" itemvalue="Python.shark_particle" />
+        <item index="1" class="java.lang.String" itemvalue="Python.particle_filter" />
       </list>
     </recent_temporary>
   </component>
@@ -413,13 +413,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="124" y="27" width="1150" height="783" extended-state="0" />
+    <frame x="244" y="107" width="1150" height="783" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997195" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39942113" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -726,7 +726,7 @@
     <entry file="file://$PROJECT_DIR$/shark_particle.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="353" column="45" selection-start-line="353" selection-start-column="45" selection-end-line="353" selection-end-column="45" />
+          <caret line="211" column="0" selection-start-line="211" selection-start-column="0" selection-end-line="222" selection-end-column="70" />
           <folding>
             <element signature="e#369#407#0" expanded="true" />
           </folding>
@@ -745,8 +745,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12436548">
-          <caret line="423" column="53" selection-start-line="423" selection-start-column="53" selection-end-line="423" selection-end-column="53" />
+        <state vertical-scroll-proportion="0.33248731">
+          <caret line="409" column="87" selection-start-line="409" selection-start-column="87" selection-end-line="409" selection-end-column="87" />
           <folding>
             <element signature="e#330#368#0" expanded="true" />
           </folding>

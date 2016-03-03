@@ -185,10 +185,23 @@ class Particle(object):
 class Robot(Particle):
     speed = 0.2
 
-    def __init__(self, maze):
-        super(Robot, self).__init__(8, 8, heading=90)
-        self.chose_random_direction()
+    def __init__(self, x, y, heading=None, w=1, noisy=False):
+        if heading is None:
+            heading = random.uniform(0, math.pi)
+        if noisy:
+            x, y, heading = add_some_noise(x, y, heading)
+
+        self.x = x
+        self.y = y
+        self.h = heading
+        self.w = w
         self.step_count = 0
+        # self.color = random.random(), random.random(), random.random()
+
+    # def __init__(self, maze):
+    #     super(Robot, self).__init__(8, 8, heading=90)
+    #     self.chose_random_direction()
+    #     self.step_count = 0
 
     def chose_random_direction(self):
         heading = random.uniform(0, math.pi)
@@ -218,6 +231,7 @@ class Shark(Particle):
         super(Shark, self).__init__(*maze.random_free_place(), heading=90)
         self.chose_random_direction()
         self.step_count = 0
+
 
     def chose_random_direction(self):
         heading = random.uniform(0, math.pi)
@@ -253,59 +267,37 @@ class Shark(Particle):
             self.chose_random_direction()
 
 
-def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
+def estimate(robots, shark, particles, world, error_x, error_y):
 
     # Initialize lists
-    shark_dist = []
-    shark_angle = []
+    weight_list = [1]*len(particles)
 
     # Read sensors
 
-    # for shark in sharks:
-    #     robot_dist = []
-    #     robot_angle = []
-    #     for robot in robots:
-    #         robot_dist.append(shark.read_distance_sensor(robot))
-    #         robot_angle.append(shark.read_angle_sensor(robot))
-    #     shark_dist.append(robot_dist)
-    #     shark_angle.append(robot_angle)
-    shark_dist_robot1 = shark.read_distance_sensor(robot1)
-    shark_angle_robot1 = shark.read_angle_sensor(robot1)
-    shark_dist_robot2 = shark.read_distance_sensor(robot2)
-    shark_angle_robot2 = shark.read_angle_sensor(robot2)
+    for i, robot in enumerate(robots):
+        shark_robot_dist = shark.read_distance_sensor(robot)
+        shark_robot_angle = shark.read_angle_sensor(robot)
 
 
-    # Update particle weight according to how good every particle matches
-    # robbie's sensor reading
-    for p in particles:
-        # particle_dist = []
-        # particle_angle = []
-        # error_dist = []
-        # error_angle = []
-        #
-        # for robot in robots:
-        #     particle_dist.append(p.read_distance_sensor(robot))
-        #     particle_angle.append(p.read_angle_sensor(robot))
-        particle_dist_robot1 = p.read_distance_sensor(robot1)
-        particle_angle_robot1 = p.read_angle_sensor(robot1)
-        particle_dist_robot2 = p.read_distance_sensor(robot2)
-        particle_angle_robot2 = p.read_angle_sensor(robot2)
+        # Update particle weight according to how good every particle matches
+        # robbie's sensor reading
+        for j, p in enumerate(particles):
 
-        # for i, shark in enumerate(sharks):
-        #     error_dist_robot = []
-        #     error_angle_robot = []
-        #     for j,robot in enumerate(robots):
-        #         error_dist_robot.append(shark_dist[i][j])
+            particle_robot_dist = p.read_distance_sensor(robot)
+            particle_robot_angle = p.read_angle_sensor(robot)
 
 
-        # Calculate weight from gaussian
-        error_dist_robot1 = shark_dist_robot1 - particle_dist_robot1
-        error_angle_robot1 = shark_angle_robot1 - particle_angle_robot1
-        error_dist_robot2 = shark_dist_robot2 - particle_dist_robot2
-        error_angle_robot2 = shark_angle_robot2 - particle_angle_robot2
+            # Calculate weight from gaussian
+            error_dist_particle_robot = shark_robot_dist - particle_robot_dist
+            error_angle_particle_robot = shark_robot_angle - particle_robot_angle
 
-        p.w = gauss(error_dist_robot1) * gauss(error_angle_robot1) * \
-              gauss(error_dist_robot2) * gauss(error_angle_robot2)
+            weight_particle_robot = gauss(error_dist_particle_robot) * gauss(error_angle_particle_robot)
+
+            weight_list[j] *= weight_particle_robot
+
+    for i, p in enumerate(particles):
+
+        p.w = weight_list[i]
 
     # Find the mean point and associated confidence
     m_x, m_y, m_confident = compute_mean_point(particles, world)
@@ -314,14 +306,6 @@ def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
     error_x.append(m_x - shark.x)
     error_y.append(m_y - shark.y)
 
-
-    # # Show current state
-    # if SHOW_VISUALIZATION:
-    #     world.show_particles(particles)
-    #     world.show_mean(m_x, m_y, m_confident)
-    #     world.show_robot(robot1)
-    #     world.show_shark(shark)
-    #     world.show_robot(robot2)
 
     # Shuffle particles
     new_particles = []
@@ -346,12 +330,12 @@ def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
         new_particles.append(new_particle)
     return new_particles
 
-def move(robot1, robot2, shark1, shark2, particles1, particles2, world):
+def move(world, robots, shark1, shark2, particles1, particles2):
     # ---------- Move things ----------
+    for robot in robots:
+        robot.move(world)
     old_heading1 = shark1.h
-    robot1.move(world)
     shark1.move(world)
-    robot2.move(world)
     # TODO: change to have more variance
     d_h1 = shark1.h - old_heading1
 
@@ -371,7 +355,6 @@ def move(robot1, robot2, shark1, shark2, particles1, particles2, world):
         p.h += random.uniform(d_h2, 0.1)  # in case robot changed heading, swirl particle heading too
         p.advance_by(shark2.speed)
 
-    # return particles1, particles2
 
 def errorPlot(error_x, error_y):
     fig, axes = plt.subplots(nrows=2, ncols=1)
@@ -384,14 +367,16 @@ def errorPlot(error_x, error_y):
 
     plt.show()
 
-def show(world, particles1, particles2, mean1, mean2, robot1, robot2, shark1, shark2):
+def show(world, robots, shark1, shark2, particles1, particles2, mean1, mean2):
     world.clearMaze()
     world.show_particles(particles1)
     world.show_particles(particles2)
     world.show_mean(mean1)
     world.show_mean(mean2)
-    world.show_robot(robot1)
-    world.show_robot(robot2)
+
+    for robot in robots:
+        world.show_robot(robot)
+
     world.show_shark(shark1)
     world.show_shark(shark2)
 
@@ -406,9 +391,8 @@ def main():
     # initial distribution assigns each particle an equal probability
     particles1 = Particle.create_random(PARTICLE_COUNT, world)
     particles2 = Particle.create_random(PARTICLE_COUNT, world)
-    robbie = Robot(world)
+    robots = Robot.create_random(2, world)
     sharkie = Shark(world)
-    robert = Robot(world)
     sharkette = Shark(world)
 
     # Initialize error lists
@@ -420,18 +404,18 @@ def main():
     # Filter for time step
     for time_step in range(TIME_STEPS):
         # TODO: consider better syntax... (make into class)
-        particles1 = estimate(robbie, robert, sharkie, particles1, world, error_x1, error_y1)
+        particles1 = estimate(robots, sharkie, particles1, world, error_x1, error_y1)
         mean1 = compute_mean_point(particles1, world)
 
-        particles2 = estimate(robbie, robert, sharkette, particles2, world, error_x2, error_y2)
+        particles2 = estimate(robots, sharkette, particles2, world, error_x2, error_y2)
         mean2 = compute_mean_point(particles2, world)
 
         # Move robots, sharks and particles
-        move(robbie, robert, sharkie, sharkette, particles1, particles2, world)
+        move(world, robots, sharkie, sharkette, particles1, particles2)
 
         # Show current state
         if SHOW_VISUALIZATION:
-            show(world, particles1, particles2, mean1, mean2, robbie, robert, sharkie, sharkette)
+            show(world, robots, sharkie, sharkette, particles1, particles2, mean1, mean2)
 
         print time_step
 

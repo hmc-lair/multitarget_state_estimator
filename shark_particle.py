@@ -325,11 +325,12 @@ def main():
     robert = Robot(world)
     robbie = Robot(world)
 
-    # while True:
-
+    while True:
+        #
         # ---------- Show current state ----------
-        # world.show_sharks(sharks)
-        # world.show_robot(robert)
+        world.show_sharks(sharks)
+        world.show_robot(robert)
+        world.show_robot(robbie)
 
         # # ---------- Move things ----------
 
@@ -339,22 +340,6 @@ def main():
         time.sleep(0.05)
 
 
-    # world = Maze(maze_data)
-    #
-    # if SHOW_VISUALIZATION:
-    #     world.draw()
-    #
-    # # initial distribution assigns each particle an equal probability
-    # particles = Particle.create_random(PARTICLE_COUNT, world)
-    # robbie = Robot(world)
-    # sharkie = Shark(world)
-    # robert = Robot(world)
-    #
-    # # Obtain error list for plotting
-    # error_x, error_y = estimate(TIME_STEPS, robert, robbie, sharkie, particles, world)
-    #
-    # # Plot actual vs. estimated into graph
-    # errorPlot(error_x, error_y)
 
 if __name__ == "__main__":
     main()
