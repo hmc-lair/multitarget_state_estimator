@@ -74,7 +74,8 @@ class Maze(object):
         xx = int(x)
         return self.maze[yy][xx] == 0
 
-    def show_mean(self, x, y, confident=False):
+    def show_mean(self, mean):
+        x, y, confident = mean
         if confident:
             turtle.color("#00AA00")
         else:
@@ -83,12 +84,15 @@ class Maze(object):
         turtle.shape("circle")
         turtle.stamp()
 
+    def clearMaze(self):
+        turtle.clearstamps()
+
     def show_particles(self, particles):
         self.update_cnt += 1
         if UPDATE_EVERY > 0 and self.update_cnt % UPDATE_EVERY != 1:
             return
 
-        turtle.clearstamps()
+        # turtle.clearstamps()
         turtle.shape('tri')
 
         draw_cnt = 0

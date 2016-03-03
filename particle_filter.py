@@ -14,7 +14,6 @@ import math
 import bisect
 import scipy.stats
 import matplotlib.pyplot as plt
-
 from draw import Maze
 
 # 0 - empty square
@@ -255,7 +254,21 @@ class Shark(Particle):
 
 
 def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
+
+    # Initialize lists
+    shark_dist = []
+    shark_angle = []
+
     # Read sensors
+
+    # for shark in sharks:
+    #     robot_dist = []
+    #     robot_angle = []
+    #     for robot in robots:
+    #         robot_dist.append(shark.read_distance_sensor(robot))
+    #         robot_angle.append(shark.read_angle_sensor(robot))
+    #     shark_dist.append(robot_dist)
+    #     shark_angle.append(robot_angle)
     shark_dist_robot1 = shark.read_distance_sensor(robot1)
     shark_angle_robot1 = shark.read_angle_sensor(robot1)
     shark_dist_robot2 = shark.read_distance_sensor(robot2)
@@ -265,10 +278,25 @@ def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
     # Update particle weight according to how good every particle matches
     # robbie's sensor reading
     for p in particles:
+        # particle_dist = []
+        # particle_angle = []
+        # error_dist = []
+        # error_angle = []
+        #
+        # for robot in robots:
+        #     particle_dist.append(p.read_distance_sensor(robot))
+        #     particle_angle.append(p.read_angle_sensor(robot))
         particle_dist_robot1 = p.read_distance_sensor(robot1)
         particle_angle_robot1 = p.read_angle_sensor(robot1)
         particle_dist_robot2 = p.read_distance_sensor(robot2)
         particle_angle_robot2 = p.read_angle_sensor(robot2)
+
+        # for i, shark in enumerate(sharks):
+        #     error_dist_robot = []
+        #     error_angle_robot = []
+        #     for j,robot in enumerate(robots):
+        #         error_dist_robot.append(shark_dist[i][j])
+
 
         # Calculate weight from gaussian
         error_dist_robot1 = shark_dist_robot1 - particle_dist_robot1
@@ -279,7 +307,7 @@ def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
         p.w = gauss(error_dist_robot1) * gauss(error_angle_robot1) * \
               gauss(error_dist_robot2) * gauss(error_angle_robot2)
 
-    # ---------- Try to find current best estimate for display ----------
+    # Find the mean point and associated confidence
     m_x, m_y, m_confident = compute_mean_point(particles, world)
 
     # Append difference between current and estimated state to lists
@@ -287,15 +315,15 @@ def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
     error_y.append(m_y - shark.y)
 
 
-    # ---------- Show current state ----------
-    if SHOW_VISUALIZATION:
-        world.show_particles(particles)
-        world.show_mean(m_x, m_y, m_confident)
-        world.show_robot(robot1)
-        world.show_shark(shark)
-        world.show_robot(robot2)
+    # # Show current state
+    # if SHOW_VISUALIZATION:
+    #     world.show_particles(particles)
+    #     world.show_mean(m_x, m_y, m_confident)
+    #     world.show_robot(robot1)
+    #     world.show_shark(shark)
+    #     world.show_robot(robot2)
 
-    # ---------- Shuffle particles ----------
+    # Shuffle particles
     new_particles = []
 
     # Normalise weights
@@ -316,22 +344,34 @@ def estimate(robot1, robot2, shark, particles, world, error_x, error_y):
                     heading=robot1.h if ROBOT_HAS_COMPASS else p.h,
                     noisy=True)
         new_particles.append(new_particle)
-    particles = new_particles
+    return new_particles
+
+def move(robot1, robot2, shark1, shark2, particles1, particles2, world):
     # ---------- Move things ----------
-    old_heading = shark.h
+    old_heading1 = shark1.h
     robot1.move(world)
-    shark.move(world)
+    shark1.move(world)
     robot2.move(world)
     # TODO: change to have more variance
-    d_h = shark.h - old_heading
+    d_h1 = shark1.h - old_heading1
+
+    old_heading2 = shark2.h
+    shark2.move(world)
+    d_h2 = shark2.h - old_heading2
 
     # Move particles according to my belief of movement (this may
     # be different than the real movement, but it's all I got)
-    for p in particles:
+    for p in particles1:
         # TODO: find a better way to disperse this (currently: 5 degree)
-        p.h += random.uniform(d_h, 0.1)  # in case robot changed heading, swirl particle heading too
-        p.advance_by(shark.speed)
-    return particles
+        p.h += random.uniform(d_h1, 0.1)  # in case robot changed heading, swirl particle heading too
+        p.advance_by(shark1.speed)
+
+    for p in particles2:
+        # TODO: find a better way to disperse this (currently: 5 degree)
+        p.h += random.uniform(d_h2, 0.1)  # in case robot changed heading, swirl particle heading too
+        p.advance_by(shark2.speed)
+
+    # return particles1, particles2
 
 def errorPlot(error_x, error_y):
     fig, axes = plt.subplots(nrows=2, ncols=1)
@@ -343,6 +383,18 @@ def errorPlot(error_x, error_y):
     axes[1].set_ylabel('Error in y')
 
     plt.show()
+
+def show(world, particles1, particles2, mean1, mean2, robot1, robot2, shark1, shark2):
+    world.clearMaze()
+    world.show_particles(particles1)
+    world.show_particles(particles2)
+    world.show_mean(mean1)
+    world.show_mean(mean2)
+    world.show_robot(robot1)
+    world.show_robot(robot2)
+    world.show_shark(shark1)
+    world.show_shark(shark2)
+
 
 # ------------------------------------------------------------------------
 def main():
@@ -366,15 +418,28 @@ def main():
     error_y2 = []
 
     # Filter for time step
-    for _ in range(TIME_STEPS):
+    for time_step in range(TIME_STEPS):
         # TODO: consider better syntax... (make into class)
         particles1 = estimate(robbie, robert, sharkie, particles1, world, error_x1, error_y1)
+        mean1 = compute_mean_point(particles1, world)
 
         particles2 = estimate(robbie, robert, sharkette, particles2, world, error_x2, error_y2)
+        mean2 = compute_mean_point(particles2, world)
+
+        # Move robots, sharks and particles
+        move(robbie, robert, sharkie, sharkette, particles1, particles2, world)
+
+        # Show current state
+        if SHOW_VISUALIZATION:
+            show(world, particles1, particles2, mean1, mean2, robbie, robert, sharkie, sharkette)
+
+        print time_step
+
 
     # Plot actual vs. estimated into graph
     errorPlot(error_x1, error_y1)
     errorPlot(error_x2, error_y2)
+
 
 
 if __name__ == "__main__":
