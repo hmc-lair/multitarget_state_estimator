@@ -44,9 +44,13 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
               ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 
+# Constants
+
 PARTICLE_COUNT = 250   # Total number of particles
 TIME_STEPS = 100 # Number of steps before simulation ends
-SHARK_COUNT = 10
+SHARK_COUNT = 10 # Number of sharks
+ROBOT_COUNT = 2 # Number of robots
+TRACK_COUNT = 2 # Number of tracked sharks
 
 SHOW_VISUALIZATION = True # Whether to have visualization
 
@@ -142,12 +146,6 @@ class Particle(object):
     def create_random(cls, count, maze):
         return [cls(*maze.random_free_place()) for _ in range(0, count)]
 
-    # def read_wall_sensor(self, maze):
-    #     """
-    #     Find distance to wall with the laser range sensor at a specific orientation.
-    #     """
-    #     return maze.distance_to_wall(*self.xyh)
-
     def read_distance_sensor(self, robot):
         """
         Returns distance between self and robot.
@@ -226,7 +224,7 @@ class Robot(Particle):
 class Shark(Particle):
     speed = 0.2
 
-    def __init__(self, x, y, heading=None, w=1, noisy=False):
+    def __init__(self, x, y, tracked=False, heading=None, w=1, noisy=False):
         if heading is None:
             heading = random.uniform(0, math.pi)
         if noisy:
@@ -235,10 +233,16 @@ class Shark(Particle):
         self.x = x
         self.y = y
         self.h = heading
+        self.tracked = tracked
         self.w = w
         self.step_count = 0
         self.color = random.random(), random.random(), random.random()
 
+    def __repr__(self):
+        return "(%f, %f, w=%f, tracked=%r)" % (self.x, self.y, self.w, self.tracked)
+    @classmethod
+    def create_random(cls, count, maze, track_count):
+        return [cls(*maze.random_free_place(), tracked=True if i<TRACK_COUNT else False) for i in range(0, count)]
 
     def chose_random_direction(self):
         heading = random.uniform(0, math.pi)
@@ -427,6 +431,12 @@ def move(world, robots, sharks, particles0, particles1):
 
 
 def errorPlot(error_x, error_y):
+    """
+
+    :param error_x: Error in x direction
+    :param error_y: Error in y direction
+    :return: Shows error plots
+    """
     fig, axes = plt.subplots(nrows=2, ncols=1)
 
     axes[0].plot(error_x)
@@ -438,7 +448,10 @@ def errorPlot(error_x, error_y):
     plt.show()
 
 def show(world, robots, sharks, particles1, particles2, mean1, mean2):
-    # world.clearMaze()
+    """
+    :return: Shows robots, sharks, particles and means.
+    """
+
     world.show_particles(particles1)
     world.show_particles(particles2)
     world.show_mean(mean1)
@@ -448,9 +461,6 @@ def show(world, robots, sharks, particles1, particles2, mean1, mean2):
         world.show_robot(robot)
 
     world.show_sharks(sharks)
-    # for shark in sharks:
-    # world.show_shark(sharks[0])
-    # world.show_shark(sharks[1])
 
 # ------------------------------------------------------------------------
 def main():
@@ -459,11 +469,14 @@ def main():
     if SHOW_VISUALIZATION:
         world.draw()
 
-    # initial distribution assigns each particle an equal probability
-    particles1 = Particle.create_random(PARTICLE_COUNT, world)
-    particles2 = Particle.create_random(PARTICLE_COUNT, world)
-    robots = Robot.create_random(2, world)
-    sharks = Shark.create_random(SHARK_COUNT, world)
+    # Initialize particles, robots and sharks
+    particles_list = []
+    for _ in range(TRACK_COUNT):
+        particles_list.append(Particle.create_random(PARTICLE_COUNT, world))
+    # particles1 = Particle.create_random(PARTICLE_COUNT, world)
+    # particles2 = Particle.create_random(PARTICLE_COUNT, world)
+    robots = Robot.create_random(ROBOT_COUNT, world)
+    sharks = Shark.create_random(SHARK_COUNT, world, TRACK_COUNT)
 
     # Initialize error lists
     error_x1 = []
@@ -474,19 +487,19 @@ def main():
     # Filter for time step
     for time_step in range(TIME_STEPS):
         # TODO: consider better syntax... (make into class)
-        particles1 = estimate(robots, sharks[0], particles1, world, error_x1, error_y1)
-        mean1 = compute_mean_point(particles1, world)
+        particles_list[0] = estimate(robots, sharks[0], particles_list[0], world, error_x1, error_y1)
+        mean1 = compute_mean_point(particles_list[0], world)
 
-        particles2 = estimate(robots, sharks[1], particles2, world, error_x2, error_y2)
-        mean2 = compute_mean_point(particles2, world)
+        particles_list[1] = estimate(robots, sharks[1], particles_list[1], world, error_x2, error_y2)
+        mean2 = compute_mean_point(particles_list[1], world)
 
         # Move robots, sharks and particles
-        move(world, robots, sharks, particles1, particles2)
+        move(world, robots, sharks, particles_list[0], particles_list[1])
 
 
         # Show current state
         if SHOW_VISUALIZATION:
-            show(world, robots, sharks, particles1, particles2, mean1, mean2)
+            show(world, robots, sharks, particles_list[0], particles_list[1], mean1, mean2)
 
         print time_step
 

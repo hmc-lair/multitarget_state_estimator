@@ -122,12 +122,13 @@ class Maze(object):
             return
 
         turtle.clearstamps()
-        turtle.shape('turtle')
+
 
         draw_cnt = 0
         px = {}
         for shark in sharks:
             draw_cnt += 1
+            shark_shape = 'turtle' if shark.tracked else 'classic'
             if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 0:
                 # Keep track of which positions already have something
                 # drawn to speed up display rendering
@@ -135,37 +136,11 @@ class Maze(object):
                 scaled_y = int(shark.y * self.one_px)
                 scaled_xy = scaled_x * 10000 + scaled_y
                 turtle.color(shark.color)
+                turtle.shape(shark_shape)
                 if not scaled_xy in px:
                     px[scaled_xy] = 1
                     turtle.setposition(*shark.xy)
                     turtle.setheading(math.degrees(shark.h))
-                    turtle.color(shark.color)
-                    turtle.stamp()
-
-    def show_robots(self, robots):
-        self.update_cnt += 1
-        if UPDATE_EVERY > 0 and self.update_cnt % UPDATE_EVERY != 1:
-            return
-
-        turtle.clearstamps()
-        turtle.shape('square')
-
-        draw_cnt = 0
-        px = {}
-        for robot in robots:
-            draw_cnt += 1
-            if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 0:
-                # Keep track of which positions already have something
-                # drawn to speed up display rendering
-                scaled_x = int(robot.x * self.one_px)
-                scaled_y = int(robot.y * self.one_px)
-                scaled_xy = scaled_x * 10000 + scaled_y
-                turtle.color("blue")
-                if not scaled_xy in px:
-                    px[scaled_xy] = 1
-                    turtle.setposition(*robot.xy)
-                    turtle.setheading(math.degrees(robot.h))
-                    turtle.color("blue")
                     turtle.stamp()
 
 
