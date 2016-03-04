@@ -50,7 +50,7 @@ PARTICLE_COUNT = 250   # Total number of particles
 TIME_STEPS = 100 # Number of steps before simulation ends
 SHARK_COUNT = 10 # Number of sharks
 ROBOT_COUNT = 2 # Number of robots
-TRACK_COUNT = 2 # Number of tracked sharks
+TRACK_COUNT = 3 # Number of tracked sharks
 
 SHOW_VISUALIZATION = True # Whether to have visualization
 
@@ -404,7 +404,7 @@ def estimate(robots, shark, particles, world, error_x, error_y):
         new_particles.append(new_particle)
     return new_particles
 
-def move(world, robots, sharks, particles0, particles1):
+def move(world, robots, sharks, particles_list):
     # ---------- Move things ----------
     for robot in robots:
         robot.move(world)
@@ -419,15 +419,17 @@ def move(world, robots, sharks, particles0, particles1):
 
     # Move particles according to my belief of movement (this may
     # be different than the real movement, but it's all I got)
-    for p in particles0:
-        # TODO: find a better way to disperse this (currently: 5 degree)
-        p.h += random.uniform(d_h[0], 0.1)  # in case robot changed heading, swirl particle heading too
-        p.advance_by(sharks[0].speed)
+    for i, particles in enumerate(particles_list):
 
-    for p in particles1:
-        # TODO: find a better way to disperse this (currently: 5 degree)
-        p.h += random.uniform(d_h[1], 0.1)  # in case robot changed heading, swirl particle heading too
-        p.advance_by(sharks[1].speed)
+        for p in particles:
+            # TODO: find a better way to disperse this (currently: 5 degree)
+            p.h += random.uniform(d_h[i], 0.1)  # in case robot changed heading, swirl particle heading too
+            p.advance_by(sharks[i].speed)
+
+    # for p in particles1:
+    #     # TODO: find a better way to disperse this (currently: 5 degree)
+    #     p.h += random.uniform(d_h[1], 0.1)  # in case robot changed heading, swirl particle heading too
+    #     p.advance_by(sharks[1].speed)
 
 
 def errorPlot(error_x, error_y):
@@ -447,15 +449,17 @@ def errorPlot(error_x, error_y):
 
     plt.show()
 
-def show(world, robots, sharks, particles1, particles2, mean1, mean2):
+def show(world, robots, sharks, particles_list, means_list):
     """
     :return: Shows robots, sharks, particles and means.
     """
 
-    world.show_particles(particles1)
-    world.show_particles(particles2)
-    world.show_mean(mean1)
-    world.show_mean(mean2)
+    for particles in particles_list:
+        world.show_particles(particles)
+    # world.show_particles(particles2)
+
+    for mean in means_list:
+        world.show_mean(mean)
 
     for robot in robots:
         world.show_robot(robot)
@@ -469,44 +473,40 @@ def main():
     if SHOW_VISUALIZATION:
         world.draw()
 
-    # Initialize particles, robots and sharks
+    # Initialize particles, robots, means and sharks
     particles_list = []
     for _ in range(TRACK_COUNT):
         particles_list.append(Particle.create_random(PARTICLE_COUNT, world))
-    # particles1 = Particle.create_random(PARTICLE_COUNT, world)
-    # particles2 = Particle.create_random(PARTICLE_COUNT, world)
     robots = Robot.create_random(ROBOT_COUNT, world)
     sharks = Shark.create_random(SHARK_COUNT, world, TRACK_COUNT)
+
 
     # Initialize error lists
     error_x1 = []
     error_y1 = []
-    error_x2 = []
-    error_y2 = []
 
     # Filter for time step
     for time_step in range(TIME_STEPS):
-        # TODO: consider better syntax... (make into class)
-        particles_list[0] = estimate(robots, sharks[0], particles_list[0], world, error_x1, error_y1)
-        mean1 = compute_mean_point(particles_list[0], world)
 
-        particles_list[1] = estimate(robots, sharks[1], particles_list[1], world, error_x2, error_y2)
-        mean2 = compute_mean_point(particles_list[1], world)
+        means_list = []
+        for i, particles in enumerate(particles_list):
+            particles_list[i] = estimate(robots, sharks[i], particles, world, error_x1, error_y1)
+            means_list.append(compute_mean_point(particles, world))
+
 
         # Move robots, sharks and particles
-        move(world, robots, sharks, particles_list[0], particles_list[1])
+        move(world, robots, sharks, particles_list)
 
 
         # Show current state
         if SHOW_VISUALIZATION:
-            show(world, robots, sharks, particles_list[0], particles_list[1], mean1, mean2)
+            show(world, robots, sharks, particles_list, means_list)
 
         print time_step
 
 
     # Plot actual vs. estimated into graph
     errorPlot(error_x1, error_y1)
-    errorPlot(error_x2, error_y2)
 
 
 
