@@ -12,7 +12,7 @@ import math
 import scipy.stats
 import numpy as np
 import time
-import particle_filter as pf
+# import particle_filter as pf
 
 from draw import Maze
 
@@ -152,7 +152,7 @@ class Particle(object):
     def read_angle_sensor(self, robot):
         self_x, self_y = self.xy
         robot_x, robot_y = robot.xy
-        return math.degrees(math.atan2(abs(self_y - robot_y), abs(self_x - robot_x)))
+        return math.atan2(abs(self_y - robot_y), abs(self_x - robot_x))
 
     def distance_to_wall(self, maze):
         return maze.distance_to_wall(*self.xyh)
@@ -323,21 +323,20 @@ def main():
     # Initialize Items
     sharks = Shark.create_random(SHARK_COUNT, world)
     robert = Robot(world)
-    robbie = Robot(world)
 
     while True:
         #
         # ---------- Show current state ----------
         world.show_sharks(sharks)
         world.show_robot(robert)
-        world.show_robot(robbie)
 
         # # ---------- Move things ----------
 
         # Move sharks with shark's speed
         for s in sharks:
             s.advance(sharks, s.speed)
-        time.sleep(0.05)
+        # time.sleep(0.05)
+
 
 
 

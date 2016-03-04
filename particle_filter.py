@@ -15,6 +15,8 @@ import bisect
 import scipy.stats
 import matplotlib.pyplot as plt
 from draw import Maze
+import shark_particle as sp
+import numpy as np
 
 # 0 - empty square
 # 1 - occupied square
@@ -42,8 +44,9 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
               ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 
-PARTICLE_COUNT = 500    # Total number of particles
+PARTICLE_COUNT = 250   # Total number of particles
 TIME_STEPS = 100 # Number of steps before simulation ends
+SHARK_COUNT = 10
 
 SHOW_VISUALIZATION = True # Whether to have visualization
 
@@ -198,10 +201,6 @@ class Robot(Particle):
         self.step_count = 0
         # self.color = random.random(), random.random(), random.random()
 
-    # def __init__(self, maze):
-    #     super(Robot, self).__init__(8, 8, heading=90)
-    #     self.chose_random_direction()
-    #     self.step_count = 0
 
     def chose_random_direction(self):
         heading = random.uniform(0, math.pi)
@@ -227,23 +226,26 @@ class Robot(Particle):
 class Shark(Particle):
     speed = 0.2
 
-    def __init__(self, maze):
-        super(Shark, self).__init__(*maze.random_free_place(), heading=90)
-        self.chose_random_direction()
+    def __init__(self, x, y, heading=None, w=1, noisy=False):
+        if heading is None:
+            heading = random.uniform(0, math.pi)
+        if noisy:
+            x, y, heading = add_some_noise(x, y, heading)
+
+        self.x = x
+        self.y = y
+        self.h = heading
+        self.w = w
         self.step_count = 0
+        self.color = random.random(), random.random(), random.random()
 
 
     def chose_random_direction(self):
         heading = random.uniform(0, math.pi)
         self.h = heading
 
-    def read_distance_sensor(self, robot):
-        """
-        Poor robot, it's sensors are noisy and pretty strange,
-        it can only know laser sensor wall distance(!)
-        and is not very accurate at that too!
-        """
-        return add_little_noise(super(Shark, self).read_distance_sensor(robot))
+    def distance(self, shark):
+        return math.sqrt((self.x - shark.x) ** 2 + (self.y - shark.y) ** 2)
 
     def read_distance_sensor(self, robot):
         """
@@ -265,6 +267,74 @@ class Shark(Particle):
             # Bumped into something or too long in same direction,
             # chose random new direction
             self.chose_random_direction()
+
+    def angle_diff(self, desired_theta):
+        """
+        :return: Difference between heading and desired_theta within -pi and pi.
+        """
+        h = self.h
+        a = desired_theta - h
+        if a > math.pi:
+            a -= 2 * math.pi
+        if a < -math.pi:
+            a += 2 * math.pi
+        return a
+
+    def find_repulsion(self, sharks):
+        """
+        :param sharks: list of sharks
+        :return: Repulsion contribution (x and y) to movement
+        """
+        x_rep = 0
+        y_rep = 0
+        for shark in sharks:
+            dist = self.distance(shark)
+            if dist < sp.FISH_INTERACTION_RADIUS and dist != 0:
+                mag = (1 / dist - 1 / sp.FISH_INTERACTION_RADIUS) ** 2
+                x_rep += mag * (self.x - shark.x)
+                y_rep += mag * (self.y - shark.y)
+        return x_rep, y_rep
+
+    def find_attraction(self, attractors):
+        """
+        :param attractors: List of attraction points
+        :return: Attractor contribution (x and y) to shark's movement
+        """
+        x_att = 0
+        y_att = 0
+        for attractor in attractors:
+            mag = (attractor[0] - self.x) ** 2 + (attractor[1] - self.y) ** 2
+            x_att += mag * (attractor[0] - self.x)
+            y_att += mag * (attractor[1] - self.y)
+        return x_att, y_att
+
+    def advance(self, sharks, speed, checker=None, noisy=False):
+        """
+        :return: Advance shark by one step.
+        """
+        # Get attributes
+        x_att, y_att = self.find_attraction(sp.ATTRACTORS)
+        x_rep, y_rep = self.find_repulsion(sharks)
+
+        # Sum all potentials
+        x_tot = sp.K_ATT * x_att + sp.K_REP * x_rep
+        y_tot = sp.K_ATT * y_att + sp.K_REP * y_rep
+        desired_theta = math.atan2(y_tot, x_tot)
+
+        # Set yaw control
+        control_theta = sp.K_CON * (self.angle_diff(desired_theta)) + sp.SIGMA_RAND * np.random.randn(1)[0]
+        control_theta = min(max(control_theta, - sp.MAX_CONTROL), sp.MAX_CONTROL)
+        self.h += control_theta
+
+        # Calculate cartesian distance
+        dx = math.cos(self.h) * speed
+        dy = math.sin(self.h) * speed
+
+        # Checks if, after advancing, shark is still in the box
+        if checker is None or checker(self, dx, dy):
+            self.move_by(dx, dy)
+            return True
+        return False
 
 
 def estimate(robots, shark, particles, world, error_x, error_y):
@@ -330,30 +400,30 @@ def estimate(robots, shark, particles, world, error_x, error_y):
         new_particles.append(new_particle)
     return new_particles
 
-def move(world, robots, shark1, shark2, particles1, particles2):
+def move(world, robots, sharks, particles0, particles1):
     # ---------- Move things ----------
     for robot in robots:
         robot.move(world)
-    old_heading1 = shark1.h
-    shark1.move(world)
-    # TODO: change to have more variance
-    d_h1 = shark1.h - old_heading1
 
-    old_heading2 = shark2.h
-    shark2.move(world)
-    d_h2 = shark2.h - old_heading2
+    d_h = []
+    for shark in sharks:
+        old_heading = shark.h
+        # shark.move(world)
+        shark.advance(sharks, shark.speed)
+        d_h.append(shark.h - old_heading)
+
 
     # Move particles according to my belief of movement (this may
     # be different than the real movement, but it's all I got)
+    for p in particles0:
+        # TODO: find a better way to disperse this (currently: 5 degree)
+        p.h += random.uniform(d_h[0], 0.1)  # in case robot changed heading, swirl particle heading too
+        p.advance_by(sharks[0].speed)
+
     for p in particles1:
         # TODO: find a better way to disperse this (currently: 5 degree)
-        p.h += random.uniform(d_h1, 0.1)  # in case robot changed heading, swirl particle heading too
-        p.advance_by(shark1.speed)
-
-    for p in particles2:
-        # TODO: find a better way to disperse this (currently: 5 degree)
-        p.h += random.uniform(d_h2, 0.1)  # in case robot changed heading, swirl particle heading too
-        p.advance_by(shark2.speed)
+        p.h += random.uniform(d_h[1], 0.1)  # in case robot changed heading, swirl particle heading too
+        p.advance_by(sharks[1].speed)
 
 
 def errorPlot(error_x, error_y):
@@ -367,8 +437,8 @@ def errorPlot(error_x, error_y):
 
     plt.show()
 
-def show(world, robots, shark1, shark2, particles1, particles2, mean1, mean2):
-    world.clearMaze()
+def show(world, robots, sharks, particles1, particles2, mean1, mean2):
+    # world.clearMaze()
     world.show_particles(particles1)
     world.show_particles(particles2)
     world.show_mean(mean1)
@@ -377,9 +447,10 @@ def show(world, robots, shark1, shark2, particles1, particles2, mean1, mean2):
     for robot in robots:
         world.show_robot(robot)
 
-    world.show_shark(shark1)
-    world.show_shark(shark2)
-
+    world.show_sharks(sharks)
+    # for shark in sharks:
+    # world.show_shark(sharks[0])
+    # world.show_shark(sharks[1])
 
 # ------------------------------------------------------------------------
 def main():
@@ -392,8 +463,7 @@ def main():
     particles1 = Particle.create_random(PARTICLE_COUNT, world)
     particles2 = Particle.create_random(PARTICLE_COUNT, world)
     robots = Robot.create_random(2, world)
-    sharkie = Shark(world)
-    sharkette = Shark(world)
+    sharks = Shark.create_random(SHARK_COUNT, world)
 
     # Initialize error lists
     error_x1 = []
@@ -404,18 +474,19 @@ def main():
     # Filter for time step
     for time_step in range(TIME_STEPS):
         # TODO: consider better syntax... (make into class)
-        particles1 = estimate(robots, sharkie, particles1, world, error_x1, error_y1)
+        particles1 = estimate(robots, sharks[0], particles1, world, error_x1, error_y1)
         mean1 = compute_mean_point(particles1, world)
 
-        particles2 = estimate(robots, sharkette, particles2, world, error_x2, error_y2)
+        particles2 = estimate(robots, sharks[1], particles2, world, error_x2, error_y2)
         mean2 = compute_mean_point(particles2, world)
 
         # Move robots, sharks and particles
-        move(world, robots, sharkie, sharkette, particles1, particles2)
+        move(world, robots, sharks, particles1, particles2)
+
 
         # Show current state
         if SHOW_VISUALIZATION:
-            show(world, robots, sharkie, sharkette, particles1, particles2, mean1, mean2)
+            show(world, robots, sharks, particles1, particles2, mean1, mean2)
 
         print time_step
 
