@@ -47,12 +47,14 @@ SHARK_COUNT = 10
 ATTRACTORS = [(8, 8)]
 FISH_INTERACTION_RADIUS = 1.5
 
+# ANGLE_LIMIT_RADIUS = 4 * FISH_INTERACTION_RADIUS # Radius above which we look at angle to attraction point
+
 # Fish simulation constants
 
-SIGMA_RAND = 0.1
+SIGMA_RAND = 0
 K_CON = 0.1
 # TODO: ask Chris about constants
-K_REP = 500000000
+K_REP = 5000
 K_ATT = 0.0000002
 K_RAND = 0.1
 

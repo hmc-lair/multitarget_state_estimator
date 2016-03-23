@@ -47,10 +47,10 @@ maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 # Constants
 
 PARTICLE_COUNT = 250   # Total number of particles
-TIME_STEPS = 100 # Number of steps before simulation ends
-SHARK_COUNT = 10 # Number of sharks
-ROBOT_COUNT = 2 # Number of robots
-TRACK_COUNT = 3 # Number of tracked sharks
+TIME_STEPS = 1000 # Number of steps before simulation ends
+SHARK_COUNT = 25 # Number of sharks
+ROBOT_COUNT = 1 # Number of robots
+TRACK_COUNT = 5 # Number of tracked sharks
 
 SHOW_VISUALIZATION = True # Whether to have visualization
 
@@ -184,7 +184,7 @@ class Particle(object):
 
 # ------------------------------------------------------------------------
 class Robot(Particle):
-    speed = 0.2
+    speed = 1
 
     def __init__(self, x, y, heading=None, w=1, noisy=False):
         if heading is None:
@@ -192,8 +192,8 @@ class Robot(Particle):
         if noisy:
             x, y, heading = add_some_noise(x, y, heading)
 
-        self.x = x
-        self.y = y
+        self.x = 8
+        self.y = 8
         self.h = heading
         self.w = w
         self.step_count = 0
@@ -222,11 +222,11 @@ class Robot(Particle):
 # ------------------------------------------------------------------------
 
 class Shark(Particle):
-    speed = 0.2
+    speed = 0.05
 
     def __init__(self, x, y, tracked=False, heading=None, w=1, noisy=False):
         if heading is None:
-            heading = random.uniform(0, math.pi)
+            heading = random.uniform(- math.pi, math.pi)
         if noisy:
             x, y, heading = add_some_noise(x, y, heading)
 
@@ -312,7 +312,7 @@ class Shark(Particle):
             y_att += mag * (attractor[1] - self.y)
         return x_att, y_att
 
-    def advance(self, sharks, speed, checker=None, noisy=False):
+    def advance(self, sharks, speed, sigma_rand, noisy=False, checker=None):
         """
         :return: Advance shark by one step.
         """
@@ -326,7 +326,7 @@ class Shark(Particle):
         desired_theta = math.atan2(y_tot, x_tot)
 
         # Set yaw control
-        control_theta = sp.K_CON * (self.angle_diff(desired_theta)) + sp.SIGMA_RAND * np.random.randn(1)[0]
+        control_theta = sp.K_CON * (self.angle_diff(desired_theta)) + sigma_rand * np.random.randn(1)[0]
         control_theta = min(max(control_theta, - sp.MAX_CONTROL), sp.MAX_CONTROL)
         self.h += control_theta
 
@@ -404,7 +404,7 @@ def estimate(robots, shark, particles, world, error_x, error_y):
         new_particles.append(new_particle)
     return new_particles
 
-def move(world, robots, sharks, particles_list):
+def move(world, robots, sharks, particles_list, sigma_rand):
     # ---------- Move things ----------
     for robot in robots:
         robot.move(world)
@@ -413,7 +413,7 @@ def move(world, robots, sharks, particles_list):
     for shark in sharks:
         old_heading = shark.h
         # shark.move(world)
-        shark.advance(sharks, shark.speed)
+        shark.advance(sharks, shark.speed, sigma_rand)
         d_h.append(shark.h - old_heading)
 
 
@@ -466,7 +466,19 @@ def show(world, robots, sharks, particles_list, means_list):
 
     world.show_sharks(sharks)
 
+def angle_diff(h, desired_theta):
+        """
+        :return: Difference between heading and desired_theta within -pi and pi.
+        """
+        a = desired_theta - h
+        while a > math.pi or a < -math.pi:
+            if a > math.pi:
+                a -= 2 * math.pi
+            if a < -math.pi:
+                a += 2 * math.pi
+        return a
 # ------------------------------------------------------------------------
+
 def main():
     world = Maze(maze_data)
 
@@ -495,7 +507,7 @@ def main():
 
 
         # Move robots, sharks and particles
-        move(world, robots, sharks, particles_list)
+        move(world, robots, sharks, particles_list, sp.SIGMA_RAND)
 
 
         # Show current state
