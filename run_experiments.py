@@ -56,6 +56,54 @@ def checkChangeHeading(sigma_rand, angle_radius_factor, shark_count):
             pf.show(world, robots, sharks, particles_list, means_list)
 
     return deltaAng
+def checkAngleAndDistanceInsideZone(sigma_rand, angle_radius_factor, shark_count):
+    world = pf.Maze(sp.maze_data)
+
+    if SHOW_VISUALIZATION:
+        world.draw()
+
+    # Initialize particles, robots, means and sharks
+    particles_list = []
+    for _ in range(TRACK_COUNT):
+        particles_list.append(pf.Particle.create_random(PARTICLE_COUNT, world))
+    robots = pf.Robot.create_random(ROBOT_COUNT, world)
+    sharks = pf.Shark.create_random(shark_count, world, TRACK_COUNT)
+
+    [(x_att, y_att)] = sp.ATTRACTORS
+
+    deltaAng = []
+    dist_mean = []
+
+    # Filter for time step
+    for time_step in range(TIME_STEPS):
+
+        means_list = []
+        m_x, m_y = 0, 0
+
+        for shark in sharks:
+
+            m_x += shark.x
+            m_y += shark.y
+
+            if np.hypot(shark.x - x_att, shark.y - y_att) < angle_radius_factor * sp.FISH_INTERACTION_RADIUS:
+
+
+                alpha = math.atan2(y_att - shark.y, x_att - shark.x)
+                delAngle = math.degrees(pf.angle_diff(alpha, shark.h))
+                deltaAng.append(delAngle)
+
+            x_mean = m_x/shark_count
+            y_mean = m_y/shark_count
+            dist_mean.append(np.hypot(x_mean - x_att, y_mean - y_att))
+
+        # Move robots, sharks and particles
+        pf.move(world, robots, sharks, particles_list, sigma_rand)
+
+        # Show current state
+        if SHOW_VISUALIZATION:
+            pf.show(world, robots, sharks, particles_list, means_list)
+
+    return deltaAng, dist_mean
 
 def checkAngleAndDistance(sigma_rand, angle_radius_factor, shark_count):
     world = pf.Maze(sp.maze_data)
@@ -110,7 +158,8 @@ def plotHistogram(deltaAng, dist_mean, sigma_rand, angle_radius_factor, shark_co
     if len(deltaAng) > 0:
         deltaAngMean = np.mean(deltaAng)
         deltaAngSD = np.std(deltaAng)
-        plt.hist(deltaAng)
+        bins = np.linspace(-180, 180, 100)
+        plt.hist(deltaAng,bins)
         plt.title('')
         plt.title('S: %s, TS: %s, SR %s, ARF %s, Mean %s, SD %s' %(shark_count, TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor, deltaAngMean, deltaAngSD))
         plt.xlabel('DelAngle')
@@ -123,7 +172,7 @@ def plotHistogram(deltaAng, dist_mean, sigma_rand, angle_radius_factor, shark_co
         deltaDistSD = np.std(dist_mean)
         plt.hist(dist_mean)
         plt.title('')
-        plt.title('S: %s, TS: %s, SR %s, ARF %s, Mean %s, SD %s' %(SHARK_COUNT, TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor, deltaDistMean, deltaDistSD))
+        plt.title('S: %s, TS: %s, SR %s, ARF %s, Mean %s, SD %s' %(shark_count, TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor, deltaDistMean, deltaDistSD))
         plt.xlabel('Distance from Attraction Point')
         plt.ylabel('Occurences')
         plt.savefig('Distance_%sSharks_%sTS_%sSR_%sARF.png'%(shark_count, TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor))
@@ -171,15 +220,26 @@ def main():
     #     plotHistogramChangeHeading(deltaAng, 0, angle_radius_factor, 10)
 
     # Varying ARF
-    for l in range(1, 10):
-        angle_radius_factor = l * 0.5
-        deltaAng = checkChangeHeading(0, angle_radius_factor, 20)
-        plotHistogramChangeHeading(deltaAng, 0, angle_radius_factor, 20)
+    # for l in range(1, 10):
+    #     angle_radius_factor = l * 0.5
+    #     deltaAng = checkChangeHeading(0, angle_radius_factor, 20)
+    #     plotHistogramChangeHeading(deltaAng, 0, angle_radius_factor, 20)
+    # Varying ARF
+    # for l in range(1, 10):
+    #     angle_radius_factor = l * 0.5
+    #     deltaAng = checkChangeHeading(0, angle_radius_factor, 5)
+    #     plotHistogramChangeHeading(deltaAng, 0, angle_radius_factor, 5)
     # # Varying Number of shark
     # for m in range(1,100)[::10]:
     #     deltaAng = checkChangeHeading(0, 1.5, m)
     #     plotHistogramChangeHeading(deltaAng, 0, 1.5, m)
     #     print m
+    ### Looking at heading and location inside zone
+    for n in range(1,100)[::10]:
+        arf = 0.5
+        deltaAng, dist_mean = checkAngleAndDistanceInsideZone(0, arf, n)
+        plotHistogram(deltaAng, dist_mean, 0, arf, n)
+        print(n)
 
 
 

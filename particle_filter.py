@@ -516,7 +516,7 @@ def main():
         if SHOW_VISUALIZATION:
             show(world, robots, sharks, particles_list, means_list)
 
-        print time_step
+        print(time_step)
 
 
     # Plot actual vs. estimated into graph
