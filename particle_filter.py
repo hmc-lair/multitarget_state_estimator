@@ -237,6 +237,8 @@ class Shark(Particle):
         self.w = w
         self.step_count = 0
         self.color = random.random(), random.random(), random.random()
+        self.in_zone = False
+        self.last_alpha = 0
 
     def __repr__(self):
         return "(%f, %f, w=%f, tracked=%r)" % (self.x, self.y, self.w, self.tracked)
