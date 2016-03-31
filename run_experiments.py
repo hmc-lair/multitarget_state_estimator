@@ -5,6 +5,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import sys
+import random
 
 
 # Constants
@@ -42,6 +43,7 @@ def checkChangeHeading(sigma_rand, angle_radius_factor, shark_count):
             if np.hypot(shark.x - x_att, shark.y - y_att) < angle_radius_factor * sp.FISH_INTERACTION_RADIUS:
                 alpha = math.atan2(y_att - shark.y, x_att - shark.x)
                 if shark.in_zone:
+                    # Add normalized deltaAng
                     deltaAng.append(math.degrees(pf.angle_diff(shark.last_alpha, alpha)))
                 shark.in_zone = True
                 shark.last_alpha = alpha
@@ -104,6 +106,38 @@ def checkAngleAndDistanceInsideZone(sigma_rand, angle_radius_factor, shark_count
             pf.show(world, robots, sharks, particles_list, means_list)
 
     return deltaAng, dist_mean
+
+def checkDistance(sigma_rand, shark_count):
+    world = pf.Maze(sp.maze_data)
+
+    if SHOW_VISUALIZATION:
+        world.draw()
+
+    # Initialize particles, robots, means and sharks
+    particles_list = []
+    for _ in range(TRACK_COUNT):
+        particles_list.append(pf.Particle.create_random(PARTICLE_COUNT, world))
+    robots = pf.Robot.create_random(ROBOT_COUNT, world)
+    sharks = pf.Shark.create_random(shark_count, world, TRACK_COUNT)
+
+    [(x_att, y_att)] = sp.ATTRACTORS
+
+    dist = []
+
+    # Filter for time step
+    for time_step in range(TIME_STEPS):
+
+        for shark in sharks:
+            dist.append(np.hypot(shark.x - x_att, shark.y - y_att))
+
+        # Move robots, sharks and particles
+        pf.move(world, robots, sharks, particles_list, sigma_rand)
+
+        # Show current state
+        if SHOW_VISUALIZATION:
+            pf.show(world, robots, sharks, particles_list, means_list)
+
+    return dist
 
 def checkAngleAndDistance(sigma_rand, angle_radius_factor, shark_count):
     world = pf.Maze(sp.maze_data)
@@ -193,6 +227,12 @@ def plotHistogramChangeHeading(deltaAng, sigma_rand, angle_radius_factor, shark_
         shark_count, TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor))
         plt.close()
 
+def plotNormalizedHistogram(deltaAng, shark_count, bins):
+    if len(deltaAng) > 0:
+        hist, bins = np.histogram(deltaAng, bins)
+        normHist = [histX/shark_count for histX in hist]
+        plt.plot(bins[:-1], normHist, label=shark_count)
+
 def main():
     # Varying Sigma rand
     # for i in range(10):
@@ -235,14 +275,96 @@ def main():
     #     plotHistogramChangeHeading(deltaAng, 0, 1.5, m)
     #     print m
     ### Looking at heading and location inside zone
-    for n in range(1,100)[::10]:
-        arf = 0.5
-        deltaAng, dist_mean = checkAngleAndDistanceInsideZone(0, arf, n)
-        plotHistogram(deltaAng, dist_mean, 0, arf, n)
-        print(n)
+    # for n in range(1,100)[::10]:
+    #     arf = 0.5
+    #     deltaAng, dist_mean = checkAngleAndDistanceInsideZone(0, arf, n)
+    #     plotHistogram(deltaAng, dist_mean, 0, arf, n)
+    #     print(n)
 
+  ### Normalized plot for change in heading
+    # plt.figure()
+    # bins = np.linspace(-15, 15, 100)
+    # angle_radius_factor = 1.5
+    # sigma_rand = 0
+    # # # # Varying Number of shark
+    # for m in range(1, 100)[::20]:
+    #     deltaAng = checkChangeHeading(sigma_rand, angle_radius_factor, m)
+    #     plotNormalizedHistogram(deltaAng, m, bins)
+    #     print(m)
+    #
+    # plt.legend(loc='upper right')
+    # plt.title('')
+    # plt.title('Norm Change in Heading with TS: %s, ARF %s' % (
+    #     TIME_STEPS, angle_radius_factor))
+    # plt.xlabel('Change in Heading')
+    # plt.ylabel('Normalized Occurences')
+    # plt.savefig('NormChangeHeading_%sTS_%sSR_%sARF.png' % (
+    #     TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor))
+    # plt.close()
 
+    # ### Normalized plot for DelTheta
+    # plt.figure()
+    # bins = np.linspace(-10, 10, 100)
+    # arf = 1.5
+    # sigma_rand = 0
+    # # # # Varying Number of shark
+    # for m in range(1, 100)[10::20]:
+    #     deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, m)
+    #     plotNormalizedHistogram(deltaAng, m, bins)
+    #     print(m)
+    #
+    # plt.legend(loc='upper right')
+    # plt.title('')
+    # plt.title('Norm DelTheta with TS: %s, ARF %s' % (
+    #     TIME_STEPS, arf))
+    # plt.xlabel('DelTheta')
+    # plt.ylabel('Normalized Occurences')
+    # plt.savefig('NormDelTheta_%sTS_%sSR_%sARF.png' % (
+    #     TIME_STEPS, math.degrees(sigma_rand), arf))
+    # plt.close()
+    #
+    # ### Normalized plot for Change in Distance
+    # plt.figure()
+    # bins = np.linspace(0, 15, 150)
+    # arf = 1.5
+    # sigma_rand = 0
+    # # # # Varying Number of shark
+    # for m in range(1, 100)[10::20]:
+    #     deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, m)
+    #     plotNormalizedHistogram(dist_mean, m, bins)
+    #     print(m)
+    #
+    # plt.legend(loc='upper right')
+    # plt.title('')
+    # plt.title('Norm Distance from Att Point with TS: %s, ARF %s' % (
+    #     TIME_STEPS, arf))
+    # plt.xlabel('Distance from attraction point')
+    # plt.ylabel('Normalized Occurences')
+    # plt.savefig('NormDist_%sTS_%sSR_%sARF.png' % (
+    #     TIME_STEPS, math.degrees(sigma_rand), arf))
+    # plt.close()
 
+    ### Normalized plot for Individual Distance From Att
+    plt.figure()
+    bins = np.linspace(0, 100, 100)
+    sigma_rand = 0
+    # # # Varying Number of shark
+    for m in range(1, 100)[10::10]:
+        dist = checkDistance(sigma_rand, m)
+        plotNormalizedHistogram(dist, m, bins)
+        print(m)
+
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Norm Individual Distance from Att Point with TS: %s' % (
+        TIME_STEPS))
+    plt.xlabel('Distance from attraction point')
+    plt.ylabel('Normalized Occurences')
+    plt.savefig('NormIndiDist_%sTS_%sSR.png' % (
+        TIME_STEPS, math.degrees(sigma_rand)))
+    plt.close()
+
+    checkDistance(sigma_rand, shark_count)
 
 
 if __name__ == "__main__":
