@@ -223,6 +223,7 @@ class Shark(Particle):
         self.w = w
         self.step_count = 0
         self.color = random.random(), random.random(), random.random()
+        self.tracked = False
 
     def distance(self, shark):
         return math.sqrt((self.x - shark.x) ** 2 + (self.y - shark.y) ** 2)
@@ -336,8 +337,8 @@ def main():
 
         # Move sharks with shark's speed
         for s in sharks:
-            s.advance(sharks, s.speed)
-        # time.sleep(0.05)
+            s.advance(sharks, s.speed, )
+        time.sleep(0.01)
 
 
 

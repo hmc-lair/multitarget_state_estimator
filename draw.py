@@ -156,7 +156,7 @@ class Maze(object):
         # turtle.clearstamps()
 
     def show_robot(self, robot):
-        turtle.color("white")
+        turtle.color("blue")
         turtle.shape('square')
         turtle.setposition(*robot.xy)
         turtle.setheading(math.degrees(robot.h))

@@ -314,8 +314,9 @@ class Shark(Particle):
             y_att += mag * (attractor[1] - self.y)
         return x_att, y_att
 
-    def advance(self, sharks, speed, sigma_rand, noisy=False, checker=None):
+    def advance(self, sharks, speed, sigma_rand, k_att=sp.K_ATT, k_rep=sp.K_REP, noisy=False, checker=None):
         """
+        :param k_att:
         :return: Advance shark by one step.
         """
         # Get attributes
@@ -323,8 +324,8 @@ class Shark(Particle):
         x_rep, y_rep = self.find_repulsion(sharks)
 
         # Sum all potentials
-        x_tot = sp.K_ATT * x_att + sp.K_REP * x_rep
-        y_tot = sp.K_ATT * y_att + sp.K_REP * y_rep
+        x_tot = k_att * x_att + k_rep * x_rep
+        y_tot = k_att * y_att + k_rep * y_rep
         desired_theta = math.atan2(y_tot, x_tot)
 
         # Set yaw control
@@ -406,7 +407,7 @@ def estimate(robots, shark, particles, world, error_x, error_y):
         new_particles.append(new_particle)
     return new_particles
 
-def move(world, robots, sharks, particles_list, sigma_rand):
+def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
     # ---------- Move things ----------
     for robot in robots:
         robot.move(world)
@@ -415,7 +416,7 @@ def move(world, robots, sharks, particles_list, sigma_rand):
     for shark in sharks:
         old_heading = shark.h
         # shark.move(world)
-        shark.advance(sharks, shark.speed, sigma_rand)
+        shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep)
         d_h.append(shark.h - old_heading)
 
 
@@ -427,11 +428,6 @@ def move(world, robots, sharks, particles_list, sigma_rand):
             # TODO: find a better way to disperse this (currently: 5 degree)
             p.h += random.uniform(d_h[i], 0.1)  # in case robot changed heading, swirl particle heading too
             p.advance_by(sharks[i].speed)
-
-    # for p in particles1:
-    #     # TODO: find a better way to disperse this (currently: 5 degree)
-    #     p.h += random.uniform(d_h[1], 0.1)  # in case robot changed heading, swirl particle heading too
-    #     p.advance_by(sharks[1].speed)
 
 
 def errorPlot(error_x, error_y):
@@ -453,6 +449,7 @@ def errorPlot(error_x, error_y):
 
 def show(world, robots, sharks, particles_list, means_list):
     """
+    :param has_particle:
     :return: Shows robots, sharks, particles and means.
     """
 
