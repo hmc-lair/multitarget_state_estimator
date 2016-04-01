@@ -239,15 +239,97 @@ def plotHistogram(data, independent_variable, bins):
     if len(data) > 0:
         hist, bins = np.histogram(data, bins)
         plt.plot(bins[:-1], hist, label=independent_variable)
-def varyKatt():
-    ##  plot for change in heading
+
+def varyKrep():
     plt.figure()
     bins = np.linspace(-15, 15, 500)
     arf = 1.5
     sigma_rand = 0
     shark_count = 10
-    k_att_range = np.linspace(0.0000001,0.00001,10)
+    k_rep_range = np.logspace(np.log10(1) , np.log10(1e4) , num=5)
+
+
+    # # # DeltaAng
+    for k_rep in k_rep_range:
+        deltaAng = checkChangeHeading(sigma_rand, arf, shark_count, k_rep=k_rep)
+        plotHistogram(deltaAng, k_rep, bins)
+        print(k_rep)
+
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Varying K_rep, Change in Heading with TS: %s, ARF %s' % (
+        TIME_STEPS, arf))
+    plt.xlabel('Change in Heading')
+    plt.ylabel('Occurences')
+    plt.savefig('VaryKrepChangeHeading_%sTS_%sSR_%sARF.png' % (
+        TIME_STEPS, math.degrees(sigma_rand), arf))
+    plt.close()
+
+    # ###  plot for DelTheta
+    plt.figure()
+    bins = np.linspace(-10, 10, 500)
     # # # Varying k_att
+    for k_rep in k_rep_range:
+        deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, shark_count, k_rep = k_rep)
+        plotHistogram(deltaAng, k_rep, bins)
+        print(k_rep)
+
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Varying K_rep, DelTheta with TS: %s, ARF %s' % (
+        TIME_STEPS, arf))
+    plt.xlabel('DelTheta')
+    plt.ylabel('Occurences')
+    plt.savefig('VaryKrepDelTheta_%sTS_%sSR_%sARF.png' % (
+        TIME_STEPS, math.degrees(sigma_rand), arf))
+    plt.close()
+    #
+    # ###  plot for Change in Distance
+    plt.figure()
+    bins = np.linspace(0, 15, 150)
+    # # # Varying Number of shark
+    for k_rep in k_rep_range:
+        deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, shark_count, k_rep=k_rep)
+        plotHistogram(dist_mean, k_rep, bins)
+        print(k_rep)
+
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Varying K_rep, Distance from Att Point with TS: %s, ARF %s' % (
+        TIME_STEPS, arf))
+    plt.xlabel('Distance from attraction point')
+    plt.ylabel('Occurences')
+    plt.savefig('VaryKrepDist_%sTS_%sSR_%sARF.png' % (
+        TIME_STEPS, math.degrees(sigma_rand), arf))
+    plt.close()
+
+    ###  plot for Individual Distance From Att
+    plt.figure()
+    bins = np.linspace(0, 15, 15)
+    for k_rep in k_rep_range:
+        dist = checkIndiDistance(sigma_rand, shark_count, k_rep=k_rep)
+        plotHistogram(dist, k_rep, bins)
+        print(k_rep)
+
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Varying K_rep, Individual Distance from Att Point with TS: %s' % (
+        TIME_STEPS))
+    plt.xlabel('Distance from attraction point')
+    plt.ylabel('Occurences')
+    plt.savefig('VaryKrepIndiDist_%sTS_%sSR.png' % (
+        TIME_STEPS, math.degrees(sigma_rand)))
+    plt.close()
+def varyKatt():
+    plt.figure()
+    bins = np.linspace(-15, 15, 500)
+    arf = 1.5
+    sigma_rand = 0
+    shark_count = 10
+    k_att_range = np.logspace(np.log10(2e-7) , np.log10(1e-6) , num=10)
+    #
+    #
+    # # # DeltaAng
     for k_att in k_att_range:
         deltaAng = checkChangeHeading(sigma_rand, arf, shark_count, k_att)
         plotHistogram(deltaAng, k_att, bins)
@@ -303,7 +385,7 @@ def varyKatt():
 
     ###  plot for Individual Distance From Att
     plt.figure()
-    bins = np.linspace(0, 100, 100)
+    bins = np.linspace(0, 15, 100)
     for k_att in k_att_range:
         dist = checkIndiDistance(sigma_rand, shark_count, k_att)
         plotHistogram(dist, k_att, bins)
@@ -321,68 +403,68 @@ def varyKatt():
 
 
 def varyNumberOfSharks():
-    ### Normalized plot for change in heading
-    # plt.figure()
-    # bins = np.linspace(-15, 15, 100)
-    # angle_radius_factor = 1.5
-    # sigma_rand = 0
-    # # # # Varying Number of shark
-    # for m in range(1, 100)[::20]:
-    #     deltaAng = checkChangeHeading(sigma_rand, angle_radius_factor, m)
-    #     plotNormalizedHistogram(deltaAng, m, bins)
-    #     print(m)
-    #
-    # plt.legend(loc='upper right')
-    # plt.title('')
-    # plt.title('Norm Change in Heading with TS: %s, ARF %s' % (
-    #     TIME_STEPS, angle_radius_factor))
-    # plt.xlabel('Change in Heading')
-    # plt.ylabel('Normalized Occurences')
-    # plt.savefig('NormChangeHeading_%sTS_%sSR_%sARF.png' % (
-    #     TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor))
-    # plt.close()
+    ## Normalized plot for change in heading
+    plt.figure()
+    bins = np.linspace(-15, 15, 100)
+    angle_radius_factor = 1.5
+    sigma_rand = 0
+    # # # Varying Number of shark
+    for m in range(1, 100)[::20]:
+        deltaAng = checkChangeHeading(sigma_rand, angle_radius_factor, m)
+        plotNormalizedHistogram(deltaAng, m, bins)
+        print(m)
 
-    # ### Normalized plot for DelTheta
-    # plt.figure()
-    # bins = np.linspace(-10, 10, 100)
-    # arf = 1.5
-    # sigma_rand = 0
-    # # # # Varying Number of shark
-    # for m in range(1, 100)[10::20]:
-    #     deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, m)
-    #     plotNormalizedHistogram(deltaAng, m, bins)
-    #     print(m)
-    #
-    # plt.legend(loc='upper right')
-    # plt.title('')
-    # plt.title('Norm DelTheta with TS: %s, ARF %s' % (
-    #     TIME_STEPS, arf))
-    # plt.xlabel('DelTheta')
-    # plt.ylabel('Normalized Occurences')
-    # plt.savefig('NormDelTheta_%sTS_%sSR_%sARF.png' % (
-    #     TIME_STEPS, math.degrees(sigma_rand), arf))
-    # plt.close()
-    #
-    # ### Normalized plot for Change in Distance
-    # plt.figure()
-    # bins = np.linspace(0, 15, 150)
-    # arf = 1.5
-    # sigma_rand = 0
-    # # # # Varying Number of shark
-    # for m in range(1, 100)[10::20]:
-    #     deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, m)
-    #     plotNormalizedHistogram(dist_mean, m, bins)
-    #     print(m)
-    #
-    # plt.legend(loc='upper right')
-    # plt.title('')
-    # plt.title('Norm Distance from Att Point with TS: %s, ARF %s' % (
-    #     TIME_STEPS, arf))
-    # plt.xlabel('Distance from attraction point')
-    # plt.ylabel('Normalized Occurences')
-    # plt.savefig('NormDist_%sTS_%sSR_%sARF.png' % (
-    #     TIME_STEPS, math.degrees(sigma_rand), arf))
-    # plt.close()
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Norm Change in Heading with TS: %s, ARF %s' % (
+        TIME_STEPS, angle_radius_factor))
+    plt.xlabel('Change in Heading')
+    plt.ylabel('Normalized Occurences')
+    plt.savefig('NormChangeHeading_%sTS_%sSR_%sARF.png' % (
+        TIME_STEPS, math.degrees(sigma_rand), angle_radius_factor))
+    plt.close()
+
+    ### Normalized plot for DelTheta
+    plt.figure()
+    bins = np.linspace(-10, 10, 100)
+    arf = 1.5
+    sigma_rand = 0
+    # # # Varying Number of shark
+    for m in range(1, 100)[10::20]:
+        deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, m)
+        plotNormalizedHistogram(deltaAng, m, bins)
+        print(m)
+
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Norm DelTheta with TS: %s, ARF %s' % (
+        TIME_STEPS, arf))
+    plt.xlabel('DelTheta')
+    plt.ylabel('Normalized Occurences')
+    plt.savefig('NormDelTheta_%sTS_%sSR_%sARF.png' % (
+        TIME_STEPS, math.degrees(sigma_rand), arf))
+    plt.close()
+
+    ### Normalized plot for Change in Distance
+    plt.figure()
+    bins = np.linspace(0, 15, 150)
+    arf = 1.5
+    sigma_rand = 0
+    # # # Varying Number of shark
+    for m in range(1, 100)[10::20]:
+        deltaAng, dist_mean = checkAngleAndDistanceInsideZone(sigma_rand, arf, m)
+        plotNormalizedHistogram(dist_mean, m, bins)
+        print(m)
+
+    plt.legend(loc='upper right')
+    plt.title('')
+    plt.title('Norm Distance from Att Point with TS: %s, ARF %s' % (
+        TIME_STEPS, arf))
+    plt.xlabel('Distance from attraction point')
+    plt.ylabel('Normalized Occurences')
+    plt.savefig('NormDist_%sTS_%sSR_%sARF.png' % (
+        TIME_STEPS, math.degrees(sigma_rand), arf))
+    plt.close()
 
     ### Normalized plot for Individual Distance From Att
     plt.figure()
@@ -452,6 +534,7 @@ def main():
     #     plotHistogram(deltaAng, dist_mean, 0, arf, n)
     #     print(n)
     varyKatt()
+    # varyKrep()
 
 
 
