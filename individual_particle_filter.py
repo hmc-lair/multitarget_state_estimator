@@ -24,35 +24,35 @@ import numpy as np
 
 # Smaller maze
 
-maze_data = ( ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-              ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
+MAZE_DATA = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+             ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 
 # Constants
 
 PARTICLE_COUNT = 250   # Total number of particles
 TIME_STEPS = 1000 # Number of steps before simulation ends
-SHARK_COUNT = 25 # Number of sharks
-ROBOT_COUNT = 1 # Number of robots
-TRACK_COUNT = 5 # Number of tracked sharks
+SHARK_COUNT = 10 # Number of sharks
+ROBOT_COUNT = 2 # Number of robots
+TRACK_COUNT = 3 # Number of tracked sharks
 
-SHOW_VISUALIZATION = True # Whether to have visualization
+SHOW_VISUALIZATION = False # Whether to have visualization
 
 ROBOT_HAS_COMPASS = False
 # ------------------------------------------------------------------------
@@ -72,7 +72,7 @@ def gauss(error):
     return scipy.stats.norm.pdf(error, 0, 0.5)
 
 # ------------------------------------------------------------------------
-def compute_mean_point(particles, world):
+def compute_particle_mean(particles, world):
     """
     Compute the mean for all particles that have a reasonably good weight.
     This is not part of the particle filter algorithm but rather an
@@ -377,7 +377,7 @@ def estimate(robots, shark, particles, world, error_x, error_y):
         p.w = weight_list[i]
 
     # Find the mean point and associated confidence
-    m_x, m_y, m_confident = compute_mean_point(particles, world)
+    m_x, m_y, m_confident = compute_particle_mean(particles, world)
 
     # Append difference between current and estimated state to lists
     error_x.append(m_x - shark.x)
@@ -447,7 +447,7 @@ def errorPlot(error_x, error_y):
 
     plt.show()
 
-def show(world, robots, sharks, particles_list, means_list):
+def show(world, robots, sharks, particles_list, means_list, attraction_point=(sp.X_ATT, sp.Y_ATT)):
     """
     :param has_particle:
     :return: Shows robots, sharks, particles and means.
@@ -462,6 +462,8 @@ def show(world, robots, sharks, particles_list, means_list):
 
     for robot in robots:
         world.show_robot(robot)
+
+    world.show_attraction_point(attraction_point)
 
     world.show_sharks(sharks)
 
@@ -479,7 +481,7 @@ def angle_diff(h, desired_theta):
 # ------------------------------------------------------------------------
 
 def main():
-    world = Maze(maze_data)
+    world = Maze(MAZE_DATA)
 
     if SHOW_VISUALIZATION:
         world.draw()
@@ -502,11 +504,11 @@ def main():
         means_list = []
         for i, particles in enumerate(particles_list):
             particles_list[i] = estimate(robots, sharks[i], particles, world, error_x1, error_y1)
-            means_list.append(compute_mean_point(particles, world))
+            means_list.append(compute_particle_mean(particles, world))
 
 
         # Move robots, sharks and particles
-        move(world, robots, sharks, particles_list, sp.SIGMA_RAND)
+        move(world, robots, sharks, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
 
 
         # Show current state

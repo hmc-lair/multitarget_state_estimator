@@ -155,6 +155,15 @@ class Maze(object):
         turtle.update()
         # turtle.clearstamps()
 
+    def show_attraction_point(self, att):
+        turtle.color('black')
+        turtle.shape('turtle')
+        turtle.setposition(att)
+        turtle.setheading(0)
+        turtle.stamp()
+        turtle.update()
+        # turtle.clearstamps()
+
     def show_robot(self, robot):
         turtle.color("blue")
         turtle.shape('square')

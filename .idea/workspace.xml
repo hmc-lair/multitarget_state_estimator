@@ -2,300 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="111e7042-3d97-4691-9a08-d028719a3cbb" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_11Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_1Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_21Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_31Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_41Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_51Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_61Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_71Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_81Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Angle_91Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_11Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_1Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_21Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_31Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_41Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_51Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_61Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_71Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_81Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/0.5 ARF/Distance_91Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/ .png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_11Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_1Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_21Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_31Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_41Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_51Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_61Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_71Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_81Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Angle_91Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_11Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_1Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_21Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_31Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_41Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_51Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_61Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_71Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_81Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/1 ARF/Distance_91Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeAngle_10Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 10 Sharks/ChangeHeading_10Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeAngle_20Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Change in ARF 20 Sharks/ChangeHeading_20Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_30Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_30Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeAngle_5Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/ChangeHeading_5Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_11Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_1Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_21Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_31Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_41Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_51Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_61Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_71Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_81Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeAngle_91Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_11Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_1Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_21Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_31Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_41Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_51Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_61Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_71Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_81Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Change in heading Data/Varying number of sharks/ChangeHeading_91Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Angle_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Finding ARF with sigma/Distance_10Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Angle_10Sharks_10000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Angle_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Angle_10Sharks_10000TS_0.0SR_3.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Angle_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Angle_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Angle_10Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Angle_10Sharks_10000TS_0.0SR_5.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Distance_10Sharks_10000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Distance_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Selected Varying Angle/Distance_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_0.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_0.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_1.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_1.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_2.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_2.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_3.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_3.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_4.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Angle_10Sharks_10000TS_0.0SR_4.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_0.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_0.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_1.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_1.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_2.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_2.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_3.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/DistanceBeyond_10Sharks_10000TS_0.0SR_3.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_0.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_0.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_1.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_1.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_2.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_2.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_2.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_3.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_3.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_3.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_4.25ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_4.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Angle Radius/Distance_10Sharks_10000TS_0.0SR_4.75ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_10Sharks_1000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_11Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_21Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_31Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_41Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_51Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_61Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_71Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_81Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Angle_91Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_10Sharks_1000TS_0.0SR_0.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_11Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_31Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_41Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_51Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_61Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_71Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_81Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/1000 Timesteps/Distance_91Sharks_1000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Angle_11Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Angle_21Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Angle_31Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Angle_41Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Angle_51Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Angle_61Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Distance_11Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Distance_21Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Distance_31Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Distance_41Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Distance_51Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/Varying Sharks/Distance_61Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_-1.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_-2.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_-3.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_-4.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_-5.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_0.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_1.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_2.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_3.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/10Sharks_10000TS_4.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_-1.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_-2.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_-3.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_-4.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_-5.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_1.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_2.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_3.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Angle_10Sharks_10000TS_4.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_-1.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_-2.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_-3.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_-4.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_-5.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_0.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_1.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_2.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_3.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Heading and Location Data/VaryingSigmaRand/Distance_10Sharks_10000TS_4.0SR_4ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MultiShark_Varying_ Angle.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NormChangeHeading_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NormDelTheta_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NormDist_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NormIndiDist_10000TS_0.0SR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in DeltaTheta/Angle_11Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in DeltaTheta/Angle_31Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in DeltaTheta/Angle_51Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in DeltaTheta/Angle_71Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Distance From Attraction Point/Distance_21Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Distance From Attraction Point/Distance_41Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Distance From Attraction Point/Distance_61Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Distance From Attraction Point/Distance_81Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Distance From Attraction Point/Distance_91Sharks_10000TS_0.0SR_1ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_10Sharks_10000TS_0.0SR_0.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_10Sharks_10000TS_0.0SR_1.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_10Sharks_10000TS_0.0SR_2.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_10Sharks_10000TS_0.0SR_3.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_10Sharks_10000TS_0.0SR_4.0ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_11Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_51Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Selected data 3.30/Change in Heading/ChangeHeading_91Sharks_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/VaryKattChangeHeading_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/VaryKattChangeHeading_10000TS_0.0SR_1.5ARF_try1.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/VaryKattDelTheta_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/VaryKattDist_10000TS_0.0SR_1.5ARF.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/VaryKattIndiDist_10000TS_0.0SR.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/particle_filter.py" afterPath="$PROJECT_DIR$/individual_particle_filter.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/particle_filter.py" afterPath="$PROJECT_DIR$/particle_filter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/draw.py" afterPath="$PROJECT_DIR$/draw.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_experiments.py" afterPath="$PROJECT_DIR$/run_experiments.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shark_particle.py" afterPath="$PROJECT_DIR$/shark_particle.py" />
     </list>
@@ -315,7 +24,8 @@
     <SUITE FILE_PATH="coverage/particle_filter_demo$run_experiments.coverage" NAME="run_experiments Coverage Results" MODIFIED="1459475605535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/particle_filter_demo$experiment.coverage" NAME="experiment Coverage Results" MODIFIED="1457681548657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/particle_filter_demo$estimate.coverage" NAME="estimate Coverage Results" MODIFIED="1457681774339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/particle_filter_demo$particle_filter.coverage" NAME="particle_filter Coverage Results" MODIFIED="1459185638835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/particle_filter_demo$particle_filter.coverage" NAME="particle_filter Coverage Results" MODIFIED="1460094842917" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/particle_filter_demo$mean_point_pf.coverage" NAME="mean_point_pf Coverage Results" MODIFIED="1460233607486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -326,11 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="shark_particle.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shark_particle.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shark_particle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+            <state relative-caret-position="615">
+              <caret line="50" column="9" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
               <folding>
                 <element signature="e#369#407#0" expanded="true" />
               </folding>
@@ -338,11 +48,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="particle_filter.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/particle_filter.py">
+      <file leaf-file-name="mean_point_pf.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/mean_point_pf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7800">
-              <caret line="520" column="0" selection-start-line="520" selection-start-column="0" selection-end-line="520" selection-end-column="0" />
+            <state relative-caret-position="180">
+              <caret line="131" column="71" selection-start-line="131" selection-start-column="71" selection-end-line="131" selection-end-column="71" />
+              <folding>
+                <element signature="e#1#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="individual_particle_filter.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="54" column="26" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
               <folding>
                 <element signature="e#330#368#0" expanded="true" />
               </folding>
@@ -353,11 +75,13 @@
       <file leaf-file-name="run_experiments.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_experiments.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="332" column="29" selection-start-line="332" selection-start-column="29" selection-end-line="332" selection-end-column="29" />
+            <state relative-caret-position="3765">
+              <caret line="257" column="4" selection-start-line="257" selection-start-column="4" selection-end-line="257" selection-end-column="33" />
               <folding>
-                <element signature="e#8403#11061#0" expanded="false" />
-                <element signature="e#13763#16531#0" expanded="false" />
+                <element signature="e#24#63#0" expanded="true" />
+                <element signature="e#11093#13741#0" expanded="false" />
+                <element signature="e#13774#16542#0" expanded="false" />
+                <element signature="e#16560#18358#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -366,8 +90,8 @@
       <file leaf-file-name="draw.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/draw.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
-              <caret line="158" column="26" selection-start-line="158" selection-start-column="26" selection-end-line="158" selection-end-column="26" />
+            <state relative-caret-position="2340">
+              <caret line="158" column="27" selection-start-line="158" selection-start-column="27" selection-end-line="158" selection-end-column="27" />
               <folding>
                 <element signature="e#315#326#0" expanded="true" />
               </folding>
@@ -391,10 +115,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/experiment.py" />
-        <option value="$PROJECT_DIR$/draw.py" />
         <option value="$PROJECT_DIR$/particle_filter.py" />
         <option value="$PROJECT_DIR$/run_experiments.py" />
+        <option value="$PROJECT_DIR$/draw.py" />
         <option value="$PROJECT_DIR$/shark_particle.py" />
+        <option value="$PROJECT_DIR$/individual_particle_filter.py" />
+        <option value="$PROJECT_DIR$/mean_point_pf.py" />
       </list>
     </option>
   </component>
@@ -404,9 +130,9 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="64" />
-    <option name="y" value="30" />
-    <option name="width" value="1303" />
+    <option name="x" value="15" />
+    <option name="y" value="23" />
+    <option name="width" value="1354" />
     <option name="height" value="841" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -439,7 +165,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -452,7 +178,13 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane />
+      </pane>
+      <pane id="Scratches" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
@@ -485,7 +217,7 @@
       </console-settings>
     </option>
   </component>
-  <component name="RunManager" selected="Python.shark_particle">
+  <component name="RunManager" selected="Python.mean_point_pf">
     <configuration default="false" name="particle_filter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -499,7 +231,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="particle_filter_demo" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/particle_filter.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/individual_particle_filter.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -538,6 +270,24 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/shark_particle.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
+      <method />
+    </configuration>
+    <configuration default="false" name="mean_point_pf" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="particle_filter_demo" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mean_point_pf.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -749,16 +499,18 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.particle_filter" />
       <item index="1" class="java.lang.String" itemvalue="Python.run_experiments" />
       <item index="2" class="java.lang.String" itemvalue="Python.shark_particle" />
+      <item index="3" class="java.lang.String" itemvalue="Python.mean_point_pf" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.shark_particle" />
-        <item index="1" class="java.lang.String" itemvalue="Python.run_experiments" />
-        <item index="2" class="java.lang.String" itemvalue="Python.particle_filter" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Python.mean_point_pf" />
+        <item index="1" class="java.lang.String" itemvalue="Python.particle_filter" />
+        <item index="2" class="java.lang.String" itemvalue="Python.shark_particle" />
+        <item index="3" class="java.lang.String" itemvalue="Python.run_experiments" />
       </list>
     </recent_temporary>
   </component>
@@ -788,17 +540,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="30" width="1303" height="841" extended-state="0" />
+    <frame x="15" y="23" width="1354" height="841" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23149016" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.085365854" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850942" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2283044" sideWeight="0.51229185" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2283044" sideWeight="0.12347561" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3257677" sideWeight="0.49088025" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32309747" sideWeight="0.46036586" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21704394" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2283044" sideWeight="0.48770818" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1411578" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26034713" sideWeight="0.8765244" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14670897" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32756326" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3981603" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -808,9 +560,30 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3285273" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843792" sideWeight="0.49599198" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850942" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2283044" sideWeight="0.12347561" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32309747" sideWeight="0.46036586" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21704394" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2283044" sideWeight="0.8765244" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32756326" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.085365854" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843792" sideWeight="0.49599198" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14670897" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3981603" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -825,21 +598,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="9" />
+      <option name="time" value="10" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/draw.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="76" column="14" selection-start-line="76" selection-start-column="8" selection-end-line="76" selection-end-column="17" />
-          <folding>
-            <element signature="e#315#326#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shark_particle.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -850,7 +613,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -880,7 +643,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="351" column="19" selection-start-line="351" selection-start-column="19" selection-end-line="351" selection-end-column="19" />
@@ -910,7 +673,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="32" column="62" selection-start-line="32" selection-start-column="62" selection-end-line="32" selection-end-column="62" />
@@ -940,7 +703,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="343" column="0" selection-start-line="343" selection-start-column="0" selection-end-line="343" selection-end-column="0" />
@@ -970,7 +733,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1000,7 +763,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1030,7 +793,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1060,7 +823,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="45" column="30" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
@@ -1090,7 +853,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1137,7 +900,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
@@ -1174,7 +937,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
@@ -1211,7 +974,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="48" column="30" selection-start-line="48" selection-start-column="30" selection-end-line="48" selection-end-column="30" />
@@ -1248,7 +1011,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="48" column="30" selection-start-line="48" selection-start-column="30" selection-end-line="48" selection-end-column="30" />
@@ -1269,41 +1032,53 @@
     <entry file="file:///usr/local/lib/python2.7/site-packages/matplotlib/axes/_axes.py" />
     <entry file="file://$PROJECT_DIR$/draw.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="158" column="26" selection-start-line="158" selection-start-column="26" selection-end-line="158" selection-end-column="26" />
+        <state relative-caret-position="2340">
+          <caret line="158" column="27" selection-start-line="158" selection-start-column="27" selection-end-line="158" selection-end-column="27" />
           <folding>
             <element signature="e#315#326#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/particle_filter.py">
+    <entry file="file://$PROJECT_DIR$/shark_particle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7800">
-          <caret line="520" column="0" selection-start-line="520" selection-start-column="0" selection-end-line="520" selection-end-column="0" />
+        <state relative-caret-position="615">
+          <caret line="50" column="9" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
           <folding>
-            <element signature="e#330#368#0" expanded="true" />
+            <element signature="e#369#407#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run_experiments.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="332" column="29" selection-start-line="332" selection-start-column="29" selection-end-line="332" selection-end-column="29" />
+        <state relative-caret-position="3765">
+          <caret line="257" column="4" selection-start-line="257" selection-start-column="4" selection-end-line="257" selection-end-column="33" />
           <folding>
-            <element signature="e#8403#11061#0" expanded="false" />
-            <element signature="e#13763#16531#0" expanded="false" />
+            <element signature="e#24#63#0" expanded="true" />
+            <element signature="e#11093#13741#0" expanded="false" />
+            <element signature="e#13774#16542#0" expanded="false" />
+            <element signature="e#16560#18358#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shark_particle.py">
+    <entry file="file://$PROJECT_DIR$/individual_particle_filter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+        <state relative-caret-position="420">
+          <caret line="54" column="26" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
           <folding>
-            <element signature="e#369#407#0" expanded="true" />
+            <element signature="e#330#368#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mean_point_pf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="131" column="71" selection-start-line="131" selection-start-column="71" selection-end-line="131" selection-end-column="71" />
+          <folding>
+            <element signature="e#1#39#0" expanded="true" />
           </folding>
         </state>
       </provider>

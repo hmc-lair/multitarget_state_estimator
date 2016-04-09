@@ -1,5 +1,5 @@
 __author__ = 'cherieho'
-import particle_filter as pf
+import individual_particle_filter as pf
 import shark_particle as sp
 import numpy as np
 import math

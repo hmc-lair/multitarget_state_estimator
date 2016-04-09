@@ -12,7 +12,7 @@ import math
 import scipy.stats
 import numpy as np
 import time
-# import particle_filter as pf
+import matplotlib.pyplot as plt
 
 from draw import Maze
 
@@ -41,10 +41,14 @@ maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
              (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
              (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
+TIME_STEPS = 10000
+
 PARTICLE_COUNT = 1000  # Total number of particles
 SHARK_COUNT = 10
 
 ATTRACTORS = [(8, 8)]
+X_ATT = 8
+Y_ATT = 8
 FISH_INTERACTION_RADIUS = 1.5
 
 # ANGLE_LIMIT_RADIUS = 4 * FISH_INTERACTION_RADIUS # Radius above which we look at angle to attraction point
@@ -54,7 +58,7 @@ FISH_INTERACTION_RADIUS = 1.5
 SIGMA_RAND = 0
 K_CON = 0.1
 # TODO: ask Chris about constants
-K_REP = 1e6
+K_REP = 1e3
 # K_ATT = 0.0000002
 # TODO: for now use 1
 K_ATT = 1
@@ -328,19 +332,42 @@ def main():
     # Initialize Items
     sharks = Shark.create_random(SHARK_COUNT, world)
     robert = Robot(world)
+    [(x_att, y_att)] = ATTRACTORS
 
-    while True:
+    dist_mean = []
+
+    # while True:
+    for time_step in range(TIME_STEPS):
         #
         # ---------- Show current state ----------
         world.show_sharks(sharks)
         world.show_robot(robert)
 
-        # # ---------- Move things ----------
 
+
+        # Calculate mean
+        m_x, m_y = 0, 0
+
+        for shark in sharks:
+
+            m_x += shark.x
+            m_y += shark.y
+
+        x_mean = m_x / len(sharks)
+        y_mean = m_y / len(sharks)
+        dist_mean.append(np.hypot(x_mean - x_att, y_mean - y_att))
+
+        # # ---------- Move things ----------
         # Move sharks with shark's speed
         for s in sharks:
             s.advance(sharks, s.speed, )
-        time.sleep(0.01)
+
+    plt.plot(dist_mean)
+    plt.title('Distance of Mean Position from Attraction Point over Time')
+    plt.ylabel('Distance from Attraction Point')
+    plt.xlabel('Time')
+    plt.show()
+
 
 
 
