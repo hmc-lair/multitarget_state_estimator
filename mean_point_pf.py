@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 
 import numpy as np
@@ -6,10 +5,10 @@ import matplotlib.pyplot as plt
 import individual_particle_filter as pf
 import shark_particle as sp
 
-
 TIME_STEPS = 1000
 SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = True # Whether to have visualization
+SHOW_VISUALIZATION = False  # Whether to have visualization
+
 
 # ------------------------------------------------------------------------
 
@@ -18,9 +17,9 @@ def moving_average(data, number_points):
     """
     length = len(data)
     if length < number_points:
-        return sum(data)/float(length)
+        return sum(data) / float(length)
     else:
-        return sum(data[length - number_points:])/float(number_points)
+        return sum(data[length - number_points:]) / float(number_points)
 
 
 def compute_mean_position(sharks, track_number):
@@ -38,8 +37,8 @@ def compute_mean_position(sharks, track_number):
 
     return x_mean, y_mean
 
-def estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att, y_att):
 
+def estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att, y_att):
     # Update particle weight according to how good every particle matches
     for j, p in enumerate(particles):
         error_xmean = x_mean - p.x
@@ -47,7 +46,6 @@ def estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att
 
         weight_particle = pf.gauss(error_xmean) * pf.gauss(error_ymean)
         p.w = weight_particle
-
 
     # Find the particle mean point and associated confidence
     m_x, m_y, m_confident = pf.compute_particle_mean(particles, world)
@@ -72,13 +70,14 @@ def estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att
             new_particle = pf.Particle.create_random(1, world)[0]
         else:
             new_particle = pf.Particle(p.x, p.y,
-                    heading=robot1.h if pf.ROBOT_HAS_COMPASS else p.h,
-                    noisy=True)
+                                       heading=robot1.h if pf.ROBOT_HAS_COMPASS else p.h,
+                                       noisy=True)
         new_particles.append(new_particle)
     return new_particles
 
-def errorPlot(error_x, error_y):
-    """
+
+def errorIndividualPlot(error_x, error_y):
+    """ Save error_x and error_y plot to current folder.
 
     :param error_x: Error in x direction
     :param error_y: Error in y direction
@@ -88,7 +87,8 @@ def errorPlot(error_x, error_y):
 
     axes[0].plot(error_x)
     axes[0].set_ylabel('Error in x')
-    axes[0].set_title('No. of Particles : %s, Tracked Sharks: %s of %s'  %(pf.PARTICLE_COUNT, pf.TRACK_COUNT, pf.SHARK_COUNT))
+    axes[0].set_title(
+        'No. of Particles : %s, Tracked Sharks: %s of %s' % (pf.PARTICLE_COUNT, pf.TRACK_COUNT, pf.SHARK_COUNT))
     axes[0].set_ylim([-2, 2])
     axes[1].plot(error_y)
     axes[1].set_ylabel('Error in y')
@@ -96,6 +96,18 @@ def errorPlot(error_x, error_y):
 
     plt.savefig('MeanPointPF%sParticles%s of %sTrackedSharks.png' % (pf.PARTICLE_COUNT, pf.TRACK_COUNT, pf.SHARK_COUNT))
     plt.close()
+
+def errorPlot(error_x, error_y, track_count):
+        """ Plot error_x and error_y
+
+        :param error_x: Error in x direction
+        :param error_y: Error in y direction
+        :return: Plots error
+        """
+        axes[0].plot(error_x, label=track_count)
+        axes[1].plot(error_y, label=track_count)
+
+
 def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
     # ---------- Move things ----------
     for robot in robots:
@@ -108,7 +120,6 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
         shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep)
         d_h.append(shark.h - old_heading)
 
-
     # Move particles according to my belief of movement (this may
     # be different than the real movement, but it's all I got)
     for i, particles in enumerate(particles_list):
@@ -116,6 +127,7 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
         for p in particles:
             p.x += np.random.normal(0, SIGMA_MEAN)
             p.y += np.random.normal(0, SIGMA_MEAN)
+
 
 def run(shark_count, track_count):
     """ Run particle filter with shark_count of sharks with track_count tracked.
@@ -130,13 +142,11 @@ def run(shark_count, track_count):
     robots = pf.Robot.create_random(0, world)
     particles_list = [pf.Particle.create_random(pf.PARTICLE_COUNT, world)]
 
-
     [(x_att, y_att)] = sp.ATTRACTORS
 
     # Initialize error lists
     error_x_list = []
     error_y_list = []
-
 
     for time_step in range(TIME_STEPS):
 
@@ -148,7 +158,6 @@ def run(shark_count, track_count):
             particles_list[i] = estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att, y_att)
             p_means_list.append(pf.compute_particle_mean(particles, world))
 
-
         # # ---------- Move things ----------
         # Move sharks with shark's speed
         move(world, robots, sharks, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
@@ -159,12 +168,34 @@ def run(shark_count, track_count):
 
         print time_step
 
-    errorPlot(error_x_list, error_y_list)
+    errorPlot(error_x_list, error_y_list, track_count)
+    # errorIndividualPlot(error_x_list, error_y_list)
+
 
 def main():
-    shark_count = 10
-    track_count = 10
-    run(shark_count, track_count)
+    shark_count = 50
+    # Initialize Plot
+    global fig
+    global axes
+    fig, axes = plt.subplots(nrows=2, ncols=1)
+    axes[0].set_ylabel('Error in x')
+    axes[0].set_title(
+        'No. of Particles : %s, Number of Sharks: %s' % (pf.PARTICLE_COUNT, shark_count))
+    axes[1].set_ylabel('Error in y')
+    axes[1].set_xlabel('Timestep')
+    axes[0].set_ylim([-2, 2])
+    axes[1].set_ylim([-2, 2])
+
+    for track_count in range(shark_count + 1)[10::10]:
+        run(shark_count, track_count)
+
+    axes[0].legend(loc='upper left')
+    axes[1].legend(loc='upper left')
+    plt.savefig('MeanPointPF%sParticles%sSharks.png' % (pf.PARTICLE_COUNT, shark_count))
+    plt.close()
+
+
+
 
 if __name__ == "__main__":
     main()
