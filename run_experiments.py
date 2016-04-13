@@ -4,8 +4,7 @@ import shark_particle as sp
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-import sys
-import random
+import mean_point_pf as mean
 
 
 # Constants
@@ -14,9 +13,9 @@ PARTICLE_COUNT = 1   # Total number of particles
 TIME_STEPS = 10000 # Number of steps before simulation ends
 SHARK_COUNT = 10 # Number of sharks
 ROBOT_COUNT = 2 # Number of robots
-TRACK_COUNT = 0 # Number of tracked sharks
+TRACK_COUNT = 10 # Number of tracked sharks
 
-SHOW_VISUALIZATION = False # Whether to have visualization
+SHOW_VISUALIZATION = True # Whether to have visualization
 
 ROBOT_HAS_COMPASS = False
 
@@ -533,7 +532,7 @@ def main():
     #     deltaAng, dist_mean = checkAngleAndDistanceInsideZone(0, arf, n)
     #     plotHistogram(deltaAng, dist_mean, 0, arf, n)
     #     print(n)
-    varyKatt()
+    # varyKatt()
     # varyKrep()
 
 

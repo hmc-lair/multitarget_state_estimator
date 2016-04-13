@@ -7,9 +7,10 @@ import individual_particle_filter as pf
 import shark_particle as sp
 
 
-TIME_STEPS = 100
-SIGMA_MEAN = 0.5
-MOVING_DATA = 25
+TIME_STEPS = 1000
+SIGMA_MEAN = 0.1
+SHOW_VISUALIZATION = True # Whether to have visualization
+
 # ------------------------------------------------------------------------
 
 def moving_average(data, number_points):
@@ -22,40 +23,36 @@ def moving_average(data, number_points):
         return sum(data[length - number_points:])/float(number_points)
 
 
-def compute_mean_position(tracked_sharks):
+def compute_mean_position(sharks, track_number):
     """ Computes the mean position of the tracked sharks
     tracked_sharks: List of tracked sharks
     """
     m_x, m_y = 0, 0
 
-    for shark in tracked_sharks:
+    for shark in sharks[:track_number]:
         m_x += shark.x
         m_y += shark.y
 
-    x_mean = m_x / len(tracked_sharks)
-    y_mean = m_y / len(tracked_sharks)
+    x_mean = m_x / track_number
+    y_mean = m_y / track_number
 
     return x_mean, y_mean
 
-def estimate(tracked_sharks, particles, world):
-
-    # Initialize lists
-    weight_list = [1]*len(particles)
-
-    # "Measure" mean position, assuming perfect location
-    x_mean, y_mean = compute_mean_position(tracked_sharks)
+def estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att, y_att):
 
     # Update particle weight according to how good every particle matches
     for j, p in enumerate(particles):
         error_xmean = x_mean - p.x
-        error_ymean = y_mean - p.x
+        error_ymean = y_mean - p.y
 
         weight_particle = pf.gauss(error_xmean) * pf.gauss(error_ymean)
-        weight_list[j] *= weight_particle
+        p.w = weight_particle
 
-    for i, p in enumerate(particles):
 
-        p.w = weight_list[i]
+    # Find the particle mean point and associated confidence
+    m_x, m_y, m_confident = pf.compute_particle_mean(particles, world)
+    error_x_list.append(m_x - x_att)
+    error_y_list.append(m_y - y_att)
 
     # Shuffle particles
     new_particles = []
@@ -80,6 +77,25 @@ def estimate(tracked_sharks, particles, world):
         new_particles.append(new_particle)
     return new_particles
 
+def errorPlot(error_x, error_y):
+    """
+
+    :param error_x: Error in x direction
+    :param error_y: Error in y direction
+    :return: Shows error plots
+    """
+    fig, axes = plt.subplots(nrows=2, ncols=1)
+
+    axes[0].plot(error_x)
+    axes[0].set_ylabel('Error in x')
+    axes[0].set_title('No. of Particles : %s, Tracked Sharks: %s of %s'  %(pf.PARTICLE_COUNT, pf.TRACK_COUNT, pf.SHARK_COUNT))
+    axes[0].set_ylim([-2, 2])
+    axes[1].plot(error_y)
+    axes[1].set_ylabel('Error in y')
+    axes[1].set_ylim([-2, 2])
+
+    plt.savefig('MeanPointPF%sParticles%s of %sTrackedSharks.png' % (pf.PARTICLE_COUNT, pf.TRACK_COUNT, pf.SHARK_COUNT))
+    plt.close()
 def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
     # ---------- Move things ----------
     for robot in robots:
@@ -98,49 +114,38 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
     for i, particles in enumerate(particles_list):
 
         for p in particles:
-            # TODO: find a better way to disperse this (currently: 5 degree)
-            # p.h += np.random.normal(0, 1)
             p.x += np.random.normal(0, SIGMA_MEAN)
             p.y += np.random.normal(0, SIGMA_MEAN)
-            # p.h += random.uniform(d_h[i], 0.1)  # in case robot changed heading, swirl particle heading too
-            # p.advance_by(2)
 
-def main():
+def run(shark_count, track_count):
+    """ Run particle filter with shark_count of sharks with track_count tracked.
+    """
     world = pf.Maze(pf.MAZE_DATA)
 
-    if pf.SHOW_VISUALIZATION:
+    if SHOW_VISUALIZATION:
         world.draw()
 
     # Initialize Items
-    sharks = pf.Shark.create_random(pf.SHARK_COUNT, world, pf.SHARK_COUNT)
-    robots = pf.Robot.create_random(pf.ROBOT_COUNT, world)
+    sharks = pf.Shark.create_random(shark_count, world, track_count)
+    robots = pf.Robot.create_random(0, world)
     particles_list = [pf.Particle.create_random(pf.PARTICLE_COUNT, world)]
+
 
     [(x_att, y_att)] = sp.ATTRACTORS
 
-    dist_mean_list = []
-    dist_mov_mean_list = []
-    x_mean_list = []
-    y_mean_list = []
+    # Initialize error lists
+    error_x_list = []
+    error_y_list = []
+
 
     for time_step in range(TIME_STEPS):
 
         # Calculate mean position
-        # TODO: change to less sharks
         p_means_list = []
-        x_mean, y_mean = compute_mean_position(sharks)
-        dist_mean_list.append(np.hypot(x_mean - x_att, y_mean - y_att))
-        x_mean_list.append(x_mean)
-        y_mean_list.append(y_mean)
+        x_mean, y_mean = compute_mean_position(sharks, track_count)
 
-        # Moving Average
-        x_mov_mean = moving_average(x_mean_list, MOVING_DATA)
-        y_mov_mean = moving_average(y_mean_list, MOVING_DATA)
-        dist_mov_mean_list.append(np.hypot(x_mov_mean - x_att, y_mov_mean - y_att))
-
-        #
         for i, particles in enumerate(particles_list):
-            particles_list[i] = estimate(sharks, particles, world)
+            particles_list[i] = estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att, y_att)
             p_means_list.append(pf.compute_particle_mean(particles, world))
 
 
@@ -149,16 +154,17 @@ def main():
         move(world, robots, sharks, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
 
         # Show current state
-        if pf.SHOW_VISUALIZATION:
+        if SHOW_VISUALIZATION:
             pf.show(world, robots, sharks, particles_list, p_means_list)
 
-    plt.figure()
-    plt.ylabel('Distance from Attraction Point')
-    plt.xlabel('Time')
-    plt.plot(dist_mean_list, label='Mean Position')
-    plt.plot(dist_mov_mean_list, label='Mean Position (Moving)')
-    plt.legend(loc='upper right')
-    plt.show()
+        print time_step
+
+    errorPlot(error_x_list, error_y_list)
+
+def main():
+    shark_count = 10
+    track_count = 10
+    run(shark_count, track_count)
 
 if __name__ == "__main__":
     main()

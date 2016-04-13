@@ -122,13 +122,11 @@ class Maze(object):
             return
 
         turtle.clearstamps()
-
-
         draw_cnt = 0
         px = {}
         for shark in sharks:
             draw_cnt += 1
-            shark_shape = 'classic' if shark.tracked else 'classic'
+            shark_shape = 'turtle' if shark.tracked else 'classic'
             if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 0:
                 # Keep track of which positions already have something
                 # drawn to speed up display rendering
@@ -157,7 +155,7 @@ class Maze(object):
 
     def show_attraction_point(self, att):
         turtle.color('black')
-        turtle.shape('turtle')
+        turtle.shape('square')
         turtle.setposition(att)
         turtle.setheading(0)
         turtle.stamp()

@@ -46,13 +46,13 @@ MAZE_DATA = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 
 # Constants
 
-PARTICLE_COUNT = 250   # Total number of particles
+PARTICLE_COUNT = 50   # Total number of particles
 TIME_STEPS = 1000 # Number of steps before simulation ends
-SHARK_COUNT = 10 # Number of sharks
+SHARK_COUNT = 15 # Number of sharks
 ROBOT_COUNT = 2 # Number of robots
-TRACK_COUNT = 3 # Number of tracked sharks
+TRACK_COUNT = 15 # Number of tracked sharks
 
-SHOW_VISUALIZATION = False # Whether to have visualization
+SHOW_VISUALIZATION = True # Whether to have visualization
 
 ROBOT_HAS_COMPASS = False
 # ------------------------------------------------------------------------
@@ -69,7 +69,7 @@ def add_some_noise(*coords):
 
 def gauss(error):
     # TODO: variance is derived experimentally
-    return scipy.stats.norm.pdf(error, 0, 0.5)
+    return scipy.stats.norm.pdf(error, 0, 0.1)
 
 # ------------------------------------------------------------------------
 def compute_particle_mean(particles, world):
@@ -230,8 +230,8 @@ class Shark(Particle):
         if noisy:
             x, y, heading = add_some_noise(x, y, heading)
 
-        self.x = x
-        self.y = y
+        self.x = 0
+        self.y = 0
         self.h = heading
         self.tracked = tracked
         self.w = w
@@ -244,7 +244,7 @@ class Shark(Particle):
         return "(%f, %f, w=%f, tracked=%r)" % (self.x, self.y, self.w, self.tracked)
     @classmethod
     def create_random(cls, count, maze, track_count):
-        return [cls(*maze.random_free_place(), tracked=True if i<TRACK_COUNT else False) for i in range(0, count)]
+        return [cls(*maze.random_free_place(), tracked=True if i<track_count else False) for i in range(0, count)]
 
     def chose_random_direction(self):
         heading = random.uniform(0, math.pi)
