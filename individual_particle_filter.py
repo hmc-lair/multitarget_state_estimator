@@ -230,8 +230,8 @@ class Shark(Particle):
         if noisy:
             x, y, heading = add_some_noise(x, y, heading)
 
-        self.x = 0
-        self.y = 0
+        self.x = x
+        self.y = y
         self.h = heading
         self.tracked = tracked
         self.w = w

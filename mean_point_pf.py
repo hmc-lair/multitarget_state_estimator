@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import individual_particle_filter as pf
 import shark_particle as sp
 
-TIME_STEPS = 1000
+TIME_STEPS = 5000
 SIGMA_MEAN = 0.1
 SHOW_VISUALIZATION = False  # Whether to have visualization
 
@@ -127,9 +127,13 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
         for p in particles:
             p.x += np.random.normal(0, SIGMA_MEAN)
             p.y += np.random.normal(0, SIGMA_MEAN)
+#
+# def determineNoise(error_list):
+#     mean
+#     return 0
 
 
-def run(shark_count, track_count):
+def run(shark_count, track_count, my_file):
     """ Run particle filter with shark_count of sharks with track_count tracked.
     """
     world = pf.Maze(pf.MAZE_DATA)
@@ -147,6 +151,8 @@ def run(shark_count, track_count):
     # Initialize error lists
     error_x_list = []
     error_y_list = []
+
+
 
     for time_step in range(TIME_STEPS):
 
@@ -168,31 +174,58 @@ def run(shark_count, track_count):
 
         print time_step
 
-    errorPlot(error_x_list, error_y_list, track_count)
+
+
+        # For looking at individual sharks
+        # my_file.write("%s, %s, %s, %s, %s, %s" % (sharks[0].x, sharks[0].y, sharks[1].x, sharks[1].y, x_mean, y_mean))
+        # my_file.write("\n")
+
+
+
+    # my_file.close()
+
+    for item in error_x_list:
+        my_file.write(str(item) + ",")
+    my_file.write("\n")
+
+    for item in error_y_list:
+        my_file.write(str(item) + ",")
+    my_file.write("\n")
+    # errorPlot(error_x_list, error_y_list, track_count)
     # errorIndividualPlot(error_x_list, error_y_list)
 
 
 def main():
     shark_count = 50
+    num_trials = 5
     # Initialize Plot
-    global fig
-    global axes
-    fig, axes = plt.subplots(nrows=2, ncols=1)
-    axes[0].set_ylabel('Error in x')
-    axes[0].set_title(
-        'No. of Particles : %s, Number of Sharks: %s' % (pf.PARTICLE_COUNT, shark_count))
-    axes[1].set_ylabel('Error in y')
-    axes[1].set_xlabel('Timestep')
-    axes[0].set_ylim([-2, 2])
-    axes[1].set_ylim([-2, 2])
+    # global fig
+    # global axes
+    # fig, axes = plt.subplots(nrows=2, ncols=1)
+    # axes[0].set_ylabel('Error in x')
+    # axes[0].set_title(
+    #     'No. of Particles : %s, Number of Sharks: %s' % (pf.PARTICLE_COUNT, shark_count))
+    # axes[1].set_ylabel('Error in y')
+    # axes[1].set_xlabel('Timestep')
+    # axes[0].set_ylim([-2, 2])
+    # axes[1].set_ylim([-2, 2])
 
-    for track_count in range(shark_count + 1)[10::10]:
-        run(shark_count, track_count)
+    global my_file
+    my_file = open("testError%s.txt" %(shark_count), "w")
 
-    axes[0].legend(loc='upper left')
-    axes[1].legend(loc='upper left')
-    plt.savefig('MeanPointPF%sParticles%sSharks.png' % (pf.PARTICLE_COUNT, shark_count))
-    plt.close()
+    for _ in range(num_trials):
+        run(shark_count, shark_count, my_file)
+
+    # run(shark_count, 10, my_file)
+
+    my_file.close()
+
+    # for track_count in range(shark_count + 1)[10::10]:
+    #     run(shark_count, track_count)
+    # axes[0].legend(loc='upper left')
+    # axes[1].legend(loc='upper left')
+    # plt.savefig('MeanPointPF%sParticles%sSharks.png' % (pf.PARTICLE_COUNT, shark_count))
+    # plt.close()
 
 
 
