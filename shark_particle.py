@@ -44,7 +44,7 @@ maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 TIME_STEPS = 10000
 
 PARTICLE_COUNT = 1000  # Total number of particles
-SHARK_COUNT = 10
+SHARK_COUNT = 60
 
 ATTRACTORS = [(8, 8)]
 X_ATT = 8
@@ -252,8 +252,8 @@ class Shark(Particle):
             dist = self.distance(shark)
             if dist < FISH_INTERACTION_RADIUS and dist != 0:
                 mag = (1 / dist - 1 / FISH_INTERACTION_RADIUS) ** 2
-                x_rep += mag * (self.x - shark.x)
-                y_rep += mag * (self.y - shark.y)
+                x_rep += mag * (shark.x - self.x)
+                y_rep += mag * (shark.y - self.y)
         return x_rep, y_rep
 
     def find_attraction(self, attractors):

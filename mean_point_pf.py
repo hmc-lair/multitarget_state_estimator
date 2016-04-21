@@ -7,7 +7,7 @@ import shark_particle as sp
 
 TIME_STEPS = 5000
 SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = False  # Whether to have visualization
+SHOW_VISUALIZATION = True  # Whether to have visualization
 
 
 # ------------------------------------------------------------------------
@@ -172,7 +172,7 @@ def run(shark_count, track_count, my_file):
         if SHOW_VISUALIZATION:
             pf.show(world, robots, sharks, particles_list, p_means_list)
 
-        print time_step
+        print(time_step)
 
 
 
@@ -196,7 +196,7 @@ def run(shark_count, track_count, my_file):
 
 
 def main():
-    shark_count = 50
+    shark_count = 60
     num_trials = 5
     # Initialize Plot
     # global fig
@@ -211,7 +211,7 @@ def main():
     # axes[1].set_ylim([-2, 2])
 
     global my_file
-    my_file = open("testError%s.txt" %(shark_count), "w")
+    my_file = open("testError%sTest.txt" %(shark_count), "w")
 
     for _ in range(num_trials):
         run(shark_count, shark_count, my_file)
