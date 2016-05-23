@@ -1,9 +1,11 @@
 %fishSim.m
-clear
+% clear
+
 
 % Declare Vars
-N_fish=60;
+N_fish=50;
 N_attractors = 1;
+N_tags = 50;
 attractors = [0 0];
 maxTime = 5000;
 v=1.0;
@@ -84,7 +86,7 @@ for time=2:maxTime;
     end
     
     
-    %loop over fish to plot
+%     loop over fish to plot
 %     arrowSize = 1.5;
 %     fig = figure(1);
 %     clf;
@@ -101,6 +103,14 @@ end
 
 
 % Store the data
+x = x';
+y = y';
+t = t';
+
+% x_tag = x(:, 1:N_tags);
+% y_tag = y(:, 1:N_tags);
+% x_mean = mean(x_tag,2);
+% y_mean = mean(y_tag,2);
 save fishSimData.mat 
 %x y t closeToNeighbor N_fish N_attractors v attractors maxTime K_con K_rep K_att K_rand sigmaRand 
 

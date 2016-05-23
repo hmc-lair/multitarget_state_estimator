@@ -12,6 +12,7 @@ SHOW_VISUALIZATION = True  # Whether to have visualization
 
 # ------------------------------------------------------------------------
 
+
 def moving_average(data, number_points):
     """ Computes the moving average of data using number_points of last data.
     """
@@ -116,7 +117,6 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
     d_h = []
     for shark in sharks:
         old_heading = shark.h
-        # shark.move(world)
         shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep)
         d_h.append(shark.h - old_heading)
 
@@ -127,10 +127,7 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
         for p in particles:
             p.x += np.random.normal(0, SIGMA_MEAN)
             p.y += np.random.normal(0, SIGMA_MEAN)
-#
-# def determineNoise(error_list):
-#     mean
-#     return 0
+
 
 
 def run(shark_count, track_count, my_file):
@@ -168,21 +165,15 @@ def run(shark_count, track_count, my_file):
         # Move sharks with shark's speed
         move(world, robots, sharks, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
 
+        #TODO: Let p_means be shark mean for now
+
         # Show current state
         if SHOW_VISUALIZATION:
             pf.show(world, robots, sharks, particles_list, p_means_list)
 
-        print(time_step)
+        # print(time_step)
+        print "Mean Position", x_mean, y_mean
 
-
-
-        # For looking at individual sharks
-        # my_file.write("%s, %s, %s, %s, %s, %s" % (sharks[0].x, sharks[0].y, sharks[1].x, sharks[1].y, x_mean, y_mean))
-        # my_file.write("\n")
-
-
-
-    # my_file.close()
 
     for item in error_x_list:
         my_file.write(str(item) + ",")
@@ -191,41 +182,22 @@ def run(shark_count, track_count, my_file):
     for item in error_y_list:
         my_file.write(str(item) + ",")
     my_file.write("\n")
-    # errorPlot(error_x_list, error_y_list, track_count)
-    # errorIndividualPlot(error_x_list, error_y_list)
 
 
 def main():
-    shark_count = 60
-    num_trials = 5
-    # Initialize Plot
-    # global fig
-    # global axes
-    # fig, axes = plt.subplots(nrows=2, ncols=1)
-    # axes[0].set_ylabel('Error in x')
-    # axes[0].set_title(
-    #     'No. of Particles : %s, Number of Sharks: %s' % (pf.PARTICLE_COUNT, shark_count))
-    # axes[1].set_ylabel('Error in y')
-    # axes[1].set_xlabel('Timestep')
-    # axes[0].set_ylim([-2, 2])
-    # axes[1].set_ylim([-2, 2])
+    shark_count = 50
+    num_trials = 1
 
+    # Export shark mean position over time into text file, can be plotted with matlab
     global my_file
-    my_file = open("testError%sTest.txt" %(shark_count), "w")
+    my_file = open("testError%s_0516.txt" %(shark_count), "w")
 
     for _ in range(num_trials):
         run(shark_count, shark_count, my_file)
 
-    # run(shark_count, 10, my_file)
 
     my_file.close()
 
-    # for track_count in range(shark_count + 1)[10::10]:
-    #     run(shark_count, track_count)
-    # axes[0].legend(loc='upper left')
-    # axes[1].legend(loc='upper left')
-    # plt.savefig('MeanPointPF%sParticles%sSharks.png' % (pf.PARTICLE_COUNT, shark_count))
-    # plt.close()
 
 
 

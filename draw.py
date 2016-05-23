@@ -155,7 +155,11 @@ class Maze(object):
 
     def show_attraction_point(self, att):
         turtle.color('black')
-        turtle.shape('square')
+        turtle.shape('circle')
+        turtle.fillcolor("")
+        turtle.resizemode("user")
+        turtle.shapesize(1.5, 1.5, 1)
+
         turtle.setposition(att)
         turtle.setheading(0)
         turtle.stamp()

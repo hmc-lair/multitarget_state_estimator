@@ -48,9 +48,9 @@ MAZE_DATA = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 
 PARTICLE_COUNT = 50   # Total number of particles
 TIME_STEPS = 1000 # Number of steps before simulation ends
-SHARK_COUNT = 15 # Number of sharks
+SHARK_COUNT = 50 # Number of sharks
 ROBOT_COUNT = 2 # Number of robots
-TRACK_COUNT = 15 # Number of tracked sharks
+TRACK_COUNT = 0 # Number of tracked sharks
 
 SHOW_VISUALIZATION = True # Whether to have visualization
 
@@ -230,8 +230,8 @@ class Shark(Particle):
         if noisy:
             x, y, heading = add_some_noise(x, y, heading)
 
-        self.x = x
-        self.y = y
+        self.x = 0
+        self.y = 0
         self.h = heading
         self.tracked = tracked
         self.w = w
@@ -280,9 +280,9 @@ class Shark(Particle):
         """
         h = self.h
         a = desired_theta - h
-        if a > math.pi:
+        while a > math.pi:
             a -= 2 * math.pi
-        if a < -math.pi:
+        while a < -math.pi:
             a += 2 * math.pi
         return a
 
@@ -314,9 +314,11 @@ class Shark(Particle):
             y_att += mag * (attractor[1] - self.y)
         return x_att, y_att
 
-    def advance(self, sharks, speed, sigma_rand, k_att=sp.K_ATT, k_rep=sp.K_REP, noisy=False, checker=None):
+    def advance(self, sharks, speed, sigma_rand, k_att, k_rep, noisy=False, checker=None):
         """
-        :param k_att:
+        :param
+                k_att: Attraction Gain
+                k_rep: Repulsive Gain
         :return: Advance shark by one step.
         """
         # Get attributes
@@ -415,7 +417,6 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
     d_h = []
     for shark in sharks:
         old_heading = shark.h
-        # shark.move(world)
         shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep)
         d_h.append(shark.h - old_heading)
 
@@ -453,9 +454,13 @@ def show(world, robots, sharks, particles_list, means_list, attraction_point=(sp
     :return: Shows robots, sharks, particles and means.
     """
 
+
+    # world.show_particles(particles2)
     for particles in particles_list:
         world.show_particles(particles)
-    # world.show_particles(particles2)
+    world.show_attraction_point(attraction_point)
+
+
 
     for mean in means_list:
         world.show_mean(mean)
@@ -463,7 +468,9 @@ def show(world, robots, sharks, particles_list, means_list, attraction_point=(sp
     for robot in robots:
         world.show_robot(robot)
 
-    world.show_attraction_point(attraction_point)
+
+
+
 
     world.show_sharks(sharks)
 
