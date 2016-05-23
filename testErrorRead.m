@@ -3,7 +3,7 @@
 
 
 % Read File
-M = csvread('testError50_0516.txt');
+M = csvread('testError50_0523.txt');
 
 x = M(1:2:end,:); % odd matrix (x position)
 y = M(2:2:end,:); % even matrix (y position)

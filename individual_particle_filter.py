@@ -119,68 +119,7 @@ class WeightedDistribution(object):
             return None
 
 # ------------------------------------------------------------------------
-class Particle(object):
-    def __init__(self, x, y, heading=None, w=1, noisy=False):
-        if heading is None:
-            heading = random.uniform(0,math.pi)
-        if noisy:
-            x, y, heading = add_some_noise(x, y, heading)
 
-        self.x = x
-        self.y = y
-        self.h = heading
-        self.w = w
-
-    def __repr__(self):
-        return "(%f, %f, w=%f)" % (self.x, self.y, self.w)
-
-    @property
-    def xy(self):
-        return self.x, self.y
-
-
-    def xyh(self):
-        return self.x, self.y, self.h
-
-    @classmethod
-    def create_random(cls, count, maze):
-        return [cls(*maze.random_free_place()) for _ in range(0, count)]
-
-    def read_distance_sensor(self, robot):
-        """
-        Returns distance between self and robot.
-        """
-        self_x, self_y = self.xy
-        robot_x, robot_y = robot.xy
-        return math.sqrt((self_x - robot_x)**2 + (self_y - robot_y)**2)
-
-    def read_angle_sensor(self,robot):
-        self_x, self_y = self.xy
-        robot_x, robot_y = robot.xy
-        return math.degrees(math.atan2(abs(self_y - robot_y), abs(self_x - robot_x)))
-
-    def distance_to_wall(self,maze):
-
-        return maze.distance_to_wall(*self.xyh)
-
-    def advance_by(self, speed, checker=None, noisy=False):
-        h = self.h
-        if noisy:
-            speed, h = add_little_noise(speed, h)
-            h += random.uniform(-0.25, 0.25) # needs more noise to disperse better
-        r = h
-        # Calculate cartesian distance
-        dx = math.cos(r) * speed
-        dy = math.sin(r) * speed
-        # Checks if, after advancing, particle is still in the box
-        if checker is None or checker(self, dx, dy):
-            self.move_by(dx, dy)
-            return True
-        return False
-
-    def move_by(self, x, y):
-        self.x += x
-        self.y += y
 
 # ------------------------------------------------------------------------
 class Robot(Particle):
@@ -467,10 +406,6 @@ def show(world, robots, sharks, particles_list, means_list, attraction_point=(sp
 
     for robot in robots:
         world.show_robot(robot)
-
-
-
-
 
     world.show_sharks(sharks)
 

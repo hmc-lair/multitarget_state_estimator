@@ -41,8 +41,7 @@ maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
              (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
              (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
-TIME_STEPS = 10000
-
+TIME_STEPS = 5000
 PARTICLE_COUNT = 1000  # Total number of particles
 SHARK_COUNT = 60
 
@@ -50,13 +49,13 @@ ATTRACTORS = [(8, 8)]
 X_ATT = 8
 Y_ATT = 8
 FISH_INTERACTION_RADIUS = 1.5
+SHOW_VISUALIZATION = True
 
-# ANGLE_LIMIT_RADIUS = 4 * FISH_INTERACTION_RADIUS # Radius above which we look at angle to attraction point
 
 # Fish simulation constants
 
 SIGMA_RAND = 0
-K_CON = 0.1
+K_CON = 0.05
 # TODO: ask Chris about constants
 K_REP = 1000
 # K_ATT = 0.0000002
@@ -122,7 +121,7 @@ def compute_mean_point(particles):
 class Particle(object):
     def __init__(self, x, y, heading=None, w=1, noisy=False):
         if heading is None:
-            heading = random.uniform(0, 360)
+            heading = random.uniform(0,math.pi)
         if noisy:
             x, y, heading = add_some_noise(x, y, heading)
 
@@ -138,16 +137,13 @@ class Particle(object):
     def xy(self):
         return self.x, self.y
 
-    # TODO: add other decorators
 
-    @property
     def xyh(self):
         return self.x, self.y, self.h
 
     @classmethod
     def create_random(cls, count, maze):
         return [cls(*maze.random_free_place()) for _ in range(0, count)]
-        # return [cls(12,8) for _ in range(0, count)]
 
     def read_distance_sensor(self, robot):
         """
@@ -155,22 +151,23 @@ class Particle(object):
         """
         self_x, self_y = self.xy
         robot_x, robot_y = robot.xy
-        return math.sqrt((self_x - robot_x) ** 2 + (self_y - robot_y) ** 2)
+        return math.sqrt((self_x - robot_x)**2 + (self_y - robot_y)**2)
 
-    def read_angle_sensor(self, robot):
+    def read_angle_sensor(self,robot):
         self_x, self_y = self.xy
         robot_x, robot_y = robot.xy
-        return math.atan2(abs(self_y - robot_y), abs(self_x - robot_x))
+        return math.degrees(math.atan2(abs(self_y - robot_y), abs(self_x - robot_x)))
 
-    def distance_to_wall(self, maze):
+    def distance_to_wall(self,maze):
+
         return maze.distance_to_wall(*self.xyh)
 
     def advance_by(self, speed, checker=None, noisy=False):
         h = self.h
         if noisy:
             speed, h = add_little_noise(speed, h)
-            h += random.uniform(-3, 3)  # needs more noise to disperse better
-        r = math.radians(h)
+            h += random.uniform(-0.25, 0.25) # needs more noise to disperse better
+        r = h
         # Calculate cartesian distance
         dx = math.cos(r) * speed
         dy = math.sin(r) * speed
@@ -184,19 +181,81 @@ class Particle(object):
         self.x += x
         self.y += y
 
-
-# ------------------------------------------------------------------------
 class Robot(Particle):
-    speed = 0.2
+    speed = 1
 
-    def __init__(self, maze):
-        super(Robot, self).__init__(8, 8, heading=90)
-        self.chose_random_direction()
+    def __init__(self, x, y, heading=None, w=1, noisy=False):
+        if heading is None:
+            heading = random.uniform(0, math.pi)
+        if noisy:
+            x, y, heading = add_some_noise(x, y, heading)
+
+        self.x = 8
+        self.y = 8
+        self.h = heading
+        self.w = w
         self.step_count = 0
+        # self.color = random.random(), random.random(), random.random()
+
 
     def chose_random_direction(self):
-        heading = random.uniform(0, 360)
+        heading = random.uniform(0, math.pi)
         self.h = heading
+
+    def move(self, maze):
+        """
+        Move the robot. Note that the movement is stochastic too.
+        """
+        while True:
+            self.step_count += 1
+            if self.advance_by(self.speed, noisy=True,
+                checker=lambda r, dx, dy: maze.is_free(r.x+dx, r.y+dy)):
+                break
+            # Bumped into something or too long in same direction,
+            # chose random new direction
+            self.chose_random_direction()
+
+class Shark(Particle):
+    speed = 0.05
+
+    def __init__(self, x, y, tracked=False, heading=None, w=1, noisy=False):
+        if heading is None:
+            heading = random.uniform(- math.pi, math.pi)
+        if noisy:
+            x, y, heading = add_some_noise(x, y, heading)
+
+        self.x = 0
+        self.y = 0
+        self.h = heading
+        self.tracked = tracked
+        self.w = w
+        self.step_count = 0
+        self.color = random.random(), random.random(), random.random()
+        self.in_zone = False
+        self.last_alpha = 0
+
+    def __repr__(self):
+        return "(%f, %f, w=%f, tracked=%r)" % (self.x, self.y, self.w, self.tracked)
+
+    @classmethod
+    def create_random(cls, count, maze, track_count):
+        return [cls(*maze.random_free_place(), tracked=True if i < track_count else False) for i in
+                range(0, count)]
+
+    def chose_random_direction(self):
+        heading = random.uniform(0, math.pi)
+        self.h = heading
+
+    def distance(self, shark):
+        return math.sqrt((self.x - shark.x) ** 2 + (self.y - shark.y) ** 2)
+
+    def read_distance_sensor(self, robot):
+        """
+        Poor robot, it's sensors are noisy and pretty strange,
+        it can only know laser sensor wall distance(!)
+        and is not very accurate at that too!
+        """
+        return add_little_noise(super(Shark, self).read_distance_sensor(robot))[0]
 
     def move(self, maze):
         """
@@ -211,35 +270,17 @@ class Robot(Particle):
             # chose random new direction
             self.chose_random_direction()
 
-
-# ------------------------------------------------------------------------
-
-class Shark(Particle):
-    speed = 0.2
-
-    def __init__(self, x, y, heading=None, w=1, noisy=False):
-        if heading is None:
-            heading = random.uniform(0, math.pi)
-        if noisy:
-            x, y, heading = add_some_noise(x, y, heading)
-
-        self.x = x
-        self.y = y
-        self.h = heading
-        self.w = w
-        self.step_count = 0
-        self.color = random.random(), random.random(), random.random()
-        self.tracked = False
-
-    def distance(self, shark):
-        return math.sqrt((self.x - shark.x) ** 2 + (self.y - shark.y) ** 2)
-
-    def chose_random_direction(self):
+    def angle_diff(self, desired_theta):
         """
-        :return: Set shark to a random heading
+        :return: Difference between heading and desired_theta within -pi and pi.
         """
-        heading = random.uniform(0, math.pi)
-        self.h = heading
+        h = self.h
+        a = desired_theta - h
+        while a > math.pi:
+            a -= 2 * math.pi
+        while a < -math.pi:
+            a += 2 * math.pi
+        return a
 
     def find_repulsion(self, sharks):
         """
@@ -252,8 +293,8 @@ class Shark(Particle):
             dist = self.distance(shark)
             if dist < FISH_INTERACTION_RADIUS and dist != 0:
                 mag = (1 / dist - 1 / FISH_INTERACTION_RADIUS) ** 2
-                x_rep += mag * (shark.x - self.x)
-                y_rep += mag * (shark.y - self.y)
+                x_rep += mag * (self.x - shark.x)
+                y_rep += mag * (self.y - shark.y)
         return x_rep, y_rep
 
     def find_attraction(self, attractors):
@@ -269,34 +310,11 @@ class Shark(Particle):
             y_att += mag * (attractor[1] - self.y)
         return x_att, y_att
 
-    def move(self, maze):
+    def advance(self, sharks, speed, sigma_rand, k_att, k_rep, noisy=False, checker=None):
         """
-        Move the shark.
-        """
-        while True:
-            self.step_count += 1
-            # TODO : change noisy to True
-            if self.advance_by(self.speed, noisy=False,
-                               checker=lambda r, dx, dy: maze.is_free(r.x + dx, r.y + dy)):
-                break
-            # Bumped into something or too long in same direction,
-            # chose random new direction
-            self.chose_random_direction()
-
-    def angle_diff(self, desired_theta):
-        """
-        :return: Difference between heading and desired_theta within -pi and pi.
-        """
-        h = self.h
-        a = desired_theta - h
-        if a > math.pi:
-            a -= 2 * math.pi
-        if a < -math.pi:
-            a += 2 * math.pi
-        return a
-
-    def advance(self, sharks, speed, checker=None, noisy=False):
-        """
+        :param
+                k_att: Attraction Gain
+                k_rep: Repulsive Gain
         :return: Advance shark by one step.
         """
         # Get attributes
@@ -304,12 +322,12 @@ class Shark(Particle):
         x_rep, y_rep = self.find_repulsion(sharks)
 
         # Sum all potentials
-        x_tot = K_ATT * x_att + K_REP * x_rep
-        y_tot = K_ATT * y_att + K_REP * y_rep
+        x_tot = k_att * x_att + k_rep * x_rep
+        y_tot = k_att * y_att + k_rep * y_rep
         desired_theta = math.atan2(y_tot, x_tot)
 
         # Set yaw control
-        control_theta = K_CON * (self.angle_diff(desired_theta)) + SIGMA_RAND * np.random.randn(1)
+        control_theta = K_CON * (self.angle_diff(desired_theta)) + sigma_rand * np.random.randn(1)[0]
         control_theta = min(max(control_theta, - MAX_CONTROL), MAX_CONTROL)
         self.h += control_theta
 
@@ -323,6 +341,41 @@ class Shark(Particle):
             return True
         return False
 
+def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
+    # ---------- Move things ----------
+    for robot in robots:
+        robot.move(world)
+
+    d_h = []
+    for shark in sharks:
+        old_heading = shark.h
+        shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep)
+        d_h.append(shark.h - old_heading)
+
+    # Move particles according to my belief of movement (this may
+    # be different than the real movement, but it's all I got)
+    for i, particles in enumerate(particles_list):
+
+        for p in particles:
+            p.x += np.random.normal(0, SIGMA_MEAN)
+            p.y += np.random.normal(0, SIGMA_MEAN)
+
+def show(world, robots, sharks, particles_list, means_list, attraction_point=(X_ATT, Y_ATT)):
+    """
+    :param has_particle:
+    :return: Shows robots, sharks, particles and means.
+    """
+    for particles in particles_list:
+        world.show_particles(particles)
+    world.show_attraction_point(attraction_point)
+
+    for mean in means_list:
+        world.show_mean(mean)
+
+    for robot in robots:
+        world.show_robot(robot)
+
+    world.show_sharks(sharks)
 
 # ------------------------------------------------------------------------
 def main():
@@ -330,20 +383,24 @@ def main():
     world.draw()
 
     # Initialize Items
-    sharks = Shark.create_random(SHARK_COUNT, world)
-    robert = Robot(world)
+    sharks = Shark.create_random(SHARK_COUNT, world, 0)
+    robert = Robot(world, 0,0)
+    robots = [robert]
     [(x_att, y_att)] = ATTRACTORS
+    no_particles = []
 
     dist_mean = []
+
 
     # while True:
     for time_step in range(TIME_STEPS):
         #
         # ---------- Show current state ----------
-        world.show_sharks(sharks)
-        world.show_robot(robert)
+        if SHOW_VISUALIZATION:
+            world.show_sharks(sharks)
+            world.show_robot(robert)
 
-
+        move(world, robots, sharks, no_particles, SIGMA_RAND, K_ATT, K_REP)
 
         # Calculate mean
         m_x, m_y = 0, 0
@@ -355,19 +412,14 @@ def main():
 
         x_mean = m_x / len(sharks)
         y_mean = m_y / len(sharks)
+        print x_mean, y_mean
         dist_mean.append(np.hypot(x_mean - x_att, y_mean - y_att))
 
-        # # ---------- Move things ----------
-        # Move sharks with shark's speed
-        for s in sharks:
-            s.advance(sharks, s.speed, )
-
-    plt.plot(dist_mean)
-    plt.title('Distance of Mean Position from Attraction Point over Time')
-    plt.ylabel('Distance from Attraction Point')
-    plt.xlabel('Time')
-    plt.show()
-
+    # Plot Mean's distance from attraction point
+    # plt.plot(dist_mean)
+    # plt.ylim(-2, 2)
+    # plt.savefig('mean.png')
+    # plt.close()
 
 
 

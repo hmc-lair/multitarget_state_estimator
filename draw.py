@@ -126,7 +126,7 @@ class Maze(object):
         px = {}
         for shark in sharks:
             draw_cnt += 1
-            shark_shape = 'turtle' if shark.tracked else 'classic'
+            shark_shape = 'classic' if shark.tracked else 'classic'
             if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 0:
                 # Keep track of which positions already have something
                 # drawn to speed up display rendering

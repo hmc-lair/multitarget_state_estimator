@@ -1,0 +1,13 @@
+5/23/2016
+
+fixed att-rep single point model
+- changed angle_diff to while instead of if loop
+
+run single point model PF (to find error over time)
+- TODO: define steady state error point
+
+modularize code so pf is separate from simulation
+
+starting att-rep line model
+-only need to change find attraction?
+

@@ -1,4 +1,4 @@
-%fishSim.m
+%fish_sim_line.m
 % clear
 
 
@@ -103,16 +103,15 @@ end
 
 
 % Store the data
-
-% Transposing so each list is individual fish trajectro
-t = t';
 x = x';
 y = y';
+t = t';
+
 % x_tag = x(:, 1:N_tags);
 % y_tag = y(:, 1:N_tags);
 % x_mean = mean(x_tag,2);
 % y_mean = mean(y_tag,2);
-save fishSimData.mat 
+save fishSimLineData.mat 
 %x y t closeToNeighbor N_fish N_attractors v attractors maxTime K_con K_rep K_att K_rand sigmaRand 
 
 

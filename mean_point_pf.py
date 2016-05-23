@@ -7,7 +7,7 @@ import shark_particle as sp
 
 TIME_STEPS = 5000
 SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = True  # Whether to have visualization
+SHOW_VISUALIZATION = False  # Whether to have visualization
 
 
 # ------------------------------------------------------------------------
@@ -171,8 +171,7 @@ def run(shark_count, track_count, my_file):
         if SHOW_VISUALIZATION:
             pf.show(world, robots, sharks, particles_list, p_means_list)
 
-        # print(time_step)
-        print "Mean Position", x_mean, y_mean
+        print(time_step)
 
 
     for item in error_x_list:
@@ -186,14 +185,15 @@ def run(shark_count, track_count, my_file):
 
 def main():
     shark_count = 50
-    num_trials = 1
+    num_trials = 3
 
     # Export shark mean position over time into text file, can be plotted with matlab
-    global my_file
-    my_file = open("testError%s_0516.txt" %(shark_count), "w")
+    for tag_count in [10, 30, 50]:
+        global my_file
+        my_file = open("testError%s_%s_0523.txt" %(tag_count, shark_count), "w")
 
-    for _ in range(num_trials):
-        run(shark_count, shark_count, my_file)
+        for _ in range(num_trials):
+            run(shark_count, tag_count, my_file)
 
 
     my_file.close()
