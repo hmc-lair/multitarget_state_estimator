@@ -76,7 +76,11 @@ class Maze(object):
         return self.maze[yy][xx] == 0
 
     def show_mean(self, mean):
-        x, y, confident = mean
+        # TODO: Delete below assumption about confident
+        confident = True
+        m1, m2 = mean
+        x = 0
+        y = 0
         if confident:
             turtle.color("#00AA00")
             turtle.fillcolor("")
@@ -105,16 +109,20 @@ class Maze(object):
             if DRAW_EVERY == 0 or draw_cnt % DRAW_EVERY == 1:
                 # Keep track of which positions already have something
                 # drawn to speed up display rendering
-                scaled_x = int(p.x * self.one_px)
-                scaled_y = int(p.y * self.one_px)
-                scaled_xy = scaled_x * 10000 + scaled_y
-                if not scaled_xy in px:
-                    px[scaled_xy] = 1
-                    turtle.setposition(*p.xy)
+                scaled_x1 = int(p.x1 * self.one_px)
+                scaled_y1 = int(p.y1 * self.one_px)
+                scaled_xy1 = scaled_x1 * 10000 + scaled_y1
+                if not scaled_xy1 in px:
+                    px[scaled_xy1] = 1
+                    turtle.setposition(*p.xy1)
                     turtle.setheading(math.degrees(p.h))
-                    turtle.color(self.weight_to_color(p.w))
+                    turtle.color("Red")
                     turtle.stamp()
 
+                    turtle.setposition(*p.xy2)
+                    turtle.setheading(math.degrees(p.h))
+                    turtle.color("Blue")
+                    turtle.stamp()
     def show_att_line(self, (x1, y1), (x2, y2)):
         turtle.penup()
         turtle.pensize(5)
@@ -123,6 +131,16 @@ class Maze(object):
         turtle.pendown()
         turtle.goto(x2, y2)
         turtle.penup()
+
+    def show_est_line(self, (x1, y1), (x2, y2)):
+        turtle.clear()
+        turtle.penup()
+        turtle.pencolor("blue")
+        turtle.goto(x1, y1)
+        turtle.pendown()
+        turtle.goto(x2, y2)
+        turtle.penup()
+
 
     def show_sharks(self, sharks):
         self.update_cnt += 1

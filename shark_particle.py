@@ -37,8 +37,8 @@ maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
              (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
 TIME_STEPS = 5000
-PARTICLE_COUNT = 1000  # Total number of particles
-SHARK_COUNT = 50
+PARTICLE_COUNT = 1  # Total number of particles
+SHARK_COUNT = 1
 
 # ATTRACTORS = [(8, 8)]
 # X_ATT = 8
@@ -81,48 +81,57 @@ def add_some_noise(*coords):
 
 def gauss(error):
     # TODO: variance is derived experimentally
-    return scipy.stats.norm.pdf(error, 0, 0.5)
+    return scipy.stats.norm.pdf(error, 0, 5)
 
 
 # ------------------------------------------------------------------------
-def compute_particle_mean(particles, world):
+def compute_particle_means(particles, world):
     """
     Compute the mean for all particles that have a reasonably good weight.
     This is not part of the particle filter algorithm but rather an
     addition to show the "best belief" for current position.
     """
-    m_x, m_y, m_count = 0, 0, 0
+    m_x1, m_y1, m_x2, m_y2, m_count = 0, 0, 0, 0, 0
     for p in particles:
         m_count += p.w
-        m_x += p.x * p.w
-        m_y += p.y * p.w
+        m_x1 += p.x1 * p.w
+        m_y1 += p.y1 * p.w
+        m_x2 += p.x2 * p.w
+        m_y2 += p.y2 * p.w
 
     if m_count == 0:
         return -1, -1, False
 
-    m_x /= m_count
-    m_y /= m_count
+    m_x1 /= m_count
+    m_y1 /= m_count
+    m_x2 /= m_count
+    m_y2 /= m_count
 
     # Now compute how good that mean is -- check how many particles
     # actually are in the immediate vicinity
     m_count = 0
     for p in particles:
-        if world.distance(p.x, p.y, m_x, m_y) < 1:
+        if world.distance(p.x1, p.y1, m_x1, m_y1) < 1:
             m_count += 1
 
-    return m_x, m_y, m_count > PARTICLE_COUNT * 0.95
+    m1 = (m_x1, m_y1)
+    m2 = (m_x2, m_y2)
+
+    return m1, m2, m_count > PARTICLE_COUNT * 0.95
 
 
 # ------------------------------------------------------------------------
 class Particle(object):
-    def __init__(self, x, y, heading=None, w=1, noisy=False):
+    def __init__(self, x1, y1, x2, y2, heading=None, w=1, noisy=False):
         if heading is None:
             heading = random.uniform(0,math.pi)
         if noisy:
-            x, y, heading = add_some_noise(x, y, heading)
+            x1, y1, heading = add_some_noise(x1, y1, heading)
 
-        self.x = x
-        self.y = y
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
         self.h = heading
         self.w = w
 
@@ -133,13 +142,21 @@ class Particle(object):
     def xy(self):
         return self.x, self.y
 
+    @property
+    def xy1(self):
+        return self.x1, self.y1
+
+    @property
+    def xy2(self):
+        return self.x2, self.y2
 
     def xyh(self):
         return self.x, self.y, self.h
 
     @classmethod
     def create_random(cls, count, maze):
-        return [cls(*maze.random_free_place()) for _ in range(0, count)]
+
+        return [cls(random.random()*16, random.random()*16, random.random()*16, random.random()*16) for _ in range(0, count)]
 
     def read_distance_sensor(self, robot):
         """
@@ -369,10 +386,13 @@ def move(world, robots, sharks, att_line, particles_list, sigma_rand, k_att, k_r
     for i, particles in enumerate(particles_list):
 
         for p in particles:
-            p.x += np.random.normal(0, SIGMA_MEAN)
-            p.y += np.random.normal(0, SIGMA_MEAN)
+            p.x1 += np.random.normal(0, SIGMA_MEAN)
+            p.y1 += np.random.normal(0, SIGMA_MEAN)
 
-def show(world, robots, sharks, particles_list, means_list, attraction_point=(0, 0)):
+            p.x2 += np.random.normal(0, SIGMA_MEAN)
+            p.y2 += np.random.normal(0, SIGMA_MEAN)
+
+def show(world, robots, sharks, particles_list, means_list, line_start, line_end, attraction_point=(0, 0)):
     """
     :param has_particle:
     :return: Shows robots, sharks, particles and means.
@@ -386,6 +406,9 @@ def show(world, robots, sharks, particles_list, means_list, attraction_point=(0,
 
     for robot in robots:
         world.show_robot(robot)
+
+    world.show_est_line(line_start, line_end)
+    world.show_att_line(LINE_START, LINE_END)
 
     world.show_sharks(sharks)
 
