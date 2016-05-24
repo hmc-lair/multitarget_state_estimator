@@ -4,7 +4,7 @@ import shark_particle as sp
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-import mean_point_pf as mean
+import att_line_pf as mean
 
 
 # Constants
