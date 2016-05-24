@@ -13,19 +13,14 @@ import scipy.stats
 import numpy as np
 import time
 import matplotlib.pyplot as plt
+from shapely.geometry import LineString, Point
 
 from draw import Maze
 
 # 0 - empty square
 # 1 - occupied square
-# 2 - occupied square with a beacon at each corner, detectable by the robot
-
-# Smaller maze
 
 maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
              (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
              (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
              (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
@@ -43,14 +38,16 @@ maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 
 TIME_STEPS = 5000
 PARTICLE_COUNT = 1000  # Total number of particles
-SHARK_COUNT = 60
+SHARK_COUNT = 50
 
-ATTRACTORS = [(8, 8)]
-X_ATT = 8
-Y_ATT = 8
+# ATTRACTORS = [(8, 8)]
+# X_ATT = 8
+# Y_ATT = 8
 FISH_INTERACTION_RADIUS = 1.5
 SHOW_VISUALIZATION = True
-
+SIGMA_MEAN = 0.1
+LINE_START = (3, 8)
+LINE_END = (13, 13)
 
 # Fish simulation constants
 
@@ -60,7 +57,7 @@ K_CON = 0.05
 K_REP = 1000
 # K_ATT = 0.0000002
 # TODO: for now use 1
-K_ATT = 1
+K_ATT = 100
 K_RAND = 0.1
 
 # Yaw Control
@@ -88,13 +85,12 @@ def gauss(error):
 
 
 # ------------------------------------------------------------------------
-def compute_mean_point(particles):
+def compute_particle_mean(particles, world):
     """
     Compute the mean for all particles that have a reasonably good weight.
     This is not part of the particle filter algorithm but rather an
     addition to show the "best belief" for current position.
     """
-
     m_x, m_y, m_count = 0, 0, 0
     for p in particles:
         m_count += p.w
@@ -182,7 +178,7 @@ class Particle(object):
         self.y += y
 
 class Robot(Particle):
-    speed = 1
+    speed = 0.01
 
     def __init__(self, x, y, heading=None, w=1, noisy=False):
         if heading is None:
@@ -310,7 +306,22 @@ class Shark(Particle):
             y_att += mag * (attractor[1] - self.y)
         return x_att, y_att
 
-    def advance(self, sharks, speed, sigma_rand, k_att, k_rep, noisy=False, checker=None):
+    def find_attraction_to_line(self, line):
+        """ Finds attractor line contribution to shark's movement
+        """
+        # Find closest point on attraction line
+        p = Point(self.x, self.y)
+        projection = line.project(p)
+        np = line.interpolate(projection)
+        attractors = [(np.x, np.y)]
+
+        # Find Attraction based on Closest Point
+        x_att, y_att = self.find_attraction(attractors)
+
+        return x_att, y_att
+
+
+    def advance(self, sharks, speed, sigma_rand, k_att, k_rep, line, noisy=False, checker=None):
         """
         :param
                 k_att: Attraction Gain
@@ -318,7 +329,8 @@ class Shark(Particle):
         :return: Advance shark by one step.
         """
         # Get attributes
-        x_att, y_att = self.find_attraction(ATTRACTORS)
+        # x_att, y_att = self.find_attraction(ATTRACTORS)
+        x_att, y_att = self.find_attraction_to_line(line)
         x_rep, y_rep = self.find_repulsion(sharks)
 
         # Sum all potentials
@@ -341,7 +353,7 @@ class Shark(Particle):
             return True
         return False
 
-def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
+def move(world, robots, sharks, att_line, particles_list, sigma_rand, k_att, k_rep):
     # ---------- Move things ----------
     for robot in robots:
         robot.move(world)
@@ -349,7 +361,7 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
     d_h = []
     for shark in sharks:
         old_heading = shark.h
-        shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep)
+        shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep, att_line)
         d_h.append(shark.h - old_heading)
 
     # Move particles according to my belief of movement (this may
@@ -360,7 +372,7 @@ def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
             p.x += np.random.normal(0, SIGMA_MEAN)
             p.y += np.random.normal(0, SIGMA_MEAN)
 
-def show(world, robots, sharks, particles_list, means_list, attraction_point=(X_ATT, Y_ATT)):
+def show(world, robots, sharks, particles_list, means_list, attraction_point=(0, 0)):
     """
     :param has_particle:
     :return: Shows robots, sharks, particles and means.
@@ -380,14 +392,17 @@ def show(world, robots, sharks, particles_list, means_list, attraction_point=(X_
 # ------------------------------------------------------------------------
 def main():
     world = Maze(maze_data)
-    world.draw()
+    world.draw(LINE_START, LINE_END)
 
     # Initialize Items
     sharks = Shark.create_random(SHARK_COUNT, world, 0)
     robert = Robot(world, 0,0)
     robots = [robert]
-    [(x_att, y_att)] = ATTRACTORS
+    # [(x_att, y_att)] = ATTRACTORS
     no_particles = []
+
+
+    line = LineString([LINE_START, LINE_END])
 
     dist_mean = []
 
@@ -400,20 +415,20 @@ def main():
             world.show_sharks(sharks)
             world.show_robot(robert)
 
-        move(world, robots, sharks, no_particles, SIGMA_RAND, K_ATT, K_REP)
+        move(world, robots, sharks, line, no_particles, SIGMA_RAND, K_ATT, K_REP)
 
-        # Calculate mean
-        m_x, m_y = 0, 0
-
-        for shark in sharks:
-
-            m_x += shark.x
-            m_y += shark.y
-
-        x_mean = m_x / len(sharks)
-        y_mean = m_y / len(sharks)
-        print x_mean, y_mean
-        dist_mean.append(np.hypot(x_mean - x_att, y_mean - y_att))
+        # # Calculate mean
+        # m_x, m_y = 0, 0
+        #
+        # for shark in sharks:
+        #
+        #     m_x += shark.x
+        #     m_y += shark.y
+        #
+        # x_mean = m_x / len(sharks)
+        # y_mean = m_y / len(sharks)
+        # print x_mean, y_mean
+        # dist_mean.append(np.hypot(x_mean - x_att, y_mean - y_att))
 
     # Plot Mean's distance from attraction point
     # plt.plot(dist_mean)

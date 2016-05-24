@@ -11,3 +11,12 @@ modularize code so pf is separate from simulation
 starting att-rep line model
 -only need to change find attraction?
 
+5/24/2016 Chris Meeting
+- Performance Metrics
+	- Error
+	- Add randomness
+	- Based on number of sharks or sharks’ speed
+- Theory in the future
+	- Likelihood of visiting each cell
+	- Amount of time taken for shark to cover
+	- Transition Model

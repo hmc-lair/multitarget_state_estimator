@@ -2,14 +2,36 @@ from __future__ import absolute_import
 
 import numpy as np
 import matplotlib.pyplot as plt
-import individual_particle_filter as pf
+# import individual_particle_filter as pf
 import shark_particle as sp
+import bisect
+import random
 
 TIME_STEPS = 5000
-SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = False  # Whether to have visualization
+# SIGMA_MEAN = 0.1
+SHOW_VISUALIZATION = True  # Whether to have visualization
+PARTICLE_COUNT = 50
+TRACK_COUNT = 50
+ROBOT_HAS_COMPASS = False
 
+# ------------------------------------------------------------------------
+class WeightedDistribution(object):
+    def __init__(self, state):
+        accum = 0.0
+        self.state = [p for p in state if p.w > 0]
+        self.distribution = []
+        for x in self.state:
+            accum += x.w
+            self.distribution.append(accum)
 
+    def pick(self):
+        try:
+            # TODO: ask Chris about how to pick
+            # Pick randomly from self.distribution
+            return self.state[bisect.bisect_left(self.distribution, random.uniform(0, 1))]
+        except IndexError:
+            # Happens when all particles are improbable w=0
+            return None
 # ------------------------------------------------------------------------
 
 
@@ -23,7 +45,7 @@ def moving_average(data, number_points):
         return sum(data[length - number_points:]) / float(number_points)
 
 
-def compute_mean_position(sharks, track_number):
+def compute_shark_mean(sharks, track_number):
     """ Computes the mean position of the tracked sharks
     tracked_sharks: List of tracked sharks
     """
@@ -45,11 +67,11 @@ def estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att
         error_xmean = x_mean - p.x
         error_ymean = y_mean - p.y
 
-        weight_particle = pf.gauss(error_xmean) * pf.gauss(error_ymean)
+        weight_particle = sp.gauss(error_xmean) * sp.gauss(error_ymean)
         p.w = weight_particle
 
     # Find the particle mean point and associated confidence
-    m_x, m_y, m_confident = pf.compute_particle_mean(particles, world)
+    m_x, m_y, m_confident = sp.compute_particle_mean(particles, world)
     error_x_list.append(m_x - x_att)
     error_y_list.append(m_y - y_att)
 
@@ -63,15 +85,15 @@ def estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att
             p.w = p.w / nu
 
     # create a weighted distribution, for fast picking
-    dist = pf.WeightedDistribution(particles)
+    dist = WeightedDistribution(particles)
 
     for _ in particles:
         p = dist.pick()
         if p is None:  # No pick b/c all totally improbable
-            new_particle = pf.Particle.create_random(1, world)[0]
+            new_particle = sp.Particle.create_random(1, world)[0]
         else:
-            new_particle = pf.Particle(p.x, p.y,
-                                       heading=robot1.h if pf.ROBOT_HAS_COMPASS else p.h,
+            new_particle = sp.Particle(p.x, p.y,
+                                       heading=robot1.h if ROBOT_HAS_COMPASS else p.h,
                                        noisy=True)
         new_particles.append(new_particle)
     return new_particles
@@ -89,13 +111,13 @@ def errorIndividualPlot(error_x, error_y):
     axes[0].plot(error_x)
     axes[0].set_ylabel('Error in x')
     axes[0].set_title(
-        'No. of Particles : %s, Tracked Sharks: %s of %s' % (pf.PARTICLE_COUNT, pf.TRACK_COUNT, pf.SHARK_COUNT))
+        'No. of Particles : %s, Tracked Sharks: %s of %s' % (PARTICLE_COUNT, TRACK_COUNT, sp.SHARK_COUNT))
     axes[0].set_ylim([-2, 2])
     axes[1].plot(error_y)
     axes[1].set_ylabel('Error in y')
     axes[1].set_ylim([-2, 2])
 
-    plt.savefig('MeanPointPF%sParticles%s of %sTrackedSharks.png' % (pf.PARTICLE_COUNT, pf.TRACK_COUNT, pf.SHARK_COUNT))
+    plt.savefig('MeanPointPF%sParticles%s of %sTrackedSharks.png' % (PARTICLE_COUNT, TRACK_COUNT, sp.SHARK_COUNT))
     plt.close()
 
 def errorPlot(error_x, error_y, track_count):
@@ -109,39 +131,19 @@ def errorPlot(error_x, error_y, track_count):
         axes[1].plot(error_y, label=track_count)
 
 
-def move(world, robots, sharks, particles_list, sigma_rand, k_att, k_rep):
-    # ---------- Move things ----------
-    for robot in robots:
-        robot.move(world)
-
-    d_h = []
-    for shark in sharks:
-        old_heading = shark.h
-        shark.advance(sharks, shark.speed, sigma_rand, k_att, k_rep)
-        d_h.append(shark.h - old_heading)
-
-    # Move particles according to my belief of movement (this may
-    # be different than the real movement, but it's all I got)
-    for i, particles in enumerate(particles_list):
-
-        for p in particles:
-            p.x += np.random.normal(0, SIGMA_MEAN)
-            p.y += np.random.normal(0, SIGMA_MEAN)
-
-
 
 def run(shark_count, track_count, my_file):
     """ Run particle filter with shark_count of sharks with track_count tracked.
     """
-    world = pf.Maze(pf.MAZE_DATA)
+    world = sp.Maze(sp.maze_data)
 
     if SHOW_VISUALIZATION:
         world.draw()
 
     # Initialize Items
-    sharks = pf.Shark.create_random(shark_count, world, track_count)
-    robots = pf.Robot.create_random(0, world)
-    particles_list = [pf.Particle.create_random(pf.PARTICLE_COUNT, world)]
+    sharks = sp.Shark.create_random(shark_count, world, track_count)
+    robots = sp.Robot.create_random(0, world)
+    particles_list = [sp.Particle.create_random(PARTICLE_COUNT, world)]
 
     [(x_att, y_att)] = sp.ATTRACTORS
 
@@ -155,21 +157,21 @@ def run(shark_count, track_count, my_file):
 
         # Calculate mean position
         p_means_list = []
-        x_mean, y_mean = compute_mean_position(sharks, track_count)
+        x_mean, y_mean = compute_shark_mean(sharks, track_count)
 
         for i, particles in enumerate(particles_list):
             particles_list[i] = estimate(particles, world, x_mean, y_mean, error_x_list, error_y_list, x_att, y_att)
-            p_means_list.append(pf.compute_particle_mean(particles, world))
+            p_means_list.append(sp.compute_particle_mean(particles, world))
 
         # # ---------- Move things ----------
         # Move sharks with shark's speed
-        move(world, robots, sharks, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
+        sp.move(world, robots, sharks, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
 
         #TODO: Let p_means be shark mean for now
 
         # Show current state
         if SHOW_VISUALIZATION:
-            pf.show(world, robots, sharks, particles_list, p_means_list)
+            sp.show(world, robots, sharks, particles_list, p_means_list)
 
         print(time_step)
 

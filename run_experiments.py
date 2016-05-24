@@ -19,6 +19,9 @@ SHOW_VISUALIZATION = True # Whether to have visualization
 
 ROBOT_HAS_COMPASS = False
 
+def gauss(error):
+    # TODO: variance is derived experimentally
+    return scipy.stats.norm.pdf(error, 0, 0.1)
 
 def checkChangeHeading(sigma_rand, angle_radius_factor, shark_count, k_att=sp.K_ATT, k_rep=sp.K_REP):
     world = pf.Maze(sp.maze_data)

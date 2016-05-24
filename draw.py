@@ -39,7 +39,7 @@ class Maze(object):
                     if block == 2:
                         self.beacons.extend(((x, nb_y), (x+1, nb_y), (x, nb_y+1), (x+1, nb_y+1)))
 
-    def draw(self):
+    def draw(self, start=(0,0), end=(0,0)):
         for x, y in self.blocks:
             turtle.up()
             turtle.setposition(x, y)
@@ -56,6 +56,7 @@ class Maze(object):
         for x, y in self.beacons:
             turtle.setposition(x, y)
             turtle.dot()
+        self.show_att_line(start, end)
         turtle.update()
 
     def weight_to_color(self, weight):
@@ -114,7 +115,14 @@ class Maze(object):
                     turtle.color(self.weight_to_color(p.w))
                     turtle.stamp()
 
-
+    def show_att_line(self, (x1, y1), (x2, y2)):
+        turtle.penup()
+        turtle.pensize(5)
+        turtle.pencolor("black")
+        turtle.goto(x1, y1)
+        turtle.pendown()
+        turtle.goto(x2, y2)
+        turtle.penup()
 
     def show_sharks(self, sharks):
         self.update_cnt += 1
