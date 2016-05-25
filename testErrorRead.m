@@ -3,7 +3,7 @@
 
 
 % % Read File
-M = csvread('testError50_50_0525random.txt');
+M = csvread('testError50_50_0525random_4.txt');
 
 x_50 = M; % Error of shark's distance from line
 

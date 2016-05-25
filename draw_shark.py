@@ -120,6 +120,7 @@ class Maze(object):
             return
 
         turtle.clearstamps()
+        turtle.clear()
         draw_cnt = 0
         px = {}
         for shark in sharks:
@@ -148,8 +149,10 @@ class Maze(object):
         turtle.setposition(*shark.xy)
         turtle.setheading(math.degrees(shark.h))
         turtle.stamp()
-        turtle.update()
-        # turtle.clearstamps()
+
+    def clearstamps(self):
+        turtle.clearstamps()
+        turtle.clear()
 
     def show_attraction_point(self, att):
         turtle.color('black')
@@ -169,7 +172,7 @@ class Maze(object):
         turtle.shape('square')
         turtle.setposition(*robot.xy)
         turtle.setheading(math.degrees(robot.h))
-        turtle.stamp()
+        # turtle.stamp()
         turtle.update()
 
     def random_place(self):
@@ -180,8 +183,8 @@ class Maze(object):
     def random_free_place(self):
         while True:
             x, y = self.random_place()
-            if self.is_free(x, y):
-                return x, y
+            # if self.is_free(x, y):
+            #     return x, y
 
     def distance(self, x1, y1, x2, y2):
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)

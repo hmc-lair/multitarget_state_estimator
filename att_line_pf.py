@@ -8,9 +8,9 @@ import random
 from shapely.geometry import LineString, Point
 import math
 
-TIME_STEPS = 500
+TIME_STEPS = 1000
 # SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = True  # Whether to have visualization
+SHOW_VISUALIZATION = False  # Whether to have visualization
 PARTICLE_COUNT = 50
 TRACK_COUNT = 1
 ROBOT_HAS_COMPASS = False
@@ -223,7 +223,7 @@ def run(shark_count, track_count, my_file, attraction_line):
         if SHOW_VISUALIZATION:
             sp.show(world, robots, sharks, particles_list, p_means_list, m1, m2, attraction_line)
 
-        # print(time_step)
+        print(time_step)
 
 
     for item in error_list:
@@ -237,14 +237,14 @@ def generate_random_point():
 
 def main():
     shark_count = 50
-    num_trials = 3
+    num_trials = 5
 
 
 
     # Export shark mean position over time into text file, can be plotted with matlab
     # for tag_count in [10, 30, 50]:
     global my_file
-    my_file = open("testError%s_%s_0525random_3.txt" %(shark_count, shark_count), "w")
+    my_file = open("testError%s_%s_0525random_4.txt" %(shark_count, shark_count), "w")
 
     for _ in range(num_trials):
         # Generate Random Line

@@ -24,3 +24,10 @@ starting att-rep line model
 
 5/25/2016
 - Working on performance metrics
+	- Where should the sharks start from
+		- if start at zero, different time it takes to reach line
+		- if random position, what is random
+		- random within given distance from line??
+- Matlab to PF 
+	- matlab visualized on python
+		- why are there lines?
