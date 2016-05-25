@@ -3,23 +3,24 @@
 
 
 % % Read File
-% M = csvread('testError20_20_0525.txt');
-% 
-% x_20 = M; % Error of shark's distance from line
-% 
-% plot(x_20');
-% xlabel('Time (s)');
-% ylabel('y distance from att (m)')
-% title('Error in Distance From Line')
-% 
-% % Plot Mean
-% xmean_20 = mean(x_20);
-% figure
-% plot(xmean_20')
-% title('Mean Error in Distance From Line')
+M = csvread('testError50_50_0525random.txt');
 
-plot(xmean_20');
-hold on 
-plot(xmean_50');
-label('20', '50')
-hold off
+x_50 = M; % Error of shark's distance from line
+
+plot(x_50', '.');
+xlabel('Time (s)');
+ylabel('y distance from att (m)')
+title('Error in Distance From Line')
+
+% Plot Mean
+xmean_50 = mean(x_50);
+figure
+plot(xmean_50', '.')
+title('Mean Error in Distance From Line')
+
+
+% subplot(2,1,1)
+% plot(x_20');
+% subplot(2,1,2)
+% plot(x_50');
+% hold off

@@ -22,6 +22,9 @@ class Particle(object):
         self.y = y
         self.h = heading
         self.w = w
+        self.x_list = x_list
+        self.y_list = y_list
+        self.t_list = t_list
 
     def __repr__(self):
         return "(%f, %f, w=%f)" % (self.x, self.y, self.w)
@@ -37,19 +40,6 @@ class Particle(object):
     @classmethod
     def create_random(cls, count, maze):
         return [cls(*maze.random_free_place()) for _ in range(0, count)]
-
-    def read_distance_sensor(self, robot):
-        """
-        Returns distance between self and robot.
-        """
-        self_x, self_y = self.xy
-        robot_x, robot_y = robot.xy
-        return math.sqrt((self_x - robot_x)**2 + (self_y - robot_y)**2)
-
-    def read_angle_sensor(self,robot):
-        self_x, self_y = self.xy
-        robot_x, robot_y = robot.xy
-        return math.degrees(math.atan2(abs(self_y - robot_y), abs(self_x - robot_x)))
 
     def advance_by(self, speed, checker=None, noisy=False):
         h = self.h
@@ -69,6 +59,11 @@ class Particle(object):
     def move_by(self, x, y):
         self.x += x
         self.y += y
+
+    def update(self, timestep):
+        self.x = self.x_list[timestep]
+        self.y = self.y_list[timestep]
+        self.h = self.h_list[timestep]
 
 class Shark(Particle):
 
@@ -124,9 +119,6 @@ class Shark(Particle):
             self.move_by(dx, dy)
             return True
         return False
-
-
-
 
 
 

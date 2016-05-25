@@ -36,6 +36,8 @@ maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
              (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
              (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
 
+HEIGHT = len(maze_data)
+WIDTH = len(maze_data[0])
 TIME_STEPS = 5000
 PARTICLE_COUNT = 1  # Total number of particles
 SHARK_COUNT = 1
@@ -51,7 +53,8 @@ LINE_END = (13, 13)
 
 # Fish simulation constants
 
-SIGMA_RAND = 0
+# Around 20 Degrees
+SIGMA_RAND = 0.35
 K_CON = 0.05
 # TODO: ask Chris about constants
 K_REP = 1000
@@ -392,7 +395,7 @@ def move(world, robots, sharks, att_line, particles_list, sigma_rand, k_att, k_r
             p.x2 += np.random.normal(0, SIGMA_MEAN)
             p.y2 += np.random.normal(0, SIGMA_MEAN)
 
-def show(world, robots, sharks, particles_list, means_list, line_start, line_end, attraction_point=(0, 0)):
+def show(world, robots, sharks, particles_list, means_list, est_line_start, est_line_end, att_line, attraction_point=(0, 0)):
     """
     :param has_particle:
     :return: Shows robots, sharks, particles and means.
@@ -407,15 +410,15 @@ def show(world, robots, sharks, particles_list, means_list, line_start, line_end
     for robot in robots:
         world.show_robot(robot)
 
-    world.show_est_line(line_start, line_end)
-    world.show_att_line(LINE_START, LINE_END)
+    world.show_est_line(est_line_start, est_line_end)
+    world.show_att_line(att_line.coords[0], att_line.coords[1])
 
     world.show_sharks(sharks)
 
 # ------------------------------------------------------------------------
 def main():
     world = Maze(maze_data)
-    world.draw(LINE_START, LINE_END)
+    world.draw()
 
     # Initialize Items
     sharks = Shark.create_random(SHARK_COUNT, world, 0)

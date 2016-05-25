@@ -6,17 +6,16 @@ import shark_particle as sp
 import bisect
 import random
 from shapely.geometry import LineString, Point
+import math
 
 TIME_STEPS = 500
 # SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = False  # Whether to have visualization
+SHOW_VISUALIZATION = True  # Whether to have visualization
 PARTICLE_COUNT = 50
 TRACK_COUNT = 1
 ROBOT_HAS_COMPASS = False
 
-LINE_START = (3, 8)
-LINE_END = (13, 13)
-ATTRACTION_LINE = LineString([LINE_START, LINE_END])
+
 # ------------------------------------------------------------------------
 class WeightedDistribution(object):
     def __init__(self, state):
@@ -173,13 +172,13 @@ def errorPlot(error_x, error_y, track_count):
 
 
 
-def run(shark_count, track_count, my_file):
+def run(shark_count, track_count, my_file, attraction_line):
     """ Run particle filter with shark_count of sharks with track_count tracked.
     """
     world = sp.Maze(sp.maze_data)
 
     if SHOW_VISUALIZATION:
-        world.draw(LINE_START, LINE_END)
+        world.draw()
 
     # Initialize Items
     sharks = sp.Shark.create_random(shark_count, world, track_count)
@@ -205,51 +204,58 @@ def run(shark_count, track_count, my_file):
 
         # # ---------- Move things ----------
         # Move sharks with shark's speed
-        sp.move(world, robots, sharks, ATTRACTION_LINE, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
+        sp.move(world, robots, sharks, attraction_line, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
         #TODO: Let p_means be shark mean for now
 
         # Find total error (performance metric) and add to list
-        # LineString([(p.x1, p.y1), (p.x2, p.y2)])
         est_line = LineString([m1, m2])
-        error_sum = 0
 
+        raw_error_sum = 0
         for shark in sharks:
-            error_sum += (distance_from_line(shark, est_line) - distance_from_line(shark, ATTRACTION_LINE))**2
+            raw_error_sum += (distance_from_line(shark, est_line) - distance_from_line(shark, attraction_line))**2
 
-        error_list.append(error_sum)
+        error = math.sqrt(raw_error_sum/track_count)
+        error_list.append(error)
 
 
 
         # Show current state
         if SHOW_VISUALIZATION:
-            sp.show(world, robots, sharks, particles_list, p_means_list, m1, m2)
+            sp.show(world, robots, sharks, particles_list, p_means_list, m1, m2, attraction_line)
 
-        print(time_step)
+        # print(time_step)
 
 
     for item in error_list:
         my_file.write(str(item) + ",")
     my_file.write("\n")
 
+def generate_random_point():
+    x_rand = random.random() * sp.WIDTH
+    y_rand = random.random() * sp.HEIGHT
+    return (x_rand, y_rand)
 
 def main():
     shark_count = 50
     num_trials = 3
 
+
+
     # Export shark mean position over time into text file, can be plotted with matlab
     # for tag_count in [10, 30, 50]:
     global my_file
-    my_file = open("testError%s_%s_0525.txt" %(shark_count, shark_count), "w")
+    my_file = open("testError%s_%s_0525random_3.txt" %(shark_count, shark_count), "w")
 
     for _ in range(num_trials):
-        run(shark_count, shark_count, my_file)
+        # Generate Random Line
+        line_start = generate_random_point()
+        line_end = generate_random_point()
+        attraction_line = LineString([line_start, line_end])
+        print (line_start, line_end)
+        run(shark_count, shark_count, my_file, attraction_line)
 
 
     my_file.close()
-
-
-
-
 
 if __name__ == "__main__":
     main()
