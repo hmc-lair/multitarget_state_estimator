@@ -1,30 +1,25 @@
-% Reads shark mean position estimate log file from mean_point_pf.py and
+% Reads shark mean position estimate log file from att_line_pf.py and
 % plots
 
 
-% Read File
-M = csvread('Data/testError30_50_0523.txt');
+% % Read File
+% M = csvread('testError20_20_0525.txt');
+% 
+% x_20 = M; % Error of shark's distance from line
+% 
+% plot(x_20');
+% xlabel('Time (s)');
+% ylabel('y distance from att (m)')
+% title('Error in Distance From Line')
+% 
+% % Plot Mean
+% xmean_20 = mean(x_20);
+% figure
+% plot(xmean_20')
+% title('Mean Error in Distance From Line')
 
-x = M(1:2:end,:); % odd matrix (x position)
-y = M(2:2:end,:); % even matrix (y position)
-xmean = mean(x);  % odd matrix
-ymean = mean(y);  % odd matrix
-
-subplot(2,1,1);
-plot(x');
-ylim([-0.5 0.5]);
-ylabel('x distance from att (m)')
-subplot(2,1,2);
-plot(y');
-ylim([-0.5 0.5]);
-xlabel('Time (s)');
-ylabel('y distance from att (m)')
-
-% Plot Mean
-figure
-subplot(2,1,1);
-plot(xmean)
-ylim([-0.5 0.5]);
-subplot(2,1,2);
-plot(ymean)
-ylim([-0.5 0.5]);
+plot(xmean_20');
+hold on 
+plot(xmean_50');
+label('20', '50')
+hold off

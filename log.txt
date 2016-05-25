@@ -20,3 +20,7 @@ starting att-rep line model
 	- Likelihood of visiting each cell
 	- Amount of time taken for shark to cover
 	- Transition Model
+- Did att_line PF
+
+5/25/2016
+- Working on performance metrics

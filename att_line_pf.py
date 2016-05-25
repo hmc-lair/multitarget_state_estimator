@@ -2,15 +2,14 @@ from __future__ import absolute_import
 
 import numpy as np
 import matplotlib.pyplot as plt
-# import individual_particle_filter as pf
 import shark_particle as sp
 import bisect
 import random
 from shapely.geometry import LineString, Point
 
-TIME_STEPS = 5000
+TIME_STEPS = 500
 # SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = True  # Whether to have visualization
+SHOW_VISUALIZATION = False  # Whether to have visualization
 PARTICLE_COUNT = 50
 TRACK_COUNT = 1
 ROBOT_HAS_COMPASS = False
@@ -107,20 +106,15 @@ def compute_particle_means(particles, world):
     return (m_x1, m_y1), (m_x2, m_y2)
 
 
-def estimate(particles, world, sharks, error_x_list, error_y_list):
+def estimate(particles, world, sharks):
+
     # Update particle weight according to how good every particle matches
+
     for j, p in enumerate(particles):
         particle_line = LineString([(p.x1, p.y1), (p.x2, p.y2)])
         particle_error = total_shark_distance_from_line(sharks, particle_line)
         weight_particle = sp.gauss(particle_error)
         p.w = weight_particle
-
-    # Find the particle mean end points and associated confidence
-    # m1, m2 = compute_particle_means(particles, world)
-
-    # TODO: not supposed to be 1
-    error_x_list.append(0)
-    error_y_list.append(0)
 
     # Shuffle particles
     new_particles = []
@@ -192,11 +186,8 @@ def run(shark_count, track_count, my_file):
     robots = sp.Robot.create_random(0, world)
     particles_list = [sp.Particle.create_random(PARTICLE_COUNT, world)]
 
-    # [(x_att, y_att)] = sp.ATTRACTORS
-
     # Initialize error lists
-    error_x_list = []
-    error_y_list = []
+    error_list = []
 
 
 
@@ -204,10 +195,9 @@ def run(shark_count, track_count, my_file):
 
         # Calculate mean position
         p_means_list = []
-        x_mean, y_mean = compute_shark_mean(sharks, track_count)
 
         for i, particles in enumerate(particles_list):
-            particles_list[i] = estimate(particles, world, sharks, error_x_list, error_y_list)
+            particles_list[i] = estimate(particles, world, sharks)
 
         m1, m2 = compute_particle_means(particles, world)
         #TODO
@@ -218,6 +208,18 @@ def run(shark_count, track_count, my_file):
         sp.move(world, robots, sharks, ATTRACTION_LINE, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
         #TODO: Let p_means be shark mean for now
 
+        # Find total error (performance metric) and add to list
+        # LineString([(p.x1, p.y1), (p.x2, p.y2)])
+        est_line = LineString([m1, m2])
+        error_sum = 0
+
+        for shark in sharks:
+            error_sum += (distance_from_line(shark, est_line) - distance_from_line(shark, ATTRACTION_LINE))**2
+
+        error_list.append(error_sum)
+
+
+
         # Show current state
         if SHOW_VISUALIZATION:
             sp.show(world, robots, sharks, particles_list, p_means_list, m1, m2)
@@ -225,23 +227,19 @@ def run(shark_count, track_count, my_file):
         print(time_step)
 
 
-    for item in error_x_list:
-        my_file.write(str(item) + ",")
-    my_file.write("\n")
-
-    for item in error_y_list:
+    for item in error_list:
         my_file.write(str(item) + ",")
     my_file.write("\n")
 
 
 def main():
-    shark_count = 20
+    shark_count = 50
     num_trials = 3
 
     # Export shark mean position over time into text file, can be plotted with matlab
     # for tag_count in [10, 30, 50]:
     global my_file
-    my_file = open("testError%s_%s_0523.txt" %(shark_count, shark_count), "w")
+    my_file = open("testError%s_%s_0525.txt" %(shark_count, shark_count), "w")
 
     for _ in range(num_trials):
         run(shark_count, shark_count, my_file)
