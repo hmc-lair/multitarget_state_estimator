@@ -20,36 +20,22 @@ from draw import Maze
 # 0 - empty square
 # 1 - occupied square
 
-maze_data = ((1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-             (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
+maze_data = ((1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+             (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
 
-HEIGHT = len(maze_data)
-WIDTH = len(maze_data[0])
+HEIGHT = 20
+WIDTH = 20
+HALF_HEIGHT = HEIGHT/2
+HALF_WIDTH = WIDTH/2
 TIME_STEPS = 5000
 PARTICLE_COUNT = 1  # Total number of particles
 SHARK_COUNT = 1
 
-# ATTRACTORS = [(8, 8)]
-# X_ATT = 8
-# Y_ATT = 8
 FISH_INTERACTION_RADIUS = 1.5
 SHOW_VISUALIZATION = True
 SIGMA_MEAN = 0.1
-LINE_START = (3, 8)
-LINE_END = (13, 13)
+LINE_START = (-9, 8)
+LINE_END = (8, 5)
 
 # Fish simulation constants
 
@@ -417,21 +403,17 @@ def show(world, robots, sharks, particles_list, means_list, est_line_start, est_
 
 # ------------------------------------------------------------------------
 def main():
-    world = Maze(maze_data)
+    world = Maze(maze_data, HALF_WIDTH, HALF_HEIGHT)
     world.draw()
 
     # Initialize Items
     sharks = Shark.create_random(SHARK_COUNT, world, 0)
     robert = Robot(world, 0,0)
     robots = [robert]
-    # [(x_att, y_att)] = ATTRACTORS
     no_particles = []
 
 
-    line = LineString([LINE_START, LINE_END])
-
-    dist_mean = []
-
+    att_line = LineString([LINE_START, LINE_END])
 
     # while True:
     for time_step in range(TIME_STEPS):
@@ -440,28 +422,9 @@ def main():
         if SHOW_VISUALIZATION:
             world.show_sharks(sharks)
             world.show_robot(robert)
+            world.show_att_line(LINE_START, LINE_END)
 
-        move(world, robots, sharks, line, no_particles, SIGMA_RAND, K_ATT, K_REP)
-
-        # # Calculate mean
-        # m_x, m_y = 0, 0
-        #
-        # for shark in sharks:
-        #
-        #     m_x += shark.x
-        #     m_y += shark.y
-        #
-        # x_mean = m_x / len(sharks)
-        # y_mean = m_y / len(sharks)
-        # print x_mean, y_mean
-        # dist_mean.append(np.hypot(x_mean - x_att, y_mean - y_att))
-
-    # Plot Mean's distance from attraction point
-    # plt.plot(dist_mean)
-    # plt.ylim(-2, 2)
-    # plt.savefig('mean.png')
-    # plt.close()
-
+        move(world, robots, sharks, att_line, no_particles, SIGMA_RAND, K_ATT, K_REP)
 
 
 

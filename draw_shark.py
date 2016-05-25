@@ -22,20 +22,22 @@ DRAW_EVERY = 0
 
 class Maze(object):
     def __init__(self, width, height):
-        # self.maze = maze
+        # TODO: I have no idea why having maze like this deletes the lines
+        self.maze = ((1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+                                 (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
         self.width   = width
         self.height  = height
         turtle.setworldcoordinates(-float(self.width)/2, -float(self.height)/2, float(self.width)/2, float(self.height)/2)
         self.blocks = []
         self.update_cnt = 0
         self.one_px = float(turtle.window_width()) / float(self.width) / 2
-        # for y, line in enumerate(self.maze):
-        #     for x, block in enumerate(line):
-        #         if block:
-        #             nb_y = self.height - y - 1
-        #             self.blocks.append((x, nb_y))
-        #             if block == 2:
-        #                 self.beacons.extend(((x, nb_y), (x+1, nb_y), (x, nb_y+1), (x+1, nb_y+1)))
+        for y, line in enumerate(self.maze):
+            for x, block in enumerate(line):
+                if block:
+                    nb_y = self.height - y - 1
+                    self.blocks.append((x, nb_y))
+                    if block == 2:
+                        self.beacons.extend(((x, nb_y), (x+1, nb_y), (x, nb_y+1), (x+1, nb_y+1)))
 
     def draw(self):
         for x, y in self.blocks:

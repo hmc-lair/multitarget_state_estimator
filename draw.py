@@ -21,11 +21,13 @@ UPDATE_EVERY = 0
 DRAW_EVERY = 0
 
 class Maze(object):
-    def __init__(self, maze):
+    def __init__(self, maze, half_width, half_height):
         self.maze = maze
-        self.width   = len(maze[0])
-        self.height  = len(maze)
-        turtle.setworldcoordinates(0, 0, self.width, self.height)
+        self.half_width = half_width
+        self.half_height = half_height
+        self.width   = half_width * 2.0
+        self.height  = half_height * 2.0
+        turtle.setworldcoordinates(-self.half_width, -self.half_height, self.half_width, self.half_height)
         self.blocks = []
         self.update_cnt = 0
         self.one_px = float(turtle.window_width()) / float(self.width) / 2
@@ -61,18 +63,13 @@ class Maze(object):
     def weight_to_color(self, weight):
         return "#%02x00%02x" % (int(weight * 255), int((1 - weight) * 255))
 
-    def is_in(self, x, y):
-        if x < 0 or y < 0 or x > self.width or y > self.height:
-            return False
-        return True
+    # def is_in(self, x, y):
+    #     if x < 0 or y < 0 or x > self.width or y > self.height:
+    #         return False
+    #     return True
 
     def is_free(self, x, y):
-        if not self.is_in(x, y):
-            return False
-
-        yy = self.height - int(y) - 1
-        xx = int(x)
-        return self.maze[yy][xx] == 0
+        return True
 
     def show_mean(self, mean):
         # TODO: Delete below assumption about confident
@@ -200,8 +197,8 @@ class Maze(object):
         turtle.update()
 
     def random_place(self):
-        x = random.uniform(0, self.width)
-        y = random.uniform(0, self.height)
+        x = random.uniform(-self.half_width, self.half_width)
+        y = random.uniform(-self.half_height, self.half_height)
         return x, y
 
     def random_free_place(self):
