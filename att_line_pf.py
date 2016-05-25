@@ -10,7 +10,7 @@ import math
 
 TIME_STEPS = 1000
 # SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = False  # Whether to have visualization
+SHOW_VISUALIZATION = True  # Whether to have visualization
 PARTICLE_COUNT = 50
 TRACK_COUNT = 1
 ROBOT_HAS_COMPASS = False
@@ -175,7 +175,7 @@ def errorPlot(error_x, error_y, track_count):
 def run(shark_count, track_count, my_file, attraction_line):
     """ Run particle filter with shark_count of sharks with track_count tracked.
     """
-    world = sp.Maze(sp.maze_data)
+    world = sp.Maze(sp.maze_data, sp.HALF_WIDTH, sp.HALF_HEIGHT)
 
     if SHOW_VISUALIZATION:
         world.draw()
@@ -231,8 +231,8 @@ def run(shark_count, track_count, my_file, attraction_line):
     my_file.write("\n")
 
 def generate_random_point():
-    x_rand = random.random() * sp.WIDTH
-    y_rand = random.random() * sp.HEIGHT
+    x_rand = random.random() * sp.WIDTH - sp.HALF_WIDTH
+    y_rand = random.random() * sp.HEIGHT - sp.HALF_HEIGHT
     return (x_rand, y_rand)
 
 def main():
@@ -244,7 +244,7 @@ def main():
     # Export shark mean position over time into text file, can be plotted with matlab
     # for tag_count in [10, 30, 50]:
     global my_file
-    my_file = open("testError%s_%s_0525random_4.txt" %(shark_count, shark_count), "w")
+    my_file = open("testError%s_%s_0525random_test.txt" %(shark_count, shark_count), "w")
 
     for _ in range(num_trials):
         # Generate Random Line
