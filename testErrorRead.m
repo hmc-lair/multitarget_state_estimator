@@ -20,17 +20,17 @@
 
 
 % % Read File (est and actual)
-M = csvread('catalina_error.txt');
+M = csvread('catalina_error_norm.txt', 2, 0);
 est_50 = M(:,1:2:end); % Est Error of shark's distance from line
 act_50 = M(:,2:2:end); % Act Error of shark's distance from line
 
 hold on
 plot(est_50', '.');
-plot(act_50', '-');
+plot(act_50', 'x');
 hold off
 
 xlabel('Time (s)');
-ylabel('y distance from att (m)')
+ylabel('Total Shark Distance from line')
 title('Error in Distance From Line')
 
 % Plot Mean
@@ -41,5 +41,7 @@ hold on
 plot(est_mean_50', '.')
 plot(act_mean_50', '-')
 legend('Est', 'Act')
+xlabel('Time (s)');
+ylabel('Total Shark Distance from line')
 title('Mean Error in Distance From Line')
 % 

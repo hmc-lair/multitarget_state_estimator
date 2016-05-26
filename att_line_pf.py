@@ -8,7 +8,7 @@ import random
 from shapely.geometry import LineString, Point
 import math
 
-TIME_STEPS = 50
+TIME_STEPS = 100
 # SIGMA_MEAN = 0.1
 SHOW_VISUALIZATION = True  # Whether to have visualization
 PARTICLE_COUNT = 50
@@ -70,7 +70,7 @@ def total_shark_distance_from_line(sharks, line):
     total = 0
     for shark in sharks:
         # Trying least squares
-        total += distance_from_line(shark, line)**2
+        total += distance_from_line(shark, line)
     return total
 
 def compute_particle_means(particles, world):
@@ -254,15 +254,27 @@ def generate_random_point():
     return (x_rand, y_rand)
 
 def main():
-    shark_count = 50
-    num_trials = 5
+    shark_count = 100
+    num_trials = 3
+
 
 
 
     # Export shark mean position over time into text file, can be plotted with matlab
     # for tag_count in [10, 30, 50]:
+    act_line_start = (-sp.HALF_WIDTH, -0.2168 * -sp.HALF_WIDTH + 0.113)
+    act_line_end = (sp.HALF_WIDTH, -0.2168 * sp.HALF_WIDTH + 0.113)
+    attraction_line = LineString([act_line_start, act_line_end])
+
     global my_file
-    my_file = open("testError%s_%s_0526random_test_2.txt" %(shark_count, shark_count), "w")
+    my_file = open("testError%s_%s_0526_norm.txt" %(shark_count, shark_count), "w")
+    my_file.write("Line Start: %s, Line End: %s" %(act_line_start, act_line_end))
+    my_file.write("\n")
+    my_file.write("NumSharks: %s, K_att: %s, K_rep: %s, Sigma_Rand: %s, Speed/ts: %s"
+                  %(shark_count, sp.K_ATT, sp.K_REP, sp.SIGMA_RAND, sp.Shark.speed))
+    my_file.write("\n")
+    my_file.write("x, y for all sharks, line break represents next time step")
+    my_file.write("\n")
 
     for _ in range(num_trials):
         # Generate Random Line
@@ -271,12 +283,8 @@ def main():
         # attraction_line = LineString([line_start, line_end])
         # print (line_start, line_end)
 
-        act_line_start = (-sp.HALF_WIDTH, -0.2168 * -sp.HALF_WIDTH + 0.113)
-        act_line_end = (sp.HALF_WIDTH, -0.2168 * sp.HALF_WIDTH + 0.113)
-        attraction_line = LineString([act_line_start, act_line_end])
 
         run(shark_count, shark_count, my_file, attraction_line)
-
 
     my_file.close()
 

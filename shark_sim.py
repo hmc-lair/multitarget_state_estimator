@@ -12,7 +12,7 @@ import numpy as np
 # Constants
 HALF_WIDTH = 15
 HALF_HEIGHT = 15
-SHOW_VISUALIZATION = True
+SHOW_VISUALIZATION = False
 TIME_STEPS = 800
 maze_data = ((1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
              (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
@@ -94,7 +94,15 @@ def main():
     act_att_line = att_pf.LineString([act_line_start, act_line_end])
 
     # Initialize error lists and file
-    my_file = open("catalina_error.txt", "w")
+    my_file = open("catalina_error_squared.txt", "w")
+
+    # Header describing model
+    my_file.write("x, y for all sharks, line break represents next time step")
+    my_file.write("\n")
+    my_file.write("z_t = sum of (distance of shark_i)")
+    my_file.write("\n")
+
+
     error_list = []
 
     for time_step in range(TIME_STEPS):

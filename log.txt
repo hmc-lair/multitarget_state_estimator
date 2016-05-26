@@ -1,3 +1,5 @@
+Video Data: https://www.dropbox.com/sh/03ur8a4v6doph1l/AAC-jmq-70SWfFgqrqjhRSnia?dl=0
+
 5/23/2016
 
 fixed att-rep single point model
@@ -35,14 +37,16 @@ starting att-rep line model
 
 5/26/2016
 - performance metrics
-	- PF work when shark are near attraction line (1000 time steps)
+	- PF work when shark are near attraction line (300 time steps)
 	- wow, by my performance metric, estimated is better than actual
 - Actual data
 	- it takes a really long time to run :(
 	- need to increase Gaussian variance in order to converge?
-
-
 -att_line_PF
 	- doesn’t really work with random positions?
 	- trying slope and intercept
 
+- z_t
+	- comparing z_t dist ^2 or dist
+	- using the same variance
+	- Chris: get variance from gaussian fit of distance
