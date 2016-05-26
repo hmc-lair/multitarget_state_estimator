@@ -186,7 +186,7 @@ def run(shark_count, track_count, my_file, attraction_line):
 
     # Allow sharks to reach attraction line first
     particles_list = []
-    for time_step in range(1000):
+    for time_step in range(300):
         sp.move(world, robots, sharks, attraction_line, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
 
     # Start PF
@@ -262,14 +262,19 @@ def main():
     # Export shark mean position over time into text file, can be plotted with matlab
     # for tag_count in [10, 30, 50]:
     global my_file
-    my_file = open("testError%s_%s_0526random_test.txt" %(shark_count, shark_count), "w")
+    my_file = open("testError%s_%s_0526random_test_2.txt" %(shark_count, shark_count), "w")
 
     for _ in range(num_trials):
         # Generate Random Line
-        line_start = generate_random_point()
-        line_end = generate_random_point()
-        attraction_line = LineString([line_start, line_end])
-        print (line_start, line_end)
+        # line_start = generate_random_point()
+        # line_end = generate_random_point()
+        # attraction_line = LineString([line_start, line_end])
+        # print (line_start, line_end)
+
+        act_line_start = (-sp.HALF_WIDTH, -0.2168 * -sp.HALF_WIDTH + 0.113)
+        act_line_end = (sp.HALF_WIDTH, -0.2168 * sp.HALF_WIDTH + 0.113)
+        attraction_line = LineString([act_line_start, act_line_end])
+
         run(shark_count, shark_count, my_file, attraction_line)
 
 

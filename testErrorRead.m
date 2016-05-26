@@ -3,23 +3,24 @@
 
 % 
 % % % Read File
-% M = csvread('testError50_50_0525random_4.txt');
+% M = csvread('catalina_error.txt');
 % 
-% x_50 = M; % Error of shark's distance from line
+% x = M; % Error of shark's distance from line
 % 
-% plot(x_50', '.');
+% plot(x', '.');
 % xlabel('Time (s)');
 % ylabel('y distance from att (m)')
 % title('Error in Distance From Line')
 % 
 % % Plot Mean
-% xmean_50 = mean(x_50);
+% x = mean(x);
 % figure
-% plot(xmean_50', '.')
+% plot(x', '.')
 % title('Mean Error in Distance From Line')
-% 
+
+
 % % Read File (est and actual)
-M = csvread('testError50_50_0526random_test.txt');
+M = csvread('catalina_error.txt');
 est_50 = M(:,1:2:end); % Est Error of shark's distance from line
 act_50 = M(:,2:2:end); % Act Error of shark's distance from line
 

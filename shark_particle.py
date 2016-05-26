@@ -23,8 +23,8 @@ from draw import Maze
 maze_data = ((1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
              (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
 
-HEIGHT = 20
-WIDTH = 20
+HEIGHT = 30
+WIDTH = 30
 HALF_HEIGHT = HEIGHT/2
 HALF_WIDTH = WIDTH/2
 TIME_STEPS = 1000
@@ -70,7 +70,7 @@ def add_some_noise(*coords):
 
 def gauss(error):
     # TODO: variance is derived experimentally
-    return scipy.stats.norm.pdf(error, 0, 5)
+    return scipy.stats.norm.pdf(error, 0, 25)
 
 
 # ------------------------------------------------------------------------

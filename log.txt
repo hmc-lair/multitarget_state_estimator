@@ -35,9 +35,13 @@ starting att-rep line model
 
 5/26/2016
 - performance metrics
-	-PF work when shark are near attraction line (1000 time steps)
+	- PF work when shark are near attraction line (1000 time steps)
+	- wow, by my performance metric, estimated is better than actual
 - Actual data
 	- it takes a really long time to run :(
+	- need to increase Gaussian variance in order to converge?
+
+
 -att_line_PF
 	- doesn’t really work with random positions?
 	- trying slope and intercept

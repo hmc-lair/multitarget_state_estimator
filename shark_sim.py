@@ -12,11 +12,11 @@ import numpy as np
 # Constants
 HALF_WIDTH = 15
 HALF_HEIGHT = 15
-SHOW_VISUALIZATION = False
-TIME_STEPS = 1000
+SHOW_VISUALIZATION = True
+TIME_STEPS = 800
 maze_data = ((1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
              (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-PARTICLE_COUNT = 100
+PARTICLE_COUNT = 50
 SIGMA_MEAN = 0.1
 
 class Shark(sp.Particle):
@@ -78,7 +78,7 @@ def main():
 
     num_sharks = len(x_LoL)
     time_steps = len(x_LoL[0])
-    print num_sharks
+
     # Initialize Objects
     world = Maze(maze_data, HALF_WIDTH, HALF_HEIGHT)
     if SHOW_VISUALIZATION:
@@ -114,14 +114,21 @@ def main():
         # Find total error (performance metric) and add to list
         est_line = att_pf.LineString([m1, m2])
 
+        est_error_sum = 0
+        act_error_sum = 0
         raw_error_sum = 0
+
         for shark in sharks:
-            raw_error_sum += (att_pf.distance_from_line(shark, est_line) - att_pf.distance_from_line(shark, act_att_line)) ** 2
+            est_error_sum += ((att_pf.distance_from_line(shark, est_line))) ** 2
+            act_error_sum += ((att_pf.distance_from_line(shark, act_att_line))) ** 2
+            # raw_error_sum += (distance_from_line(shark, est_line) - distance_from_line(shark, attraction_line))**2
 
-        error = att_pf.math.sqrt(raw_error_sum / num_sharks)
-        error_list.append(error)
+        # error = math.sqrt(raw_error_sum/track_count)
+        est_error = att_pf.math.sqrt(est_error_sum / num_sharks)
+        act_error = att_pf.math.sqrt(act_error_sum / num_sharks)
 
-        my_file.write(str(error) + ",")
+        error_list.append(est_error)
+        error_list.append(act_error)
 
 
         #
@@ -130,6 +137,10 @@ def main():
             sp.show(world, robots, sharks, particles_list, p_means_list, m1, m2, act_att_line)
 
         print time_step
+
+    for item in error_list:
+        my_file.write(str(item) + ",")
+    my_file.write("\n")
     my_file.close()
 
 
