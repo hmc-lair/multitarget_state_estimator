@@ -31,3 +31,14 @@ starting att-rep line model
 - Matlab to PF 
 	- matlab visualized on python
 		- why are there lines?
+	- fixed with sketchy stuff
+
+5/26/2016
+- performance metrics
+	-PF work when shark are near attraction line (1000 time steps)
+- Actual data
+	- it takes a really long time to run :(
+-att_line_PF
+	- doesn’t really work with random positions?
+	- trying slope and intercept
+

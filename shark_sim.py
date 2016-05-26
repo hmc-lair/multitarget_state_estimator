@@ -6,14 +6,18 @@ import scipy.io as sio
 from draw import Maze
 import shark_particle as sp
 import random
+import att_line_pf as att_pf
+import numpy as np
 
 # Constants
 HALF_WIDTH = 15
 HALF_HEIGHT = 15
-SHOW_VISUALIZATION = True
+SHOW_VISUALIZATION = False
 TIME_STEPS = 1000
 maze_data = ((1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
              (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+PARTICLE_COUNT = 100
+SIGMA_MEAN = 0.1
 
 class Shark(sp.Particle):
 
@@ -48,10 +52,21 @@ class Shark(sp.Particle):
 
 
 
-def move(world, sharks, timestep):
+def move(world, sharks, particles_list, timestep):
     # ---------- Move things ----------
     for shark in sharks:
         shark.update(timestep)
+
+    for i, particles in enumerate(particles_list):
+
+        for p in particles:
+            p.x1 += np.random.normal(0, SIGMA_MEAN)
+            p.y1 += np.random.normal(0, SIGMA_MEAN)
+
+            p.x2 += np.random.normal(0, SIGMA_MEAN)
+            p.y2 += np.random.normal(0, SIGMA_MEAN)
+
+
 
 def main():
     mat_contents = sio.loadmat('tracks.mat')
@@ -60,27 +75,64 @@ def main():
     x_LoL = mat_contents['x']
     y_LoL = mat_contents['y']
 
-    world = Maze(maze_data, HALF_WIDTH, HALF_HEIGHT)
+
     num_sharks = len(x_LoL)
     time_steps = len(x_LoL[0])
-
+    print num_sharks
+    # Initialize Objects
+    world = Maze(maze_data, HALF_WIDTH, HALF_HEIGHT)
     if SHOW_VISUALIZATION:
         world.draw()
-
     sharks = Shark.create_random(num_sharks, world, x_LoL, y_LoL, t_LoL, num_sharks)
+    robots = sp.Robot.create_random(0, world)
+    particles_list = [sp.Particle.create_random(PARTICLE_COUNT, world)]
 
+    # Actual Line (from Kim)
+    # y = -0.2168x + 0.113
+    act_line_start = (-HALF_WIDTH, -0.2168*-HALF_WIDTH + 0.113)
+    act_line_end = (HALF_WIDTH, -0.2168* HALF_WIDTH + 0.113)
+    act_att_line = att_pf.LineString([act_line_start, act_line_end])
 
-    robert = sp.Robot(world, 0, 0)
-
+    # Initialize error lists and file
+    my_file = open("catalina_error.txt", "w")
+    error_list = []
 
     for time_step in range(TIME_STEPS):
+        # TODO: Consolidate shark_sim.py and att_line_pf.py
+        # Calculate mean position
+        p_means_list = []
+
+        for i, particles in enumerate(particles_list):
+            particles_list[i] = att_pf.estimate(particles, world, sharks)
+
+        m1, m2 = att_pf.compute_particle_means(particles, world)
+        # TODO
+        p_means_list.append(m1)
+
+        move(world, sharks, particles_list, time_step)
+
+        # Find total error (performance metric) and add to list
+        est_line = att_pf.LineString([m1, m2])
+
+        raw_error_sum = 0
+        for shark in sharks:
+            raw_error_sum += (att_pf.distance_from_line(shark, est_line) - att_pf.distance_from_line(shark, act_att_line)) ** 2
+
+        error = att_pf.math.sqrt(raw_error_sum / num_sharks)
+        error_list.append(error)
+
+        my_file.write(str(error) + ",")
+
+
         #
         # ---------- Show current state ----------
         if SHOW_VISUALIZATION:
-            world.show_sharks(sharks)
-            world.show_robot(robert)
+            sp.show(world, robots, sharks, particles_list, p_means_list, m1, m2, act_att_line)
 
-        move(world, sharks, time_step)
+        print time_step
+    my_file.close()
+
+
 
 
 
