@@ -3,15 +3,17 @@
 Author: Cherie Ho
 """
 import scipy.io as sio
-from draw_shark import Maze
+from draw import Maze
 import shark_particle as sp
 import random
 
 # Constants
-WIDTH = 30
-HEIGHT = 30
+HALF_WIDTH = 15
+HALF_HEIGHT = 15
 SHOW_VISUALIZATION = True
 TIME_STEPS = 1000
+maze_data = ((1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+             (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
 
 class Shark(sp.Particle):
 
@@ -58,16 +60,13 @@ def main():
     x_LoL = mat_contents['x']
     y_LoL = mat_contents['y']
 
-    world = Maze(WIDTH, HEIGHT)
+    world = Maze(maze_data, HALF_WIDTH, HALF_HEIGHT)
     num_sharks = len(x_LoL)
     time_steps = len(x_LoL[0])
 
     if SHOW_VISUALIZATION:
         world.draw()
 
-    # shark = Shark(x_LoL[0], y_LoL[0], t_LoL[0])
-    # shark2 = Shark(x_LoL[1], y_LoL[1], t_LoL[1])
-    # sharks = [shark, shark2]
     sharks = Shark.create_random(num_sharks, world, x_LoL, y_LoL, t_LoL, num_sharks)
 
 
@@ -80,7 +79,6 @@ def main():
         if SHOW_VISUALIZATION:
             world.show_sharks(sharks)
             world.show_robot(robert)
-            world.clearstamps()
 
         move(world, sharks, time_step)
 
