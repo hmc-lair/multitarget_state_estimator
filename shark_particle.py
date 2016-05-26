@@ -145,7 +145,8 @@ class Particle(object):
     @classmethod
     def create_random(cls, count, maze):
 
-        return [cls(random.random()*16, random.random()*16, random.random()*16, random.random()*16) for _ in range(0, count)]
+        return [cls(random.uniform(-HALF_WIDTH, HALF_WIDTH), random.uniform(-HALF_HEIGHT, HALF_HEIGHT),
+                    random.uniform(-HALF_WIDTH, HALF_WIDTH), random.uniform(-HALF_HEIGHT, HALF_HEIGHT)) for _ in range(0, count)]
 
     def read_distance_sensor(self, robot):
         """

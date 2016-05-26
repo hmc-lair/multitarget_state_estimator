@@ -8,7 +8,7 @@ import random
 from shapely.geometry import LineString, Point
 import math
 
-TIME_STEPS = 1000
+TIME_STEPS = 50
 # SIGMA_MEAN = 0.1
 SHOW_VISUALIZATION = True  # Whether to have visualization
 PARTICLE_COUNT = 50
@@ -183,6 +183,13 @@ def run(shark_count, track_count, my_file, attraction_line):
     # Initialize Items
     sharks = sp.Shark.create_random(shark_count, world, track_count)
     robots = sp.Robot.create_random(0, world)
+
+    # Allow sharks to reach attraction line first
+    particles_list = []
+    for time_step in range(1000):
+        sp.move(world, robots, sharks, attraction_line, particles_list, sp.SIGMA_RAND, sp.K_ATT, sp.K_REP)
+
+    # Start PF
     particles_list = [sp.Particle.create_random(PARTICLE_COUNT, world)]
 
     # Initialize error lists
@@ -210,12 +217,23 @@ def run(shark_count, track_count, my_file, attraction_line):
         # Find total error (performance metric) and add to list
         est_line = LineString([m1, m2])
 
+        est_error_sum = 0
+        act_error_sum = 0
         raw_error_sum = 0
-        for shark in sharks:
-            raw_error_sum += (distance_from_line(shark, est_line) - distance_from_line(shark, attraction_line))**2
 
-        error = math.sqrt(raw_error_sum/track_count)
-        error_list.append(error)
+        for shark in sharks:
+            est_error_sum += ((distance_from_line(shark, est_line)))**2
+            act_error_sum += ((distance_from_line(shark, attraction_line))) ** 2
+            # raw_error_sum += (distance_from_line(shark, est_line) - distance_from_line(shark, attraction_line))**2
+
+        # error = math.sqrt(raw_error_sum/track_count)
+        est_error = math.sqrt(est_error_sum/track_count)
+        act_error = math.sqrt(act_error_sum /track_count)
+
+
+
+        error_list.append(est_error)
+        error_list.append(act_error)
 
 
 
@@ -244,7 +262,7 @@ def main():
     # Export shark mean position over time into text file, can be plotted with matlab
     # for tag_count in [10, 30, 50]:
     global my_file
-    my_file = open("testError%s_%s_0525random_test.txt" %(shark_count, shark_count), "w")
+    my_file = open("testError%s_%s_0526random_test.txt" %(shark_count, shark_count), "w")
 
     for _ in range(num_trials):
         # Generate Random Line
