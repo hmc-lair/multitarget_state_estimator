@@ -27,9 +27,9 @@ HEIGHT = 20
 WIDTH = 20
 HALF_HEIGHT = HEIGHT/2
 HALF_WIDTH = WIDTH/2
-TIME_STEPS = 5000
+TIME_STEPS = 1000
 PARTICLE_COUNT = 1  # Total number of particles
-SHARK_COUNT = 1
+SHARK_COUNT = 112
 
 FISH_INTERACTION_RADIUS = 1.5
 SHOW_VISUALIZATION = True
@@ -412,6 +412,17 @@ def main():
     robots = [robert]
     no_particles = []
 
+    # Write to File
+    my_file = open("simulated_tracks.txt", "w")
+
+    # Header describing model
+    my_file.write("Line Start: %s, Line End: %s" %(LINE_START, LINE_END))
+    my_file.write("\n")
+    my_file.write("NumSharks: %s, K_att: %s, K_rep: %s, Sigma_Rand: %s, Speed/ts: %s" %(SHARK_COUNT, K_ATT, K_REP, SIGMA_RAND, Shark.speed))
+    my_file.write("\n")
+    my_file.write("x, y for all sharks, line break represents next time step")
+    my_file.write("\n")
+
 
     att_line = LineString([LINE_START, LINE_END])
 
@@ -425,6 +436,13 @@ def main():
             world.show_att_line(LINE_START, LINE_END)
 
         move(world, robots, sharks, att_line, no_particles, SIGMA_RAND, K_ATT, K_REP)
+        for shark in sharks:
+            my_file.write("%s, %s," % (shark.x, shark.y))
+        my_file.write("\n")
+
+        print time_step
+
+    my_file.close()
 
 
 
