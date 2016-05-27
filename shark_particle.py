@@ -27,13 +27,13 @@ HEIGHT = 30
 WIDTH = 30
 HALF_HEIGHT = HEIGHT/2
 HALF_WIDTH = WIDTH/2
-TIME_STEPS = 1000
+TIME_STEPS = 100
 PARTICLE_COUNT = 1  # Total number of particles
-SHARK_COUNT = 112
+# SHARK_COUNT = 112
 GAUSS_VARIANCE = 25
 
 FISH_INTERACTION_RADIUS = 1.5
-SHOW_VISUALIZATION = True
+SHOW_VISUALIZATION = False
 SIGMA_MEAN = 0.1
 LINE_START = (-9, 8)
 LINE_END = (8, 5)
@@ -72,6 +72,10 @@ def add_some_noise(*coords):
 def gauss(error):
     # TODO: variance is derived experimentally
     return scipy.stats.norm.pdf(error, 0, GAUSS_VARIANCE)
+
+def distance_from_line(shark, line):
+    p = Point(shark.x, shark.y)
+    return p.distance(line)
 
 
 # ------------------------------------------------------------------------
@@ -403,48 +407,56 @@ def show(world, robots, sharks, particles_list, means_list, est_line_start, est_
 
     world.show_sharks(sharks)
 
+
+
 # ------------------------------------------------------------------------
 def main():
     world = Maze(maze_data, HALF_WIDTH, HALF_HEIGHT)
     world.draw()
 
+
+    for shark_count in [110, 120, 130, 140, 150]:
     # Initialize Items
-    sharks = Shark.create_random(SHARK_COUNT, world, 0)
-    robert = Robot(world, 0,0)
-    robots = [robert]
-    no_particles = []
+        sharks = Shark.create_random(shark_count, world, 0)
+        robert = Robot(world, 0,0)
+        robots = [robert]
+        no_particles = []
 
-    # Write to File
-    my_file = open("simulated_tracks.txt", "w")
+        # Write to File
+        my_file = open("%sSharksDistFromLine.txt" %(shark_count), "w")
 
-    # Header describing model
-    my_file.write("Line Start: %s, Line End: %s" %(LINE_START, LINE_END))
-    my_file.write("\n")
-    my_file.write("NumSharks: %s, K_att: %s, K_rep: %s, Sigma_Rand: %s, Speed/ts: %s" %(SHARK_COUNT, K_ATT, K_REP, SIGMA_RAND, Shark.speed))
-    my_file.write("\n")
-    my_file.write("x, y for all sharks, line break represents next time step")
-    my_file.write("\n")
-
-
-    att_line = LineString([LINE_START, LINE_END])
-
-    # while True:
-    for time_step in range(TIME_STEPS):
-        #
-        # ---------- Show current state ----------
-        if SHOW_VISUALIZATION:
-            world.show_sharks(sharks)
-            world.show_robot(robert)
-            world.show_att_line(LINE_START, LINE_END)
-
-        move(world, robots, sharks, att_line, no_particles, SIGMA_RAND, K_ATT, K_REP)
-        for shark in sharks:
-            my_file.write("%s, %s," % (shark.x, shark.y))
+        # Header describing model
+        my_file.write("Line Start: %s, Line End: %s" %(LINE_START, LINE_END))
+        my_file.write("\n")
+        my_file.write("NumSharks: %s, K_att: %s, K_rep: %s, Sigma_Rand: %s, Speed/ts: %s" %(shark_count, K_ATT, K_REP, SIGMA_RAND, Shark.speed))
         my_file.write("\n")
 
-        print time_step
 
-    my_file.close()
+        att_line = LineString([LINE_START, LINE_END])
+
+        # Let sharks move towards attraction line first
+        for time_step in range(300):
+            move(world, robots, sharks, att_line, no_particles, SIGMA_RAND, K_ATT, K_REP)
+
+        # while True:
+        for _ in range(3):
+            for time_step in range(TIME_STEPS):
+                #
+                # ---------- Show current state ----------
+                if SHOW_VISUALIZATION:
+                    world.show_sharks(sharks)
+                    world.show_robot(robert)
+                    world.show_att_line(LINE_START, LINE_END)
+
+                move(world, robots, sharks, att_line, no_particles, SIGMA_RAND, K_ATT, K_REP)
+                for shark in sharks:
+                    # my_file.write("%s, %s," % (shark.x, shark.y))
+                    my_file.write("%s, " %(distance_from_line(shark, att_line)))
+                my_file.write("\n")
+
+                print time_step
+
+        my_file.close()
 
 
 
