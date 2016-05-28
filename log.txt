@@ -50,3 +50,11 @@ starting att-rep line model
 	- comparing z_t dist ^2 or dist
 	- using the same variance
 	- Chris: get variance from gaussian fit of distance
+
+5/27/2016
+-att_line_PF
+	- add fifth parameter (number of sharks)
+	- use num_shark vs. s.d. from gaussian fit to put as PF s.d.
+	- is the linear trend only for band?
+	- may want to redo with better K_att and K_rep
+	- compare between max s.d. and varying s.d.

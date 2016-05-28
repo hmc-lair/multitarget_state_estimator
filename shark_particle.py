@@ -27,7 +27,7 @@ HEIGHT = 30
 WIDTH = 30
 HALF_HEIGHT = HEIGHT/2
 HALF_WIDTH = WIDTH/2
-TIME_STEPS = 100
+TIME_STEPS = 1000
 PARTICLE_COUNT = 1  # Total number of particles
 # SHARK_COUNT = 112
 GAUSS_VARIANCE = 25
@@ -415,7 +415,7 @@ def main():
     world.draw()
 
 
-    for shark_count in [110, 120, 130, 140, 150]:
+    for shark_count in range(151)[10::10]:
     # Initialize Items
         sharks = Shark.create_random(shark_count, world, 0)
         robert = Robot(world, 0,0)

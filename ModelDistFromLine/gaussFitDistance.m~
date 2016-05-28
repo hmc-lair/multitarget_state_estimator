@@ -1,7 +1,0 @@
-M = csvread('50SharksDistFromLine.txt', 2, 0);
-B = reshape(M, 1, [])
-% Replicate to negative distances
-B = [-B, B];
-
-% h = histogram(B)
-histfit(B,'normal')
