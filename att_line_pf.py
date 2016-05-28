@@ -8,9 +8,9 @@ import random
 from shapely.geometry import LineString, Point
 import math
 
-TIME_STEPS = 100
+TIME_STEPS = 500
 # SIGMA_MEAN = 0.1
-SHOW_VISUALIZATION = True  # Whether to have visualization
+SHOW_VISUALIZATION = False  # Whether to have visualization
 PARTICLE_COUNT = 50
 TRACK_COUNT = 1
 ROBOT_HAS_COMPASS = False
@@ -254,7 +254,7 @@ def generate_random_point():
     return (x_rand, y_rand)
 
 def main():
-    shark_count = 100
+    shark_count = 10
     num_trials = 3
 
 
@@ -267,7 +267,7 @@ def main():
     attraction_line = LineString([act_line_start, act_line_end])
 
     global my_file
-    my_file = open("testError%s_%s_0526_norm.txt" %(shark_count, shark_count), "w")
+    my_file = open("att_line_pf_%sSharks.txt" %(shark_count), "w")
     my_file.write("Line Start: %s, Line End: %s" %(act_line_start, act_line_end))
     my_file.write("\n")
     my_file.write("NumSharks: %s, K_att: %s, K_rep: %s, Sigma_Rand: %s, Speed/ts: %s"

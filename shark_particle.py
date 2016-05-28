@@ -30,7 +30,7 @@ HALF_WIDTH = WIDTH/2
 TIME_STEPS = 1000
 PARTICLE_COUNT = 1  # Total number of particles
 # SHARK_COUNT = 112
-GAUSS_VARIANCE = 25
+GAUSS_SD = 221
 
 FISH_INTERACTION_RADIUS = 1.5
 SHOW_VISUALIZATION = False
@@ -71,7 +71,7 @@ def add_some_noise(*coords):
 
 def gauss(error):
     # TODO: variance is derived experimentally
-    return scipy.stats.norm.pdf(error, 0, GAUSS_VARIANCE)
+    return scipy.stats.norm.pdf(error, 0, GAUSS_SD)
 
 def distance_from_line(shark, line):
     p = Point(shark.x, shark.y)

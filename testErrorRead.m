@@ -20,7 +20,7 @@
 
 
 % % Read File (est and actual)
-M = csvread('catalina_error_norm.txt', 2, 0);
+M = csvread('att_line_pf_10Sharks.txt', 3, 0);
 est_50 = M(:,1:2:end); % Est Error of shark's distance from line
 act_50 = M(:,2:2:end); % Act Error of shark's distance from line
 
