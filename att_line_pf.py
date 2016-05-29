@@ -255,7 +255,7 @@ def generate_random_point():
 
 def main():
 
-    for shark_count in range(151)[10::10]:
+    for shark_count in range(151)[30::10]:
         # shark_count = 10
         num_trials = 5
 
