@@ -113,7 +113,7 @@ def main():
         for i, particles in enumerate(particles_list):
             particles_list[i] = att_pf.estimate(particles, world, sharks)
 
-        m1, m2 = att_pf.compute_particle_means(particles, world)
+        m1, m2, m_num_sharks = att_pf.compute_particle_means(particles, world)
         # TODO
         p_means_list.append(m1)
 

@@ -7,6 +7,7 @@ import bisect
 import random
 from shapely.geometry import LineString, Point
 import math
+import scipy.stats
 
 TIME_STEPS = 1000
 # SIGMA_MEAN = 0.1
@@ -35,8 +36,9 @@ class WeightedDistribution(object):
             # Happens when all particles are improbable w=0
             return None
 # ------------------------------------------------------------------------
-
-
+def gauss(error, sd):
+    # TODO: variance is derived experimentally
+    return scipy.stats.norm.pdf(error, 0, sd)
 def moving_average(data, number_points):
     """ Computes the moving average of data using number_points of last data.
     """
@@ -79,13 +81,14 @@ def compute_particle_means(particles, world):
     This is not part of the particle filter algorithm but rather an
     addition to show the "best belief" for current position.
     """
-    m_x1, m_y1, m_x2, m_y2, m_count = 0, 0, 0, 0, 0
+    m_x1, m_y1, m_x2, m_y2, m_count, m_num_sharks = 0, 0, 0, 0, 0, 0
     for p in particles:
         m_count += p.w
         m_x1 += p.x1 * p.w
         m_y1 += p.y1 * p.w
         m_x2 += p.x2 * p.w
         m_y2 += p.y2 * p.w
+        m_num_sharks += p.num_sharks * p.w
 
     if m_count == 0:
         return (0,0), (0,0)
@@ -94,6 +97,7 @@ def compute_particle_means(particles, world):
     m_y1 /= m_count
     m_x2 /= m_count
     m_y2 /= m_count
+    m_num_sharks /= m_count
 
     # Now compute how good that mean is -- check how many particles
     # actually are in the immediate vicinity
@@ -102,7 +106,7 @@ def compute_particle_means(particles, world):
         if world.distance(p.x1, p.y1, m_x1, m_y1) < 1:
             m_count += 1
 
-    return (m_x1, m_y1), (m_x2, m_y2)
+    return (m_x1, m_y1), (m_x2, m_y2), m_num_sharks
 
 
 def estimate(particles, world, sharks):
@@ -112,7 +116,7 @@ def estimate(particles, world, sharks):
     for j, p in enumerate(particles):
         particle_line = LineString([(p.x1, p.y1), (p.x2, p.y2)])
         particle_error = total_shark_distance_from_line(sharks, particle_line)
-        weight_particle = sp.gauss(particle_error)
+        weight_particle = gauss(particle_error, get_sd_from_num_sharks(p.num_sharks))
         p.w = weight_particle
 
     # Shuffle particles
@@ -132,12 +136,16 @@ def estimate(particles, world, sharks):
         if p is None:  # No pick b/c all totally improbable
             new_particle = sp.Particle.create_random(1, world)[0]
         else:
-            new_particle = sp.Particle(p.x1, p.y1, p.x2, p.y2,
+            new_particle = sp.Particle(p.x1, p.y1, p.x2, p.y2, p.num_sharks,
                                        heading=robot1.h if ROBOT_HAS_COMPASS else p.h,
                                        noisy=True)
         new_particles.append(new_particle)
     return new_particles
 
+def get_sd_from_num_sharks(num_sharks):
+    """Get sd for PF. sd from Gaussian Fit.
+    sd = 1.551*num_sharks - 15.7406"""
+    return 1.551 * num_sharks - 15.7406
 
 def errorIndividualPlot(error_x, error_y):
     """ Save error_x and error_y plot to current folder.
@@ -194,6 +202,7 @@ def run(shark_count, track_count, my_file, attraction_line):
 
     # Initialize error lists
     error_list = []
+    est_numSharks = []
 
 
 
@@ -205,7 +214,7 @@ def run(shark_count, track_count, my_file, attraction_line):
         for i, particles in enumerate(particles_list):
             particles_list[i] = estimate(particles, world, sharks)
 
-        m1, m2 = compute_particle_means(particles, world)
+        m1, m2, m_num_sharks = compute_particle_means(particles, world)
         #TODO
         p_means_list.append(m1)
 
@@ -219,12 +228,10 @@ def run(shark_count, track_count, my_file, attraction_line):
 
         est_error_sum = 0
         act_error_sum = 0
-        raw_error_sum = 0
 
         for shark in sharks:
-            est_error_sum += ((distance_from_line(shark, est_line)))**2
-            act_error_sum += ((distance_from_line(shark, attraction_line))) ** 2
-            # raw_error_sum += (distance_from_line(shark, est_line) - distance_from_line(shark, attraction_line))**2
+            est_error_sum += np.power(distance_from_line(shark, est_line), 2)
+            act_error_sum += np.power(distance_from_line(shark, attraction_line), 2)
 
         # error = math.sqrt(raw_error_sum/track_count)
         est_error = math.sqrt(est_error_sum/track_count)
@@ -234,18 +241,21 @@ def run(shark_count, track_count, my_file, attraction_line):
 
         error_list.append(est_error)
         error_list.append(act_error)
-
-
+        est_numSharks.append(m_num_sharks)
 
         # Show current state
         if SHOW_VISUALIZATION:
             sp.show(world, robots, sharks, particles_list, p_means_list, m1, m2, attraction_line)
 
-        print(time_step)
+        print time_step, "est_num_sharks: ", m_num_sharks
 
 
     for item in error_list:
         my_file.write(str(item) + ",")
+    my_file.write("\n")
+
+    for item in est_numSharks:
+        my_file2.write(str(item) + ",")
     my_file.write("\n")
 
 def generate_random_point():
@@ -255,15 +265,11 @@ def generate_random_point():
 
 def main():
 
-    for shark_count in range(151)[10::10]:
-        # shark_count = 10
+    for shark_count in range(101)[10::20]:
+        # shark_count = 50
         num_trials = 5
 
-
-
-
         # Export shark mean position over time into text file, can be plotted with matlab
-        # for tag_count in [10, 30, 50]:
         act_line_start = (-sp.HALF_WIDTH, -0.2168 * -sp.HALF_WIDTH + 0.113)
         act_line_end = (sp.HALF_WIDTH, -0.2168 * sp.HALF_WIDTH + 0.113)
         attraction_line = LineString([act_line_start, act_line_end])
@@ -278,17 +284,15 @@ def main():
         my_file.write("x, y for all sharks, line break represents next time step")
         my_file.write("\n")
 
+        global my_file2
+        my_file2 = open("att_numsharks_%sSharks.txt" % (shark_count), "w")
+
         for _ in range(num_trials):
-            # Generate Random Line
-            # line_start = generate_random_point()
-            # line_end = generate_random_point()
-            # attraction_line = LineString([line_start, line_end])
-            # print (line_start, line_end)
-
-
             run(shark_count, shark_count, my_file, attraction_line)
 
         my_file.close()
+        my_file2.close()
+
 
 if __name__ == "__main__":
     main()

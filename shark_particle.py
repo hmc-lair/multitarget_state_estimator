@@ -30,7 +30,7 @@ HALF_WIDTH = WIDTH/2
 TIME_STEPS = 1000
 PARTICLE_COUNT = 1  # Total number of particles
 # SHARK_COUNT = 112
-GAUSS_SD = 221
+GAUSS_SD = 8.2
 
 FISH_INTERACTION_RADIUS = 1.5
 SHOW_VISUALIZATION = False
@@ -67,11 +67,6 @@ def add_little_noise(*coords):
 
 def add_some_noise(*coords):
     return add_noise(0.1, *coords)
-
-
-def gauss(error):
-    # TODO: variance is derived experimentally
-    return scipy.stats.norm.pdf(error, 0, GAUSS_SD)
 
 def distance_from_line(shark, line):
     p = Point(shark.x, shark.y)
@@ -116,7 +111,7 @@ def compute_particle_means(particles, world):
 
 # ------------------------------------------------------------------------
 class Particle(object):
-    def __init__(self, x1, y1, x2, y2, heading=None, w=1, noisy=False):
+    def __init__(self, x1, y1, x2, y2, num_sharks, heading=None, w=1, noisy=False):
         if heading is None:
             heading = random.uniform(0,math.pi)
         if noisy:
@@ -126,6 +121,7 @@ class Particle(object):
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
+        self.num_sharks = num_sharks
         self.h = heading
         self.w = w
 
@@ -151,7 +147,8 @@ class Particle(object):
     def create_random(cls, count, maze):
 
         return [cls(random.uniform(-HALF_WIDTH, HALF_WIDTH), random.uniform(-HALF_HEIGHT, HALF_HEIGHT),
-                    random.uniform(-HALF_WIDTH, HALF_WIDTH), random.uniform(-HALF_HEIGHT, HALF_HEIGHT)) for _ in range(0, count)]
+                    random.uniform(-HALF_WIDTH, HALF_WIDTH), random.uniform(-HALF_HEIGHT, HALF_HEIGHT),
+                    random.uniform(10,100)) for _ in range(0, count)]
 
     def read_distance_sensor(self, robot):
         """
@@ -386,6 +383,8 @@ def move(world, robots, sharks, att_line, particles_list, sigma_rand, k_att, k_r
 
             p.x2 += np.random.normal(0, SIGMA_MEAN)
             p.y2 += np.random.normal(0, SIGMA_MEAN)
+
+            p.num_sharks += np.random.uniform(-10, 10)
 
 def show(world, robots, sharks, particles_list, means_list, est_line_start, est_line_end, att_line, attraction_point=(0, 0)):
     """
