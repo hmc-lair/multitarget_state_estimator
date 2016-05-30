@@ -65,6 +65,6 @@ end
     
 num_sharks = linspace(10,100,10)';
 plot(num_sharks, error_list, '.', 'MarkerSize', 20)
-title('Error between estimated and actual over 1000 Timesteps')
-ylabel('Diff between est and actual sum of shark distances')
+title('Estimated sum of shark distances')
+ylabel('Difference between estimated and actual')
 xlabel('Number of Sharks')

@@ -1,0 +1,10 @@
+i = 9;
+for i = 1:10
+    string = strcat('line_pf_vary_sd/att_numsharks_', num2str(i*10), 'Sharks.txt');
+    M = csvread(string, 0)
+    M = M(1,1:end-1);
+    mean_M = nanmean(M)
+
+    % mean_shark = mean(M)
+    % plot(mean_M, '.')
+end
