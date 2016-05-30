@@ -228,19 +228,14 @@ def run(shark_count, track_count, my_file, attraction_line):
 
         est_error_sum = 0
         act_error_sum = 0
+        raw_error_sum = 0
 
         for shark in sharks:
-            est_error_sum += np.power(distance_from_line(shark, est_line), 2)
-            act_error_sum += np.power(distance_from_line(shark, attraction_line), 2)
+            raw_error_sum += distance_from_line(shark, est_line) - distance_from_line(shark, attraction_line)
 
-        # error = math.sqrt(raw_error_sum/track_count)
-        est_error = math.sqrt(est_error_sum/track_count)
-        act_error = math.sqrt(act_error_sum /track_count)
+        error = math.sqrt(raw_error_sum)
 
-
-
-        error_list.append(est_error)
-        error_list.append(act_error)
+        error_list.append(error)
         est_numSharks.append(m_num_sharks)
 
         # Show current state
