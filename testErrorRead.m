@@ -51,6 +51,7 @@ for i=1:10
     % title('Mean Error in Distance From Line')
     % 
 
+
     % Error 
     len = size(est_mean,2);
     for j = 1:len
