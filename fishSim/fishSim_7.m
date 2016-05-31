@@ -1,19 +1,16 @@
 %fishSim.m
-clear
 
 
 % Declare Vars
-N_fish= 10;
-% N_attractors = 1;
-N_tags = 10;
-% attractors = [0 0];
+% N_fish= 10;
+% N_tags = 10;
 maxTime = 5000;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;
 % fishInteractionRadiusSquared = fishInteractionRadius^2;
 K_con = 0.05;
-K_rep = 1e2;
+K_rep = 1e3;
 K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
@@ -79,31 +76,32 @@ for time=2:maxTime;
     
 end
 
-for time=300:maxTime;
-%     loop over fish to plot
-    arrowSize = 1.5;
-    fig = figure(1);
-    clf;
-    hold on;
-    for f=1:N_fish
-       plot(x(time,f),y(time,f),'o'); 
-       plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]);         
-    end
-    plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)])
-    scale = 0.5;
-    axis(scale*[-width width -width width]);
-  
-    pause(0.0001); 
-end
-
+% for time=300:maxTime;
+% %     loop over fish to plot
+%     arrowSize = 1.5;
+%     fig = figure(1);
+%     clf;
+%     hold on;
+%     for f=1:N_fish
+%        plot(x(time,f),y(time,f),'o'); 
+%        plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]);         
+%     end
+%     plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)])
+%     scale = 0.5;
+%     axis(scale*[-width width -width width]);
+%   
+%     pause(0.0001); 
+% end
 
 
 % Store the data
-x = x';
-y = y';
-t = t';
+% x = x';
+% y = y';
+% t = t';
 
 save fishSimData.mat 
+
+clear
 %x y t closeToNeighbor N_fish N_attractors v attractors maxTime K_con K_rep K_att K_rand sigmaRand 
 
 

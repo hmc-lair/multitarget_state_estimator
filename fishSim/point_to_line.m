@@ -12,6 +12,6 @@ y2 = line_end(2);
 num = abs((y2-y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1);
 den = sqrt( (y2-y1)^2 + (x2 - x1)^2);
 
-dist = num/den
+dist = num/den;
 end
 
