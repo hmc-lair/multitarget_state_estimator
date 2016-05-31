@@ -1,4 +1,4 @@
-% N_fish = 10;
+N_fish = 10;
 N_trials = 5;
 
 muhat_list = zeros(3,1);
@@ -6,6 +6,8 @@ sigmahat_list = zeros(3,1);
 
 for i = 1:15;
     N_fish = i*10;
+    disp(N_fish)
+    TS = 4000;
     max_dist = zeros(TS, N_trials);
     for j=1:N_trials
         run fishSim_7.m
