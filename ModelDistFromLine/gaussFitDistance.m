@@ -23,3 +23,7 @@ plot(num_sharks, sigmahat_list, 'x')
 xlabel('Number of Sharks')
 ylabel('Sigma from Gaussian Fit')
 
+% num_sharks = linspace(10,150,15);
+% plot(num_sharks, sigmahat_list, 'x')
+% xlabel('Number of Sharks')
+% ylabel('Sigma from Gaussian Fit')
