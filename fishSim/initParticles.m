@@ -1,5 +1,5 @@
 function p = initParticles(height, width, N_part)
-% Initialize Particles for att_pf.m
+% Initialize Particles for att_pf.m given height and width of world
 % x1, y1, x2, y2
  
     x1_part = rand(N_part, 1) * width - width/2;
