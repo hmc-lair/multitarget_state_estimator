@@ -1,22 +1,22 @@
-%fishSim.m
-% clear
+% Simulate shark trajectories using an attraction line model
 
 
 % Declare Vars
-N_fish=50;
-N_attractors = 1;
-N_tags = 50;
-attractors = [0 0];
+% N_fish= 25;
+% N_tags = 10;
 maxTime = 5000;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;
-attractionRadius = 0;%15;
-% fishInteractionRadiusSquared = fishInteractionRadius^2;
-K_con = 0.1;
-K_rep = 1e8;
-K_att = 1;
+K_con = 0.05;
+K_rep = 1e3;
+K_att = 1e3;
 K_rand = 0.1;
+sigmaRand = 0.1;
+
+LINE_START = [-10, 0];
+LINE_END = [10,20];
+
 
 % Initialize states
 width = 50;
@@ -38,7 +38,6 @@ for time=2:maxTime;
         % Check for neighbors
         x_rep = 0; y_rep = 0;closeToNeighbor(time,f) = 0;
         for g=1:N_fish
-            
             dist = sqrt((x(time-1,f)-x(time,g))^2 + (y(time-1,f)-y(time-1,g))^2);
             if dist < fishInteractionRadius && g ~= f
                 mag = (1/dist - 1/fishInteractionRadius)^2;
@@ -49,23 +48,12 @@ for time=2:maxTime;
         end
         
         % Determine attraction to habitat
-        x_att=0;y_att=0;
-        for a = 1:N_attractors
-            dist = sqrt((x(time-1,f)-attractors(a,1))^2 + (y(time-1,f)-attractors(a,2))^2);
-            if dist > attractionRadius
-                mag = (attractors(1,1)-x(time-1,f))^2 + (attractors(1,2)-y(time-1,f))^2 - dist;
-                x_att = x_att + mag*(attractors(1,1)-x(time-1,f));
-                y_att = y_att + mag*(attractors(1,2)-y(time-1,f));
-            end
-        end
-        
-        % Determine attraction to habitat
-        sigmaRand = 0;
-        %randTheta = sigmaRand*randn(1) + t(time-1,f);
-        %x_rand = cos(randTheta);
-        %y_rand = sin(randTheta);
-        
-        
+        closest_pt = project_point_to_line_segment(LINE_START, LINE_END, [x(time-1,f), y(time-1,f)]);
+        dist = sqrt((x(time-1,f)-closest_pt(1))^2 + (y(time-1,f)-closest_pt(1))^2);
+        mag = (closest_pt(1) -x(time-1,f))^2 + (closest_pt(2)-y(time-1,f))^2;
+        x_att = mag*(closest_pt(1)-x(time-1,f));
+        y_att = mag*(closest_pt(2)-y(time-1,f));
+   
         % Sum all potentials
         x_tot = K_att*x_att + K_rep*x_rep;
         y_tot = K_att*y_att + K_rep*y_rep;
@@ -85,35 +73,11 @@ for time=2:maxTime;
         
     end
     
-    
-%     loop over fish to plot
-%     arrowSize = 1.5;
-%     fig = figure(1);
-%     clf;
-%     hold on;
-%     for f=1:N_fish
-%        plot(x(time,f),y(time,f),'o'); 
-%        plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]);         
-%     end
-%     scale = 0.5;
-%     axis(scale*[-width width -width width]);
-%   
-%     pause(0.0001); 
 end
 
-
 % Store the data
-x = x';
-y = y';
-t = t';
-
-% x_tag = x(:, 1:N_tags);
-% y_tag = y(:, 1:N_tags);
-% x_mean = mean(x_tag,2);
-% y_mean = mean(y_tag,2);
 save fishSimData.mat 
-%x y t closeToNeighbor N_fish N_attractors v attractors maxTime K_con K_rep K_att K_rand sigmaRand 
-
+% clear
 
 
 

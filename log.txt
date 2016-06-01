@@ -1,4 +1,4 @@
-Video Data: https://www.dropbox.com/sh/03ur8a4v6doph1l/AAC-jmq-70SWfFgqrqjhRSnia?dl=0
+﻿Video Data: https://www.dropbox.com/sh/03ur8a4v6doph1l/AAC-jmq-70SWfFgqrqjhRSnia?dl=0
 
 5/23/2016
 
@@ -58,3 +58,8 @@ starting att-rep line model
 	- is the linear trend only for band?
 	- may want to redo with better K_att and K_rep
 	- compare between max s.d. and varying s.d.
+
+5/31/2016
+-Python -> Matlab
+	- point_to_line doesn't take into accoutn line segment
+		- fixed
