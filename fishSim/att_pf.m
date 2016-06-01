@@ -8,8 +8,8 @@ Sigma_mean = 0.1;
 x_sharks = x(1000:end, :); % Allow time for sharks to approach line
 y_sharks = y(1000:end, :);
 t_sharks = t(1000:end, :);
-PF_sd = 5;
-Show_visualization = false;
+PF_sd = 10;
+Show_visualization = true;
 
 TS_PF = 500;
 
