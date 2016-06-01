@@ -4,18 +4,23 @@ load fishSimData.mat
 Height = 50;
 Width = 50;
 N_part = 50;
-Sigma_mean = 0.1;
+Sigma_mean = 1;
 x_sharks = x(1000:end, :); % Allow time for sharks to approach line
 y_sharks = y(1000:end, :);
 t_sharks = t(1000:end, :);
-PF_sd = 5;
+N_sharks = size(x_sharks,2);
+
+PF_sd = 20;
 Show_visualization = false;
 
 TS_PF = 500;
 
 % Initialize States
 p = initParticles(Height, Width, N_part);
+est_error = zeros(TS_PF,1);
+act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
+
 estimated = mean(p);
 
 
@@ -26,8 +31,11 @@ for i = 1:TS_PF
     p = resample(p,w);
     p_mean = computeParticleMean(p,w);
     
-    error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
-    
+    est_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+    act_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END);
+
+    error(i) = pfError(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_sharks);
+
     % Visualize Sharks and Particles
     if Show_visualization
         arrowSize = 1.5;
@@ -55,5 +63,13 @@ for i = 1:TS_PF
         pause(0.0001); 
     end
 end
-
-plot(error)
+figure
+hold on
+plot(act_error, '.')
+plot(est_error, '.')
+hold off
+figure
+% plot(error)
+xlabel('Number of Steps')
+% legend('Actual', 'Estimated')
+hold off

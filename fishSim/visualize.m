@@ -1,4 +1,5 @@
 %% Visualize fish trajectories from fishSim_7
+clf
 load fishSimData.mat 
 
 for time=1000:maxTime;

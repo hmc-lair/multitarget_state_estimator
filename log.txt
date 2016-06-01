@@ -1,4 +1,4 @@
-﻿Video Data: https://www.dropbox.com/sh/03ur8a4v6doph1l/AAC-jmq-70SWfFgqrqjhRSnia?dl=0
+Video Data: https://www.dropbox.com/sh/03ur8a4v6doph1l/AAC-jmq-70SWfFgqrqjhRSnia?dl=0
 
 5/23/2016
 
@@ -61,5 +61,12 @@ starting att-rep line model
 
 5/31/2016
 -Python -> Matlab
-	- point_to_line doesn't take into accoutn line segment
+	- point_to_line doesn't take into account line segment
 		- fixed
+6/1/2016
+- gaussian fit of sum_dist with +/- distance
+	- mean: around 0 YAY!
+	- sd: ~linearly increases with number of sharks
+- +/- distance not a better metric
+	- it may rather fit itself to perpendicular
+	- bring abs(sum_dist) back

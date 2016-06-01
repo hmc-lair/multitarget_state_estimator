@@ -8,6 +8,7 @@ function total_error = totalSharkDistance(x_sharks, y_sharks, line_start, line_e
     Z = 0;
     
     for s=1:size(x_sharks, 2)
+%         is_above = isAbove(x_sharks(s), y_sharks(s), [x1, y1], [x2, y2]);
         error = point_to_line(x_sharks(s), y_sharks(s), [x1, y1], [x2, y2]);
         Z = Z + error;
     end
