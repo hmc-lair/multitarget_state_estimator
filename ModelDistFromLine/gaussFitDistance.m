@@ -7,8 +7,8 @@ for i = 1
     M = csvread(string, 2, 0);
     sum_dist = sum(M,2);
     B = reshape(sum_dist, 1, []);
-    % Replicate to negative distances
-%     B = [-B, B];
+    Replicate to negative distances
+    B = [-B, B];
     h = histogram(B);
     [muhat, sigmahat] = normfit(B);
     muhat_list(i) = muhat;

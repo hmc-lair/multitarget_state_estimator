@@ -17,6 +17,8 @@ TS_PF = 500;
 % Initialize States
 p = initParticles(Height, Width, N_part);
 error = zeros(TS_PF,1);
+act_error = zeros(TS_PF,1);
+
 estimated = mean(p);
 
 
@@ -28,6 +30,7 @@ for i = 1:TS_PF
     p_mean = computeParticleMean(p,w);
     
     error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+    act_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END);
     
     % Visualize Sharks and Particles
     if Show_visualization
@@ -57,4 +60,9 @@ for i = 1:TS_PF
     end
 end
 
+hold on
+plot(act_error)
 plot(error)
+xlabel('Number of Steps')
+legend('Actual', 'Estimated')
+hold off

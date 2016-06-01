@@ -1,9 +1,9 @@
 % Simulate shark trajectories using an attraction line model
 
 
-clear
+% clear
 % Declare Vars
-N_fish= 100;
+% N_fish= 100;
 % N_tags = 10;
 maxTime = 5000;
 v=1.0;
