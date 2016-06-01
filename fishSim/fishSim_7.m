@@ -1,21 +1,21 @@
-%% Simulate shark trajectories using an attraction line model
-clear
+% Simulate shark trajectories using an attraction line model
+
+
 % Declare Vars
-N_fish= 10;
+% N_fish= 25;
 % N_tags = 10;
 maxTime = 5000;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;
-% fishInteractionRadiusSquared = fishInteractionRadius^2;
 K_con = 0.05;
 K_rep = 1e3;
 K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
-LINE_START = [-10, 10];
-LINE_END = [10,10];
+LINE_START = [-10, 0];
+LINE_END = [10,20];
 
 
 % Initialize states
@@ -77,6 +77,7 @@ end
 
 % Store the data
 save fishSimData.mat 
+% clear
 
 
 
