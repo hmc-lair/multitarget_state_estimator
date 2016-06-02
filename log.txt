@@ -70,3 +70,6 @@ starting att-rep line model
 - +/- distance not a better metric
 	- it may rather fit itself to perpendicular
 	- bring abs(sum_dist) back
+- gauss fit of max_dist
+	- use curve fitting tool to fit mu
+	
