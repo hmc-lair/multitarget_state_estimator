@@ -10,7 +10,7 @@ y_sharks = y(1000:end, :);
 t_sharks = t(1000:end, :);
 N_sharks = size(x_sharks,2);
 
-PF_sd = 20;
+PF_sd = 18;
 Show_visualization = false;
 
 TS_PF = 500;
@@ -25,7 +25,7 @@ estimated = mean(p);
 
 
 for i = 1:TS_PF
-    disp(i)
+%     disp(i)
     p = propagate(p, Sigma_mean);
     w = getParticleWeights(p, x_sharks(i,:), y_sharks(i,:), PF_sd);
     p = resample(p,w);
@@ -63,13 +63,17 @@ for i = 1:TS_PF
         pause(0.0001); 
     end
 end
-figure
-hold on
-plot(act_error, '.')
-plot(est_error, '.')
-hold off
-figure
-% plot(error)
-xlabel('Number of Steps')
+
+% Plot Error
+% subplot(2,1,1)
+% hold on
+% plot(act_error, '.')
+% plot(est_error, '.')
 % legend('Actual', 'Estimated')
-hold off
+% title('Sum of shark distances')
+% hold off
+% 
+% subplot(2,1,2)
+% plot(error, '.')
+% xlabel('Number of Steps')
+% ylabel('Error')

@@ -1,0 +1,16 @@
+
+
+threshold = 0.5;
+N_trial = 5
+settling_time = zeros(N_trial,1);
+
+for N_fish = 1:10
+    for trial = 1:N_trial
+        run fishSim_7.m
+        load fishSimData.mat
+        run att_pf.m
+        time = find(error < threshold, 1);
+        settling_time(trial) = time;
+    %     disp(trial)
+    end
+end
