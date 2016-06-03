@@ -1,7 +1,7 @@
 % Simulate shark trajectories using an attraction line model
 
 
-% clear
+clear
 % Declare Vars
 N_fish= 50;
 % N_tags = 10;
@@ -77,7 +77,8 @@ for time=2:maxTime;
 end
 
 % Store the data
-save fishSimData.mat 
+save fishSimData.mat ...
+    t x y N_fish LINE_START LINE_END
 
 
 

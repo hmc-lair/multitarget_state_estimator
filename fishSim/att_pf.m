@@ -1,3 +1,4 @@
+clf
 load fishSimData.mat
 
 % PF Constants
@@ -13,14 +14,14 @@ N_sharks = size(x_sharks,2);
 numshark_sd = 0.4;
 Show_visualization = false;
 
-TS_PF = 200;
+TS_PF = 500;
 
 % Initialize States
 p = initParticles(Height, Width, N_part);
 est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
-numshark_error = zeros(TS_PF,2);
+numshark_est = zeros(TS_PF,1);
 
 estimated = mean(p);
 
@@ -37,7 +38,7 @@ for i = 1:TS_PF
     act_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END);
 
     error(i) = pfError(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_sharks);
-    numshark_error(i) = p_mean(5) - N_sharks;
+    numshark_est(i) = p_mean(5);
     % Visualize Sharks and Particles
     if Show_visualization
         arrowSize = 1.5;
@@ -70,17 +71,21 @@ subplot(3,1,1)
 hold on
 plot(act_error, '.')
 plot(est_error, '.')
-legend('Actual', 'Estimated')
-title('Sum of distance')
+legend('Actual Line', 'Estimated Line')
+title('Comparison of Sum of Distance to Actual and Estimated Line for 50 Sharks')
 hold off
 
 subplot(3,1,2)
-plot(error)
-title('Performance Metric ( (dist_act_i - dist_est_i)^2/numshark))')
+plot(error, '.')
+title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2/numshark)))')
 
 subplot(3,1,3)
-plot(numshark_error, '.')
-title('Numshark error')
+hold on
+plot([0 TS_PF], [N_sharks N_sharks]);
+plot(numshark_est, '.');
+legend('Actual', 'Estimated')
+hold off
+title('Comparison of Actual and Estimated Number of Sharks')
 
 xlabel('Number of Steps')
 % legend('Actual', 'Estimated')
