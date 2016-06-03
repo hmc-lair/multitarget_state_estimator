@@ -11,12 +11,12 @@ for i_fish = 1:10
         load fishSimData.mat
         run att_pf.m
         
-        time = find(error < threshold, 1);
+%         time = find(error < threshold, 1);
         if isempty(time)
-            time = 1000;
-        end
+%             time = 1000;
+%         end
         
-        settling_time(trial, i_fish) = time;
+        settling_time(trial, i_fish) = set_index;
 
     end
     disp(i_fish)
