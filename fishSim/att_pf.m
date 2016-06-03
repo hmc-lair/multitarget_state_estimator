@@ -10,7 +10,7 @@ y_sharks = y(1000:end, :);
 t_sharks = t(1000:end, :);
 N_sharks = size(x_sharks,2);
 
-PF_sd = 18;
+PF_sd = 2;
 Show_visualization = false;
 
 TS_PF = 500;
@@ -23,18 +23,21 @@ error = zeros(TS_PF,1);
 
 estimated = mean(p);
 
+i = 0;
+pf_error = 10;
 
-for i = 1:TS_PF
+while (pf_error > 0.5 || isnan(pf_error)) & i < 500
+    i = i+1;
 %     disp(i)
     p = propagate(p, Sigma_mean);
     w = getParticleWeights(p, x_sharks(i,:), y_sharks(i,:), PF_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w);
     
-    est_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
-    act_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END);
+%     est_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+%     act_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END);
 
-    error(i) = pfError(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_sharks);
+    pf_error = pfError(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_sharks)
 
     % Visualize Sharks and Particles
     if Show_visualization
@@ -63,6 +66,8 @@ for i = 1:TS_PF
         pause(0.0001); 
     end
 end
+
+set_index = i
 
 % Plot Error
 % subplot(2,1,1)
