@@ -1,4 +1,4 @@
-Video Data: https://www.dropbox.com/sh/03ur8a4v6doph1l/AAC-jmq-70SWfFgqrqjhRSnia?dl=0
+﻿Video Data: https://www.dropbox.com/sh/03ur8a4v6doph1l/AAC-jmq-70SWfFgqrqjhRSnia?dl=0
 
 5/23/2016
 
@@ -70,3 +70,10 @@ starting att-rep line model
 - +/- distance not a better metric
 	- it may rather fit itself to perpendicular
 	- bring abs(sum_dist) back
+
+6/2/2016
+- how do we propagate
+
+Stuff to do later
+- reorganize code (
+- percentage of sharks needed to tag
