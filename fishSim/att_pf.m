@@ -14,7 +14,7 @@ N_sharks = size(x_sharks,2);
 numshark_sd = 0.4;
 Show_visualization = false;
 
-TS_PF = 500;
+TS_PF = 1000;
 
 % Initialize States
 p = initParticles(Height, Width, N_part);
@@ -22,13 +22,17 @@ est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
+numshark_old = zeros(N_part, 2);
 
 estimated = mean(p);
 
 
 for i = 1:TS_PF
     disp(i)
-    p = propagate(p, Sigma_mean);
+    numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
+    numshark_old(:,1) = p(:,5);
+    
+    p = propagate(p, Sigma_mean, numshark_old(:,2));
     
     w = getParticleWeights(p, x_sharks(i,:), y_sharks(i,:), @fit_sumdist_sd, numshark_sd);
     p = resample(p,w);
@@ -67,12 +71,13 @@ for i = 1:TS_PF
     end
 end
 
+% Plot Performance of attraction line PF
 subplot(3,1,1)
 hold on
 plot(act_error, '.')
 plot(est_error, '.')
 legend('Actual Line', 'Estimated Line')
-title('Comparison of Sum of Distance to Actual and Estimated Line for 50 Sharks')
+title(sprintf('Comparison of Sum of Distance to Actual and Estimated Line for %d Sharks', N_fish));
 hold off
 
 subplot(3,1,2)
@@ -84,9 +89,8 @@ hold on
 plot([0 TS_PF], [N_sharks N_sharks]);
 plot(numshark_est, '.');
 legend('Actual', 'Estimated')
-hold off
 title('Comparison of Actual and Estimated Number of Sharks')
-
+ylim([0 110])
 xlabel('Number of Steps')
-% legend('Actual', 'Estimated')
 hold off
+% legend('Actual', 'Estimated')

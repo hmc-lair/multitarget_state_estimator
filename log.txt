@@ -73,3 +73,7 @@ starting att-rep line model
 - gauss fit of max_dist
 	- use curve fitting tool to fit mu
 	
+6/3/2016
+- check relative weighting of line fit and ns fit
+- looking at propagation
+	- sigma = 0.5 is a lot!
