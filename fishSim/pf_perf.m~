@@ -1,0 +1,16 @@
+N_tri = 1;
+tag_list = linspace(10,2,2);
+tag_size = size(tag_list, 2);
+pf_perflist = zeros(N_tri, tag_size);
+
+% run fishSim_7.m
+
+for j = 1:tag_size
+    N_tagged = tag_list(j) 
+    for trial = 1:N_tri     
+        run att_pf.m
+
+        pf_perflist(trial, j) = size(find(error < 0.5),1)
+    end
+    disp(j)
+end
