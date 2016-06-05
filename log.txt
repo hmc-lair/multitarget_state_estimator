@@ -70,3 +70,14 @@ starting att-rep line model
 - +/- distance not a better metric
 	- it may rather fit itself to perpendicular
 	- bring abs(sum_dist) back
+- gauss fit of max_dist
+	- use curve fitting tool to fit mu
+	
+6/3/2016
+- check relative weighting of line fit and ns fit
+- looking at propagation
+	- sigma = 0.5 is a lot!
+
+6/4/2016
+- added number of tagged sharks
+- performance( settling time or time under 0.5)
