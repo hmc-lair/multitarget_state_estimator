@@ -1,5 +1,6 @@
 function p = propagate(p, sigma_mean, ns_t2)
 %% Propagates particles by one move
+    sigma = 0;
 
     for indi_p = 1:size(p,1)
         x1 = p(indi_p, 1) + normrnd(0, sigma_mean);
