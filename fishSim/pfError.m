@@ -13,4 +13,4 @@ for s=1:size(x_sharks, 2)
 end
 
 
-error = sqrt(error_sum/N_sharks);
+error = sqrt(error_sum)/N_sharks;
