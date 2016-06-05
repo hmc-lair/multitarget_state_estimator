@@ -71,26 +71,27 @@ for i = 1:TS_PF
     end
 end
 
-% Plot Performance of attraction line PF
-subplot(3,1,1)
-hold on
-plot(act_error, '.')
-plot(est_error, '.')
-legend('Actual Line', 'Estimated Line')
-title(sprintf('Comparison of Sum of Distance to Actual and Estimated Line for %d Sharks', N_fish));
-hold off
-
-subplot(3,1,2)
-plot(error, '.')
-title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2/numshark)))')
-
-subplot(3,1,3)
-hold on
-plot([0 TS_PF], [N_sharks N_sharks]);
-plot(numshark_est, '.');
-legend('Actual', 'Estimated')
-title('Comparison of Actual and Estimated Number of Sharks')
-ylim([0 110])
-xlabel('Number of Steps')
-hold off
+% % Plot Performance of attraction line PF
+% subplot(3,1,1)
+% hold on
+% plot(act_error, '.')
+% plot(est_error, '.')
+% legend('Actual Line', 'Estimated Line')
+% title(sprintf('Comparison of Sum of Distance to Actual and Estimated Line for %d Sharks', N_fish));
+% hold off
+% 
+% subplot(3,1,2)
+% plot(error, '.')
+% title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2/numshark)))')
+% 
+% subplot(3,1,3)
+% hold on
+% plot([0 TS_PF], [N_sharks N_sharks]);
+% plot(numshark_est, '.');
 % legend('Actual', 'Estimated')
+% title('Comparison of Actual and Estimated Number of Sharks')
+% xlabel('Number of Steps')
+% hold off
+
+% Performance Criteria for numshark estimation
+within_ns_limit = size(find( numshark_est > N_sharks - 5 & numshark_est < N_sharks + 5),1);
