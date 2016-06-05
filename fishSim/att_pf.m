@@ -1,4 +1,4 @@
-function error = att_pf(x, y, t, N_tagged, LINE_START, LINE_END)
+function [act_error, est_error, error] = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF)
 % load fishSimData.mat
 
 % PF Constants
@@ -6,7 +6,7 @@ Height = 10;
 Width = 10;
 N_part = 50;
 Sigma_mean = 1;
-% N_tagged = 112;
+% N_tagged = 50;
 N_fish = size(x,2);
 x_tagged = x(:, 1:N_tagged); % Allow time for sharks to approach line
 y_tagged = y(:, 1:N_tagged);
@@ -14,9 +14,8 @@ t_tagged = t(:, 1:N_tagged);
 
 
 PF_sd = 18;
-Show_visualization = false;
+Show_visualization = true;
 
-TS_PF = 500;
 
 % Initialize States
 p = initParticles(Height, Width, N_part);
@@ -41,7 +40,7 @@ for i = 1:TS_PF
     error(i) = pfError(x(i,:), y(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_fish);
 
     % Visualize Sharks and Particles
-    if Show_visualization
+    if i > 700
         arrowSize = 1.5;
         fig = figure(1);
         clf;
@@ -78,15 +77,5 @@ end
 
 
 % Plot Performance of attraction line PF
-subplot(2,1,1)
-hold on
-plot(act_error, '.')
-plot(est_error, '.')
-legend('Actual Line', 'Estimated Line')
-title(sprintf('Comparison of Sum of Distance to Actual and Estimated Line for %d tagged out of %d Sharks', N_tagged, N_fish));
-hold off
 
-subplot(2,1,2)
-plot(error, '.')
-title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2)/numshark)')
 end

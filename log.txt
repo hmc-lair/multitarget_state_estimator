@@ -80,4 +80,4 @@ starting att-rep line model
 
 6/4/2016
 - added number of tagged sharks
-- performance( settling time or time under 0.5)
+- performance( settling time or time under 0.1)
