@@ -1,5 +1,9 @@
 % Run att_pf and graph performance
-[act_error, est_error, error] = att_pf(x, y, t, 50, LINE_START, LINE_END, 50);
+
+%Variables
+TS_PF = 200;
+N_tag = 30;
+[act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tag, LINE_START, LINE_END, TS_PF);
 % Plot Performance of attraction line PF
 subplot(3,1,1)
 hold on
