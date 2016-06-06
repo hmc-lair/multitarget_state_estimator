@@ -11,7 +11,7 @@ x_tagged = x(:, 1:N_tagged);
 y_tagged = y(:, 1:N_tagged);
 t_tagged = t(:, 1:N_tagged);
 
-numshark_sd = 0.4;
+numshark_sd = 0.65;
 Show_visualization = false;
 
 
@@ -33,7 +33,7 @@ for i = 1:TS_PF
     
     p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);
     
-    w = getParticleWeights(p, x_tagged(i,:), y_tagged(i,:), @fit_sumdist_sd, numshark_sd);
+    w = getParticleWeights(p, x_tagged(i,:), y_tagged(i,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
     

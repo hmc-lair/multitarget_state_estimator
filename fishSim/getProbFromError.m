@@ -1,4 +1,4 @@
-function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, numshark_sd)
+function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_fit, numshark_sd)
 % Get error measurement and corresponding probability from Gaussian
     x1 = p(1);
     y1 = p(2);
@@ -13,8 +13,10 @@ function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, numshark_s
     end
     Z_line = sum(line_error);
     
+    point_mu = point_mu_fit(numshark);
     point_sd = point_sd_fit(numshark);
-    prob_line = normpdf(Z_line, 0, point_sd);
+    
+    prob_line = normpdf(Z_line - point_mu, 0, point_sd);
     
     % Number of Shark Correction
     max_d = max(line_error);

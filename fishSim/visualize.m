@@ -2,7 +2,7 @@
 clf
 load fishSimData.mat 
 
-for time=1000:maxTime;
+for time=1:maxTime;
 %     loop over fish to plot
     arrowSize = 1.5;
     fig = figure(1);
@@ -13,11 +13,7 @@ for time=1000:maxTime;
        plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]); 
     end
     
-    for g=1:N_part
-        plot(p(g, 1), p(g,2), '.');
-        plot(p(g, 3), p(g,4), '.');
-    end
-    
+
     % Plot attraction line
     plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)])
     scale = 0.5;
