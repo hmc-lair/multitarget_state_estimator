@@ -76,6 +76,10 @@ for time=2:maxTime;
     
 end
 
+t = t(1001:end, :);
+x = x(1001:end, :);
+y = y(1001:end, :);
+
 % Store the data
 save fishSimData.mat ...
     t x y N_fish LINE_START LINE_END

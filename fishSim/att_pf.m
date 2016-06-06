@@ -1,20 +1,19 @@
-clf
-load fishSimData.mat
+
+function [act_error, est_error, error] = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF)
 
 % PF Constants
-Height = 50;
-Width = 50;
+Height = 10;
+Width = 10;
 N_part = 50;
 Sigma_mean = 1;
-x_sharks = x(1000:end, :); % Allow time for sharks to approach line
-y_sharks = y(1000:end, :);
-t_sharks = t(1000:end, :);
-N_sharks = size(x_sharks,2);
+N_fish = size(x,2);
+x_tagged = x(:, 1:N_tagged);
+y_tagged = y(:, 1:N_tagged);
+t_tagged = t(:, 1:N_tagged);
 
 numshark_sd = 0.4;
 Show_visualization = false;
 
-TS_PF = 1000;
 
 % Initialize States
 p = initParticles(Height, Width, N_part);
@@ -34,31 +33,41 @@ for i = 1:TS_PF
     
     p = propagate(p, Sigma_mean, numshark_old(:,2));
     
-    w = getParticleWeights(p, x_sharks(i,:), y_sharks(i,:), @fit_sumdist_sd, numshark_sd);
+    w = getParticleWeights(p, x_tagged(i,:), y_tagged(i,:), @fit_sumdist_sd, numshark_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
     
-    est_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
-    act_error(i) = totalSharkDistance(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END);
+    est_error(i) = totalSharkDistance(x(i,:), y(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+    act_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
 
-    error(i) = pfError(x_sharks(i,:), y_sharks(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_sharks);
+    % Performance Error: Error between actual and estimated line
+    error(i) = pfError(x(i,:), y(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_fish);
     numshark_est(i) = p_mean(5);
+
     % Visualize Sharks and Particles
     if Show_visualization
         arrowSize = 1.5;
         fig = figure(1);
         clf;
         hold on;
+        
+        % Plot Tagged Sharks
+        for f=1:N_tagged
+           plot(x_tagged(i,f),y_tagged(i,f),'x'); 
+           plot([x_tagged(i,f) x_tagged(i,f)+cos(t_tagged(i,f))*arrowSize],[y_tagged(i,f) y_tagged(i,f)+sin(t_tagged(i,f))*arrowSize]); 
+        end
+        
+        
         % Plot Sharks
-        for f=1:N_fish
-           plot(x_sharks(i,f),y_sharks(i,f),'o'); 
-           plot([x_sharks(i,f) x_sharks(i,f)+cos(t_sharks(i,f))*arrowSize],[y_sharks(i,f) y_sharks(i,f)+sin(t_sharks(i,f))*arrowSize]); 
+        for f = N_tagged+1 : N_fish
+           plot(x(i,f),y(i,f),'o'); 
+           plot([x(i,f) x(i,f)+cos(t(i,f))*arrowSize],[y(i,f) y(i,f)+sin(t(i,f))*arrowSize]); 
         end
 
         % Plot Particles
-        for g=1:N_part
-            plot(p(g, 1), p(g,2), '.', 'MarkerSize', 10);
-            plot(p(g, 3), p(g,4), '.', 'MarkerSize', 10);
+        for h=1:N_part
+            plot(p(h, 1), p(h,2), '.', 'MarkerSize', 10);
+            plot(p(h, 3), p(h,4), '.', 'MarkerSize', 10);
         end
 
         % Plot Particle Mean Line
@@ -71,28 +80,9 @@ for i = 1:TS_PF
     end
 end
 
-% % Plot Performance of attraction line PF
-subplot(3,1,1)
-hold on
-plot(act_error, '.')
-plot(est_error, '.')
-legend('Actual Line', 'Estimated Line')
-title(sprintf('Comparison of Sum of Distance to Act and Est Line for %d Sharks with sigma=1 and randi=10', N_fish));
-hold off
 
-subplot(3,1,2)
-plot(error, '.')
-title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2/numshark)))')
-
-subplot(3,1,3)
-hold on
-plot([0 TS_PF], [N_sharks N_sharks]);
-plot(numshark_est, '.');
-ylim([0 200]);
-legend('Actual', 'Estimated')
-title('Comparison of Actual and Estimated Number of Sharks')
-xlabel('Number of Steps')
-hold off
 
 % Performance Criteria for numshark estimation
-within_ns_limit = size(find( numshark_est > N_sharks - 5 & numshark_est < N_sharks + 5),1);
+within_ns_limit = size(find( numshark_est > N_fish - 5 & numshark_est < N_fish + 5),1);
+
+end
