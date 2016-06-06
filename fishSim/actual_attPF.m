@@ -13,16 +13,17 @@ LINE_START = [-25 5.533];
 LINE_END = [25 -5.3070];
 N_fish = 112;
 
-ts_pf = 800;
+ts_pf = 200;
 
 % act_pf_perf = zeros(11, N_trial);
 act_error_list = zeros(ts_pf, 3);
 est_error_list = zeros(ts_pf, 3);
 error_list = zeros(ts_pf, 3);
+
 tag_x = linspace(3,11,5);
 
 
-for i = 1
+for i =1:3
     for j = 1:N_trial
         N_tagged = 112;
         [act_error_list(:,i), est_error_list(:,i), error_list(:,i)] = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, ts_pf);

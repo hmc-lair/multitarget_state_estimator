@@ -14,7 +14,7 @@ t_tagged = t(:, 1:N_tagged);
 
 
 PF_sd = 18;
-Show_visualization = true;
+Show_visualization = false;
 
 
 % Initialize States
@@ -40,7 +40,7 @@ for i = 1:TS_PF
     error(i) = pfError(x(i,:), y(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_fish);
 
     % Visualize Sharks and Particles
-    if i > 700
+    if Show_visualization
         arrowSize = 1.5;
         fig = figure(1);
         clf;
