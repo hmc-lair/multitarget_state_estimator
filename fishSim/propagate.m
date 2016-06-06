@@ -1,6 +1,6 @@
 function p = propagate(p, sigma_mean, ns_t2)
 %% Propagates particles by one move
-    sigma = 0;
+    sigma = 1;
 
     for indi_p = 1:size(p,1)
         x1 = p(indi_p, 1) + normrnd(0, sigma_mean);
@@ -9,8 +9,8 @@ function p = propagate(p, sigma_mean, ns_t2)
         y2 = p(indi_p, 4) + normrnd(0, sigma_mean);  
         num_shark = p(indi_p, 5) + sigma*(p(indi_p,5) - ns_t2(indi_p))...
             + randi([-10 10]); % TODO: currently using uniform
-        if num_shark < 10
-            num_shark = randi([10, 100]);
+        if num_shark < 0
+            num_shark = randi([0, 100]);
         end
         
         p(indi_p, :) = [x1, y1, x2, y2, num_shark];
