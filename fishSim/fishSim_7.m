@@ -4,7 +4,7 @@
 % clear
 % Declare Vars
 % N_tags = 10;
-N_fish = 110;
+N_fish = 20;
 maxTime = 5000;
 v=1.0;
 deltaT = 0.1;
@@ -15,11 +15,10 @@ K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
-% LINE_START = [-25 5.533]; % Actual Line
-% LINE_END = [25 -5.3070];
+LINE_START = [-25 5.533]; % Actual Line
+LINE_END = [25 -5.3070];
 
-LINE_START = [25 10];
-LINE_END = [-25 -10];
+
 
 
 % Initialize states

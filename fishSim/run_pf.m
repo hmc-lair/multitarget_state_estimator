@@ -38,7 +38,7 @@ subplot(3,1,3)
 hold on
 plot([0 ts_pf], [N_fish N_fish]);
 plot(numshark_est, '.');
-ylim([50 150]);
+ylim([0 200]);
 legend('Actual', 'Estimated')
 title('Comparison of Actual and Estimated Number of Sharks')
 xlabel('Number of Steps')
