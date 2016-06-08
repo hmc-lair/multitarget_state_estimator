@@ -23,10 +23,6 @@ est_error_list = zeros(ts_pf, tag_list_size);
 numshark_est_list = zeros(ts_pf, tag_list_size);
 
 
-
-%Variables
-% ts_pf = 1000;
-% N_tag = 100;
 for i = 1:tag_list_size
     N_tag = tag_list(i)
     [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf);
@@ -35,6 +31,7 @@ for i = 1:tag_list_size
     error_list(:,i) = error;
     numshark_est_list(:,i) = numshark_est;
 end
+
 % Plot Performance of attraction line PF
 subplot(3,1,1)
 hold on
