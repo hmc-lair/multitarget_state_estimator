@@ -77,3 +77,10 @@ starting att-rep line model
 - check relative weighting of line fit and ns fit
 - looking at propagation
 	- sigma = 0.5 is a lot!
+
+6/6/2016
+- work on better indicators for number of sharks
+	- 90 Percentile of Max Dist
+		- Moving Average
+	- Fish Population coverage
+	- Density?
