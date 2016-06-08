@@ -18,7 +18,6 @@ ts_pf = 800;
 
 %Variables
 % ts_pf = 1000;
-% N_tag = 100;
 [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf);
 
 % Plot Performance of attraction line PF

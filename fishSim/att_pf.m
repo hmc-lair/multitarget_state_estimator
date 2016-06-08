@@ -5,7 +5,7 @@ function [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tagged,
 Height = 10;
 Width = 10;
 N_part = 50;
-Sigma_mean = 1;
+Sigma_mean = 0.5;
 N_fish = size(x,2);
 x_tagged = x(:, 1:N_tagged);
 y_tagged = y(:, 1:N_tagged);
@@ -36,6 +36,7 @@ for i = 1:TS_PF
     w = getParticleWeights(p, x_tagged(i,:), y_tagged(i,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
+    
     
     est_error(i) = totalSharkDistance(x(i,:), y(i,:), [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
     act_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);

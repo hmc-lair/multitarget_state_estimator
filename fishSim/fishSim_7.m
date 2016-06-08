@@ -4,7 +4,7 @@
 % clear
 % Declare Vars
 % N_tags = 10;
-N_fish = 20;
+N_fish = 100;
 maxTime = 5000;
 v=1.0;
 deltaT = 0.1;
