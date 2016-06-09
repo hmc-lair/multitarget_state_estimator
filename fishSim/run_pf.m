@@ -14,18 +14,22 @@ clf
 % N_fish = 110;
 % N_tag = N_fish;
 
-tag_list =linspace(10,50,5);
-ts_pf = 100;
+% tag_list =linspace(10,50,5);
+tag_list = 101;
+LINE_START = [-25 5.533]; % Actual Line
+LINE_END = [25 -5.3070];
+
+ts_pf = 800;
 
 tag_list_size = size(tag_list, 2);
 act_error_list = zeros(ts_pf, tag_list_size);
 est_error_list = zeros(ts_pf, tag_list_size);
 numshark_est_list = zeros(ts_pf, tag_list_size);
-
+error_list = zeros(ts_pf, tag_list_size);
 
 for i = 1:tag_list_size
     N_tag = tag_list(i)
-    [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf);
+    [act_error, est_error, error, numshark_est] = att_pf(x_sharks, y_sharks, t_sharks, N_tag, LINE_START, LINE_END, ts_pf, false);
     act_error_list(:,i) = act_error;
     est_error_list(:,i) = est_error;
     error_list(:,i) = error;
