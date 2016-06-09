@@ -10,23 +10,20 @@ clf
 % threshold = 0.1;
 % N_trial = 1;
 
-% Line endpoints from actual data (from Kim)
-% N_fish = 110;
-% N_tag = N_fish;
-
-tag_list =linspace(10,50,5);
-ts_pf = 100;
+tag_list = linspace(10,50,5);
+ts_pf = 1000;
 
 tag_list_size = size(tag_list, 2);
-act_error_list = zeros(ts_pf, tag_list_size);
+act_error_list = zeros(ts_pf, 1);
 est_error_list = zeros(ts_pf, tag_list_size);
+error_list = zeros(ts_pf, tag_list_size);
 numshark_est_list = zeros(ts_pf, tag_list_size);
 
 
 for i = 1:tag_list_size
-    N_tag = tag_list(i)
+    N_tag = tag_list(i);
     [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf);
-    act_error_list(:,i) = act_error;
+    act_error_list(:,1) = act_error;
     est_error_list(:,i) = est_error;
     error_list(:,i) = error;
     numshark_est_list(:,i) = numshark_est;
@@ -37,20 +34,21 @@ subplot(3,1,1)
 hold on
 plot(act_error_list, '.')
 plot(est_error_list, '.')
-legend('Actual Line', 'Estimated Line')
+legend('Actual Line', '10 Tagged', '20', '30', '40', '50')
 title(sprintf('Comparison of Sum of Distance to Act and Est Line for %d Sharks with sigma=1 and uni(0,0.1)', N_fish));
 hold off
 
 subplot(3,1,2)
 plot(error_list, '.')
 title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2/numshark)))')
+legend('10 Tagged', '20', '30', '40', '50')
 
 subplot(3,1,3)
 hold on
 plot([0 ts_pf], [N_fish N_fish]);
 plot(numshark_est_list, '.');
 ylim([0 200]);
-legend('Actual', 'Estimated')
+legend('Actual', '10 Tagged', '20', '30', '40', '50')
 title('Comparison of Actual and Estimated Number of Sharks')
 xlabel('Number of Steps')
 hold off
