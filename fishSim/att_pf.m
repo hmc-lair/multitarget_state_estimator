@@ -4,7 +4,7 @@ function [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tagged,
 % PF Constants
 Height = 10;
 Width = 10;
-N_part = 50;
+N_part = 100;
 Sigma_mean = 0.5;
 N_fish = size(x,2);
 x_tagged = x(:, 1:N_tagged);

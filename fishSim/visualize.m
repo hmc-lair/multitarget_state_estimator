@@ -1,7 +1,11 @@
 %% Visualize fish trajectories from fishSim_7
-clf
-load fishSimData.mat 
 
+function [] = visualize(x, y, t, LINE_START, LINE_END)
+clf
+% load fishSimData.mat 
+
+maxTime = size(x,1);
+N_fish = size(x,2);
 for time=1:maxTime;
 %     loop over fish to plot
     arrowSize = 1.5;
@@ -16,8 +20,12 @@ for time=1:maxTime;
 
     % Plot attraction line
     plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)])
+    width = 30;
     scale = 0.5;
     axis(scale*[-width width -width width]);
   
     pause(0.0001); 
+    disp(time)
+end
+
 end

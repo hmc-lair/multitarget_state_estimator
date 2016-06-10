@@ -12,7 +12,7 @@ function p = propagate(p, sigma_mean, ns_t2, LINE_START, LINE_END)
 %         x2 = LINE_END(1);
 %         y2 = LINE_END(2);
         num_shark = p(indi_p, 5) + sigma*(p(indi_p,5) - ns_t2(indi_p))...
-            + normrnd(0,5); % TODO: currently using uniform
+            + normrnd(0,1); % TODO: currently using uniform
         if num_shark < 0
             num_shark = randi([0, 100]);
         end

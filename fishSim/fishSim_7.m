@@ -4,8 +4,9 @@
 % clear
 % Declare Vars
 % N_tags = 10;
-N_fish = 100;
-maxTime = 5000;
+N_fish = 50;
+
+maxTime = 3000;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;
