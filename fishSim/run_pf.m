@@ -5,9 +5,9 @@ clf
 %     x y t
 % 
 
-N_trial = 3;
+N_trial = 5;
 tag_list = [50 70 90 100];
-ts_pf = 10;
+ts_pf = 800;
 
 LINE_START = [-25 5.533]; % Actual Line
 LINE_END = [25 -5.3070];
@@ -37,10 +37,10 @@ for i = 1:tag_list_size
     end
        
     
-    act_error_list(:,i) = mean(act_error_tag,2);
-    est_error_list(:,i) = mean(est_error_tag,2);
-    error_list(:,i) = mean(error_tag, 2);
-    numshark_est_list(:,i) = mean(numshark_est, 2);
+    act_error_list(:,i) = nanmean(act_error_tag,2);
+    est_error_list(:,i) = nanmean(est_error_tag,2);
+    error_list(:,i) = nanmean(error_tag, 2);
+    numshark_est_list(:,i) = nanmean(numshark_est, 2);
 end
 
 % Plot Performance of attraction line PF

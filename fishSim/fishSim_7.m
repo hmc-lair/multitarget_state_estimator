@@ -4,7 +4,7 @@
 % clear
 % Declare Vars
 % N_tags = 10;
-N_fish = 20;
+N_fish = 50;
 
 maxTime = 3000;
 v=1.0;
@@ -84,8 +84,8 @@ x = x(1001:end, :);
 y = y(1001:end, :);
 
 % Store the data
-save fishSimData.mat ...
-    t x y N_fish LINE_START LINE_END
+% save fishSimData.mat ...
+%     t x y N_fish LINE_START LINE_END
 
 
 
