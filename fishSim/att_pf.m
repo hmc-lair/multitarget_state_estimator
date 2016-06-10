@@ -7,9 +7,11 @@ Width = 10;
 N_part = 100;
 Sigma_mean = 0.5;
 N_fish = size(x,2);
-x_tagged = x(:, 1:N_tagged);
-y_tagged = y(:, 1:N_tagged);
-t_tagged = t(:, 1:N_tagged);
+
+randomSharks = randperm(N_fish, N_tagged)
+x_tagged = x(:, randomSharks);
+y_tagged = y(:, randomSharks);
+t_tagged = t(:, randomSharks);
 
 numshark_sd = 0.65;
 % show_visualization = false;
