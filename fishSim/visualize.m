@@ -1,6 +1,6 @@
 %% Visualize fish trajectories from fishSim_7
 
-function [] = visualize(x, y, t, LINE_START, LINE_END)
+function [] = visualize(x, y, t, left, right, top, bot, LINE_START, LINE_END)
 clf
 % load fishSimData.mat 
 
@@ -17,10 +17,14 @@ for time=1:maxTime;
        plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]); 
     end
     
+    plot([left(time), left(time)],ylim);
+    plot([right(time),right(time)],ylim);
+    plot([left(time), right(time)],top(time));
+    plot([left(time), right(time)],bot(time));
 
     % Plot attraction line
     plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)])
-    width = 30;
+    width = 60;
     scale = 0.5;
     axis(scale*[-width width -width width]);
   
