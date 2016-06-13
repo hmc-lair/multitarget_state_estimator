@@ -1,5 +1,5 @@
 % Find width of shark band
-function area = getBandwidth(x,y)
+function length = getBandwidth(x,y)
 N_ts = size(x,1);
 
 left = zeros(N_ts, 1);
@@ -16,6 +16,7 @@ for i = 1:N_ts
 end
 
 area = (right - left).*(top - bot);
+length = (top - bot);
 % area = (top - bot);
 % plot(width,'x')
 

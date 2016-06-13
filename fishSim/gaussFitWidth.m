@@ -1,32 +1,33 @@
-muhat_list = zeros(20,1);
-sigmahat_list = zeros(20,1);
+muhat_list = zeros(5,1);
+sigmahat_list = zeros(5,1);
 N_trial = 5;
+fish_num_list = [5 10 15 20 25];
 clf
 
 for i = 1:size(muhat_list,1)
-    N_fish = i*10;
-    area = [];
+    N_fish = fish_num_list(i);
+    length = [];
     
     for j = 1:N_trial
         [x,y] = fishSim_7(N_fish);
-        area_trial = getBandwidth(x,y);
-        area = [area; area_trial];      
+        length_trial = getBandwidth(x,y);
+        length = [length; width_trial];      
         disp(j)
     end
     
     
-    hist(area);
-    [muhat, sigmahat] = normfit(area);
+    hist(length);
+    [muhat, sigmahat] = normfit(length);
     muhat_list(i) = muhat;
     sigmahat_list(i)= sigmahat;
     
     disp(i)
 end
 
-num_sharks = linspace(10,200,20);
+num_sharks = [5 10 15 20 25];
 subplot(2,1,1)
 plot(num_sharks, muhat_list, 'x');
-title('Gaussian fit of School Area') 
+title('Gaussian fit of School Length') 
 ylabel('Mean from Gaussian Fit')
 subplot(2,1,2)
 plot(num_sharks, sigmahat_list, 'x')
