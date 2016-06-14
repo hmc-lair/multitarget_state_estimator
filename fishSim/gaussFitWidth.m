@@ -1,7 +1,7 @@
-muhat_list = zeros(5,1);
-sigmahat_list = zeros(5,1);
+muhat_list = zeros(6,1);
+sigmahat_list = zeros(6,1);
 N_trial = 5;
-fish_num_list = [5 10 15 20 25];
+fish_num_list = linspace(25,200,6);
 clf
 
 for i = 1:size(muhat_list,1)
@@ -11,7 +11,7 @@ for i = 1:size(muhat_list,1)
     for j = 1:N_trial
         [x,y] = fishSim_7(N_fish);
         length_trial = getBandwidth(x,y);
-        length = [length; width_trial];      
+        length = [length; length_trial];      
         disp(j)
     end
     
@@ -24,7 +24,7 @@ for i = 1:size(muhat_list,1)
     disp(i)
 end
 
-num_sharks = [5 10 15 20 25];
+num_sharks = fish_num_list;
 subplot(2,1,1)
 plot(num_sharks, muhat_list, 'x');
 title('Gaussian fit of School Length') 
