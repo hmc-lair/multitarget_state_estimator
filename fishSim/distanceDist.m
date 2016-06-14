@@ -1,10 +1,10 @@
 % Get list of shark's distance from line from x and y position
 clf
 load fishSimData.mat
-% load Data/distLine_actual.mat distLine
+load Data/distLine_actual.mat distLine
 
-x_resized = reshape(x(1001:end, :), [4000*N_fish, 1]);
-y_resized = reshape(y(1001:end, :), [4000*N_fish, 1]);
+x_resized = reshape(x, [4000*N_fish, 1]);
+y_resized = reshape(y, [4000*N_fish, 1]);
 N_resized = size(x_resized, 1);
 
 dist = zeros(N_resized, 1);

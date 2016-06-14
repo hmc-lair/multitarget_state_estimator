@@ -3,7 +3,9 @@
 
 % clear
 % Declare Vars
-N_fish= 100;
+
+function [x,y,t] = fishSim_7(fish_density, seg_length) 
+% N_fish= 112;
 % N_tags = 10;
 maxTime = 5000;
 v=1.0;
@@ -15,18 +17,22 @@ K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
-LINE_START = [-10, 0];
-LINE_END = [10,20];
+% LINE_START = [-25 5.533];
+% LINE_END = [25 -5.3070];
 
 
 % Initialize states
-width = 50;
+% seg_length = 50;
+N_fish = fish_density * seg_length;
+height = 10;
+LINE_START = [-seg_length/2 0];
+LINE_END = [seg_length/2 0];
 t=zeros(maxTime,N_fish);
 x=t;
 y=t;
 t(1,1:N_fish) = -ones(N_fish,1)*pi+rand([N_fish,1])*2*pi;
-x(1,1:N_fish) = -ones(N_fish,1)*width/2+rand([N_fish,1])*width;
-y(1,1:N_fish) = -ones(N_fish,1)*width/2+rand([N_fish,1])*width;
+x(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
+y(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
 closeToNeighbor = zeros(maxTime,N_fish);
 
 %loop over time
@@ -81,7 +87,8 @@ x = x(1001:end, :);
 y = y(1001:end, :);
 
 % Store the data
-save fishSimData.mat 
+% save fishSimData.mat 
+end
 
 
 
