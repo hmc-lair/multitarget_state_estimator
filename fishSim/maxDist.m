@@ -1,8 +1,7 @@
-N_fish = 10;
-N_trials = 5;
+N_trials = 3;
 
-muhat_list = zeros(3,1);
-sigmahat_list = zeros(3,1);
+muhat_list = zeros(15,1);
+sigmahat_list = zeros(15,1);
 
 for i = 1:15;
     N_fish = i*10;
@@ -41,3 +40,15 @@ for i = 1:15;
     sigmahat_list(i)= sigmahat;
     
 end
+
+num_sharks = linspace(10,150,15);
+subplot(2,1,1)
+plot(num_sharks, muhat_list, 'x');
+title('Gaussian fit of sum of shark distances (+/-)') 
+ylabel('Mean from Gaussian Fit')
+subplot(2,1,2)
+plot(num_sharks, sigmahat_list, 'x')
+xlabel('Number of Sharks')
+ylabel('Sigma from Gaussian Fit')
+
+save('Data/sumdist_gaussfit.mat', 'num_sharks', 'muhat_list', 'sigmahat_list');

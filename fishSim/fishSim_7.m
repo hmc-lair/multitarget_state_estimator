@@ -5,9 +5,9 @@
 % Declare Vars
 
 function [x,y,t] = fishSim_7(fish_density, seg_length) 
-% N_fish= 112;
-% N_tags = 10;
-maxTime = 5000;
+
+
+maxTime = 3000;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;
@@ -17,12 +17,10 @@ K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
-% LINE_START = [-25 5.533];
+% LINE_START = [-25 5.533]; % Actual Line
 % LINE_END = [25 -5.3070];
 
-
 % Initialize states
-% seg_length = 50;
 N_fish = fish_density * seg_length;
 height = 10;
 LINE_START = [-seg_length/2 0];
@@ -87,7 +85,9 @@ x = x(1001:end, :);
 y = y(1001:end, :);
 
 % Store the data
-% save fishSimData.mat 
+% save fishSimData.mat ...
+%     t x y N_fish LINE_START LINE_END
+
 end
 
 

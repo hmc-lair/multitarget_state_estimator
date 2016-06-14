@@ -84,5 +84,5 @@ starting att-rep line model
 		- Moving Average
 	- Fish Population coverage
 	- Density?
-
 - how different is it for different segment length
+
