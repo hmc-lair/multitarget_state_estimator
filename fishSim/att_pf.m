@@ -12,7 +12,7 @@ y_tagged = y(:, 1:N_tagged);
 t_tagged = t(:, 1:N_tagged);
 
 numshark_sd = 0.65;
-% show_visualization = false;
+
 
 
 % Initialize States
@@ -46,7 +46,9 @@ for i = 1:TS_PF
     numshark_est(i) = p_mean(5);
 
     % Visualize Sharks and Particles
+
     if show_visualization
+
         arrowSize = 1.5;
         fig = figure(1);
         clf;
