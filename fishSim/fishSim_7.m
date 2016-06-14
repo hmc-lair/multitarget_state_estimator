@@ -3,9 +3,12 @@
 
 % clear
 % Declare Vars
-N_fish= 100;
 % N_tags = 10;
-maxTime = 5000;
+% N_fish = 100;
+
+function [x,y] = fishSim_7(N_fish)
+
+maxTime = 3000;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;
@@ -15,8 +18,13 @@ K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
-LINE_START = [-10, 0];
-LINE_END = [10,20];
+% LINE_START = [-25 5.533]; % Actual Line
+% LINE_END = [25 -5.3070];
+
+% Same as actual line length
+
+LINE_START = [-25.58 0];
+LINE_END = [25.58 0];
 
 
 % Initialize states
@@ -81,7 +89,10 @@ x = x(1001:end, :);
 y = y(1001:end, :);
 
 % Store the data
-save fishSimData.mat 
+save fishSimData.mat ...
+    t x y N_fish LINE_START LINE_END
+
+end
 
 
 

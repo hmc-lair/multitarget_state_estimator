@@ -78,6 +78,9 @@ starting att-rep line model
 - looking at propagation
 	- sigma = 0.5 is a lot!
 
-6/4/2016
-- added number of tagged sharks
-- performance( settling time or time under 0.1)
+6/6/2016
+- work on better indicators for number of sharks
+	- 90 Percentile of Max Dist
+		- Moving Average
+	- Fish Population coverage
+	- Density?
