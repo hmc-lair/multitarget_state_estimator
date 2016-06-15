@@ -6,7 +6,7 @@
 % N_tags = 10;
 % N_fish = 100;
 
-function [x,y] = fishSim_7(N_fish)
+function [x,y, t] = fishSim_7(N_fish, seg_length)
 
 maxTime = 3000;
 v=1.0;
@@ -23,18 +23,20 @@ sigmaRand = 0.1;
 
 % Same as actual line length
 
-LINE_START = [-25.58 0];
-LINE_END = [25.58 0];
+LINE_START = [-seg_length/2 0];
+LINE_END = [seg_length/2 0];
+% LINE_START = [-25.58 0];
+% LINE_END = [25.58 0];
 
 
 % Initialize states
-width = 50;
+% seg_length = 50;
 t=zeros(maxTime,N_fish);
 x=t;
 y=t;
 t(1,1:N_fish) = -ones(N_fish,1)*pi+rand([N_fish,1])*2*pi;
-x(1,1:N_fish) = -ones(N_fish,1)*width/2+rand([N_fish,1])*width;
-y(1,1:N_fish) = -ones(N_fish,1)*width/2+rand([N_fish,1])*width;
+x(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
+y(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
 closeToNeighbor = zeros(maxTime,N_fish);
 
 %loop over time

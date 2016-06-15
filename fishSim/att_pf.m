@@ -75,9 +75,7 @@ for i = 1:TS_PF
 
         % Plot Particle Mean Line
         plot([p_mean(1), p_mean(3)], [p_mean(2), p_mean(4)]);
-        
-        ylim([-10 10])
-        xlim([-25 25])
+ 
 
         % Plot Attraction Line
         plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)], 'black');
