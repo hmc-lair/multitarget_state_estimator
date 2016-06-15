@@ -1,5 +1,5 @@
 
-function [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
+function [act_error, est_error, error, numshark_est] = att_pf(x, y, t, N_tagged, seg_length, TS_PF, show_visualization)
 
 % PF Constants
 Height = 10;
@@ -10,6 +10,8 @@ N_fish = size(x,2);
 x_tagged = x(:, 1:N_tagged);
 y_tagged = y(:, 1:N_tagged);
 t_tagged = t(:, 1:N_tagged);
+LINE_START = [-seg_length/2 0];
+LINE_END = [seg_length/2 0];
 
 numshark_sd = 0.65;
 
