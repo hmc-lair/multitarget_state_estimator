@@ -1,5 +1,5 @@
 
-function [act_error, est_error, error, numshark_est] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
+function [act_error, est_error, error, numshark_est, x_robots, y_robots] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
 Height = 10;
@@ -12,8 +12,9 @@ N_fish = size(x,2);
 % t_tagged = t(:, 1:N_tagged);
 
 robots = [-25 0 0;
+            0 0 0;
            25 0 0];
-N_robots = 2;
+N_robots = 3;
 range = 10;
 
 numshark_sd = 0.65;
@@ -28,6 +29,9 @@ act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
+
+x_robots = zeros(TS_PF, N_robots);
+y_robots = zeros(TS_PF, N_robots);
 
 estimated = mean(p);
 
@@ -49,6 +53,9 @@ for i = 1:TS_PF
     % Move Robot
     robots = moveRobots(robots, x_range, y_range, ...
         [p_mean(1) p_mean(2)], [p_mean(3) p_mean(4)]);
+    
+    x_robots(i,:) = robots(:,1);
+    y_robots(i,:) = robots(:,2);
     
     
     est_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
