@@ -1,4 +1,4 @@
-function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
+function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len_est] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
 Height = 10;
@@ -22,6 +22,7 @@ est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
 num_tag_covered = zeros(TS_PF,1);
+seg_len_est = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 
@@ -45,7 +46,7 @@ for i = 1:TS_PF
     
 
     p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);   
-    w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
+    w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, dens_sd);
 
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
@@ -60,7 +61,8 @@ for i = 1:TS_PF
     
     est_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
     act_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
-
+    
+    seg_len_est(i) = dist(p_mean(1), p_mean(2), p_mean(3), p_mean(4));
     % Performance Error: Error between actual and estimated line
     error(i) = pfError(x(i,:), y(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_fish);
     numshark_est(i) = p_mean(5);

@@ -13,7 +13,7 @@ function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_f
     for s=1:size(x_sharks, 2)
         line_error(s) = point_to_line(x_sharks(s), y_sharks(s), [x1, y1], [x2, y2]);
     end
-    Z_line = sum(line_error)
+    Z_line = sum(line_error);
     
 %     point_mu = point_mu_fit(numshark);
 %     point_sd = point_sd_fit(numshark);
