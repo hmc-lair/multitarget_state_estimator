@@ -10,19 +10,21 @@ N_fish = size(x,2);
 N_robots = 5;
 robot_range = 10;
 
-numshark_sd = 0.65;
+dens_sd = 0.65;
 
 
 
 % Initialize States
 robots = initRobots(50,N_robots);
 p = initParticles(Height, Width, N_part);
+
 est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
 num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
+
 
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
@@ -41,8 +43,10 @@ for i = 1:TS_PF
     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
     numshark_old(:,1) = p(:,5);
     
+
     p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);   
     w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
+
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
     
