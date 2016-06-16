@@ -7,7 +7,7 @@
 function [x,y,t] = fishSim_7(fish_density, seg_length) 
 
 
-maxTime = 3000;
+maxTime = 4000;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;

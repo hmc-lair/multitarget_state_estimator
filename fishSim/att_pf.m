@@ -13,18 +13,18 @@ t_tagged = t(:, 1:N_tagged);
 LINE_START = [-seg_length/2 0];
 LINE_END = [seg_length/2 0];
 
-numshark_sd = 0.65;
+dens_sd = 0.65;
 
 
 
 % Initialize States
 p = initParticles(Height, Width, N_part);
+
 est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
-
 estimated = mean(p);
 
 
@@ -35,7 +35,7 @@ for i = 1:TS_PF
     
     p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);
     
-    w = getParticleWeights(p, x_tagged(i,:), y_tagged(i,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
+    w = getParticleWeights(p, x_tagged(i,:), y_tagged(i,:), @fit_sumdist_sd, @fit_sumdist_mu, dens_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
     
