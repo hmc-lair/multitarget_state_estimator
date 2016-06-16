@@ -9,7 +9,7 @@ Sigma_mean = 0.5;
 N_fish = size(x,2);
 
 N_robots = 5;
-range = 30;
+range = 10;
 
 numshark_sd = 0.65;
 
@@ -45,7 +45,7 @@ for i = 1:TS_PF
     p_mean = computeParticleMean(p,w)
     
     % Move Robot
-    robots = moveRobots(robots, ...
+    robots = moveRobots(robots, x_range, y_range, ...
         [p_mean(1) p_mean(2)], [p_mean(3) p_mean(4)]);
     
     x_robots(:,i) = robots(:,1);
