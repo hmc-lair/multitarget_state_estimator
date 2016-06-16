@@ -1,5 +1,5 @@
 
-function [act_error, est_error, error, numshark_est, x_robots, y_robots] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
+function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
 Height = 10;
@@ -21,6 +21,7 @@ p = initParticles(Height, Width, N_part);
 est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
+num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 
@@ -34,6 +35,8 @@ for i = 1:TS_PF
     % Find tagged shark in range of robot
     [i_range, x_range, y_range] = getNearbyTags(robots,range, x(i,:),y(i,:));
     N_inRange = size(i_range, 2);
+    
+    num_tag_covered(i) = N_inRange;
     
     disp(i)
     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
@@ -91,6 +94,7 @@ for i = 1:TS_PF
         for r = 1 : N_robots
             plot(robots(r,1),robots(r,2),'square',...
                 'MarkerSize',20, 'MarkerFaceColor', [.49 1 .63]);
+            plot([robots(r,1) robots(r,1)+cos(robots(r,3))*arrowSize],[robots(r,2) robots(r,2)+sin(robots(r,3))*arrowSize]); 
             circle(robots(r,1),robots(r,2), range);
             
         end

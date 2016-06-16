@@ -4,7 +4,8 @@ function [robots] = moveRobots(robots, x_range, y_range, att_line_start, att_lin
 % Movement constants
 v=1.0;
 deltaT = 0.1;
-robotInteractionRadius = 1.5;
+robotInteractionRadius = 10;
+fishInteractionRadius = 1.5;
 K_con = 0.05;
 K_rep = 1e5;
 K_att = 1e3;
@@ -21,18 +22,18 @@ t_robots = robots(:,3);
 %loop over robot to update state
 for f=1:N_robots
 
-%     % Check for robots (Repulsive)
+    % Check for robots (Repulsive)
 %     x_rep = 0; y_rep = 0;
 %     for g=1:N_robots
 %         dist = sqrt((x_robots(f)-x_robots(g))^2 + (y_robots(f)-y_robots(g))^2);
-%         if dist < robotInteractionRadius
+%         if dist < robotInteractionRadius && g ~= f
 %             mag = (1/dist - 1/robotInteractionRadius)^2;
 %             x_rep = x_rep+mag*(x_robots(f)-x_robots(g));
 %             y_rep = y_rep+mag*(y_robots(f)-y_robots(g));     
 %         end
 %     end
 
-%     Check for in-range fish
+% %     Check for in-range fish
     x_rep = 0; y_rep = 0;
     for g=1:N_range
         dist = sqrt((x_robots(f)-x_range(g))^2 + (y_robots(f)-y_range(g))^2);
@@ -43,12 +44,26 @@ for f=1:N_robots
         end
     end
 
-    % Determine attraction to habitat
+%     % Determine attraction to habitat (closest point on line)
     closest_pt = project_point_to_line_segment(att_line_start, att_line_end, [x_robots(f), y_robots(f)]);
     dist = sqrt((x_robots(f)-closest_pt(1))^2 + (y_robots(f)-closest_pt(1))^2);
     mag = (closest_pt(1) -x_robots(f))^2 + (closest_pt(2)-y_robots(f))^2;
     x_att = mag*(closest_pt(1)-x_robots(f));
     y_att = mag*(closest_pt(2)-y_robots(f));
+
+    % Determine attraction to habitat (in-range fish)
+%     x_att = 0; y_att = 0;
+%     for g=1:N_range
+%         dist = sqrt((x_robots(f)-x_range(g))^2 + (y_robots(f)-y_range(g))^2);
+%         if dist > fishInteractionRadius
+%             mag = (x_range(g) -x_robots(f))^2 + (y_range(g) -y_robots(f))^2;
+%             x_att = x_att+mag*(x_range(g) - x_robots(f));
+%             y_att = y_att+mag*(y_range(g) - y_robots(f));     
+%         end
+%     end
+    
+    disp(x_att)
+    disp(y_att)
 
     % Sum all potentials
     x_tot = K_att*x_att + K_rep*x_rep;
@@ -59,6 +74,8 @@ for f=1:N_robots
     maxControl = pi/180*20;
     controlTheta = K_con*angleDiff(desiredTheta-t_robots(f)) + sigmaRand*randn(1);
     controlTheta = min(max(controlTheta,-maxControl), maxControl);
+    
+    disp(controlTheta)
 
     % Update the state
     robots(f,3) = robots(f,3) + controlTheta; % t
