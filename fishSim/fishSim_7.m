@@ -25,12 +25,23 @@ N_fish = fish_density * seg_length;
 height = 10;
 LINE_START = [-seg_length/2 0];
 LINE_END = [seg_length/2 0];
+
+% Same as actual line length
+
+
+% LINE_START = [-25.58 0];
+% LINE_END = [25.58 0];
+
+
+% Initialize states
+% seg_length = 50;
 t=zeros(maxTime,N_fish);
 x=t;
 y=t;
 t(1,1:N_fish) = -ones(N_fish,1)*pi+rand([N_fish,1])*2*pi;
 x(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
 y(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
+
 closeToNeighbor = zeros(maxTime,N_fish);
 
 %loop over time
