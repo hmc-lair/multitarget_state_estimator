@@ -4,7 +4,7 @@
 % clear
 % Declare Vars
 
-function [x,y,t] = fishSim_7(fish_density, seg_length) 
+function [x,y,t] = fishSim_7(N_fish, seg_length) 
 
 
 maxTime = 4000;
@@ -21,7 +21,6 @@ sigmaRand = 0.1;
 % LINE_END = [25 -5.3070];
 
 % Initialize states
-N_fish = fish_density * seg_length;
 height = 10;
 LINE_START = [-seg_length/2 0];
 LINE_END = [seg_length/2 0];
