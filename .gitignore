@@ -2,3 +2,7 @@
 *.pyo
 *.swp
 .DS_Store
+
+# Matlab
+*.asv
+*.m~
