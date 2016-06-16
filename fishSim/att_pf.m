@@ -7,22 +7,16 @@ Width = 50;
 N_part = 100;
 Sigma_mean = 0.5;
 N_fish = size(x,2);
-% x_tagged = x(:, 1:N_tagged);
-% y_tagged = y(:, 1:N_tagged);
-% t_tagged = t(:, 1:N_tagged);
 
-robots = [-25 0 0;
-            0 0 0;
-           25 0 0];
-N_robots = 3;
-range = 10;
+N_robots = 5;
+range = 30;
 
 numshark_sd = 0.65;
 
 
 
 % Initialize States
-% robots = initRobots(
+robots = initRobots(50,N_robots);
 p = initParticles(Height, Width, N_part);
 est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
@@ -30,8 +24,8 @@ error = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 
-x_robots = zeros(TS_PF, N_robots);
-y_robots = zeros(TS_PF, N_robots);
+x_robots = zeros(N_robots, TS_PF);
+y_robots = zeros(N_robots, TS_PF);
 
 estimated = mean(p);
 
@@ -51,11 +45,11 @@ for i = 1:TS_PF
     p_mean = computeParticleMean(p,w)
     
     % Move Robot
-    robots = moveRobots(robots, x_range, y_range, ...
+    robots = moveRobots(robots, ...
         [p_mean(1) p_mean(2)], [p_mean(3) p_mean(4)]);
     
-    x_robots(i,:) = robots(:,1);
-    y_robots(i,:) = robots(:,2);
+    x_robots(:,i) = robots(:,1);
+    y_robots(:,i) = robots(:,2);
     
     
     est_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
