@@ -61,9 +61,6 @@ for f=1:N_robots
 %             y_att = y_att+mag*(y_range(g) - y_robots(f));     
 %         end
 %     end
-    
-    disp(x_att)
-    disp(y_att)
 
     % Sum all potentials
     x_tot = K_att*x_att + K_rep*x_rep;
@@ -74,8 +71,7 @@ for f=1:N_robots
     maxControl = pi/180*20;
     controlTheta = K_con*angleDiff(desiredTheta-t_robots(f)) + sigmaRand*randn(1);
     controlTheta = min(max(controlTheta,-maxControl), maxControl);
-    
-    disp(controlTheta)
+
 
     % Update the state
     robots(f,3) = robots(f,3) + controlTheta; % t

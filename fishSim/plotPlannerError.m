@@ -3,10 +3,13 @@
 
 clf 
 ts_pf = size(x_robots,2);
+% ts_pf = 2000;
+LINE_START = [-50 0];
+LINE_END = [50 0];
 N_fish = size(x,2);
 
 % [act_error, est_error, error, numshark_est, x_robots, y_robots] = ...
-%     att_pf(x, y, t,[-25.5 0], [25.5 0], ts_pf, false)
+%     att_pf(x, y, t,LINE_START, LINE_END, ts_pf, false)
 
 subplot(2,2,1);
 hold on
@@ -14,7 +17,7 @@ plot(x_robots',y_robots','x');
 plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)], 'black');
 xlabel('x (m)')
 ylabel('y (m)')
-title({'5 Robots Repulsed by Fish, Attracted to Line, Range: 10 m, 50/50 Tagged ','Robot Trajectory'});
+title({'5 Robots Repulsed by Fish, Attracted to Line, Range: 50 m, 75/75 Tagged ','Robot Trajectory'});
 hold off
 
 subplot(2,2,2)

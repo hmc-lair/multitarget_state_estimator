@@ -9,7 +9,7 @@ Sigma_mean = 0.5;
 N_fish = size(x,2);
 
 N_robots = 5;
-range = 10;
+range = 50;
 
 numshark_sd = 0.65;
 
@@ -38,7 +38,9 @@ for i = 1:TS_PF
     
     num_tag_covered(i) = N_inRange;
     
-    disp(i)
+    if ~mod(i, 100)
+        disp(i)
+    end
     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
     numshark_old(:,1) = p(:,5);
     
