@@ -1,6 +1,6 @@
 % Gauss Fit SumDist for attraction line PF
 seg_list = 28;
-fish_list = [10 20];
+fish_list = [10 20 40 70 100 150 200];
 seg_list_len = size(seg_list,2);
 fish_list_len = size(fish_list,2);
 muhat_list_max = zeros(seg_list_len,fish_list_len);
@@ -19,8 +19,8 @@ for i = 1:seg_list_len
         N_fish = fish_list(j)
         sum_dist = [];
         max_dist = [];
-        
-        for k = 1:N_trial
+        tic
+        parfor k = 1:N_trial
                   
             [x,y,t] = fishSim_7(N_fish,seg_length);
             for ts = 1:size(x,1)
@@ -35,6 +35,7 @@ for i = 1:seg_list_len
                 max_dist = [max_dist, max(dist_list)];
             end
         end    
+        toc
     
 %     hist(max_dist);
         [muhat_max, sigmahat_max] = normfit(max_dist);
