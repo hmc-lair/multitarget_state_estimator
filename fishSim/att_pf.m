@@ -3,9 +3,9 @@ function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag
 
 % PF Constants
 Height = 10;
-Width = 50;
-N_part = 100;
-Sigma_mean = 0.5;
+Width = 30;
+N_part = 50;
+Sigma_mean = 1;
 N_fish = size(x,2);
 
 N_robots = 5;
