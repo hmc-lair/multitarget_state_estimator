@@ -1,5 +1,5 @@
 
-function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
+function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len] = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
 Height = 10;
@@ -13,6 +13,8 @@ range = 50;
 
 numshark_sd = 0.65;
 
+randomSharks = randperm(N_fish, N_tagged);
+
 
 
 % Initialize States
@@ -24,16 +26,20 @@ error = zeros(TS_PF,1);
 num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
+seg_len = zeros(TS_PF, 1);
 
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
+
+x_tagged = x(:, randomSharks);
+y_tagged = y(:, randomSharks);
 
 estimated = mean(p);
 
 
 for i = 1:TS_PF
     % Find tagged shark in range of robot
-    [i_range, x_range, y_range] = getNearbyTags(robots,range, x(i,:),y(i,:));
+    [i_range, x_range, y_range] = getNearbyTags(robots,range, x_tagged(i,:),y_tagged(i,:));
     N_inRange = size(i_range, 2);
     
     num_tag_covered(i) = N_inRange;
@@ -48,6 +54,7 @@ for i = 1:TS_PF
     w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
+    seg_len(i) = dist(p_mean(1), p_mean(2), p_mean(3), p_mean(4));
     
     % Move Robot
     robots = moveRobots(robots, x_range, y_range, ...

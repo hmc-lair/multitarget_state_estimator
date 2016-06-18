@@ -15,11 +15,18 @@ function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_f
     end
     Z_line = sum(line_error);
     
+    % FWeight for segment length
+    cost = seg_len * cost_factor;
+    Z_line = Z_line + cost;
+    
     point_mu = point_mu_fit(numshark);
 %     point_sd = point_sd_fit(numshark);
     point_sd = 100;
     
     prob_line = normpdf(Z_line, 0, point_sd);
+    
+    
+    
     
     % Number of Shark Correction
     max_area_sd = 200;
