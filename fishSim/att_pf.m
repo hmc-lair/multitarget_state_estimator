@@ -1,5 +1,7 @@
 
 function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len] = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
+% Particle filter to estimate attraction line and number of
+% fish in the fish swarm
 
 % PF Constants
 Height = 10;
@@ -13,13 +15,14 @@ range = 50;
 
 numshark_sd = 0.65;
 
-randomSharks = randperm(N_fish, N_tagged);
+randomSharks = randperm(N_fish, N_tagged); % Randomize Selection of Sharks
 
 
 
 % Initialize States
 robots = initRobots(50,N_robots);
 p = initParticles(Height, Width, N_part);
+
 est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
@@ -28,13 +31,14 @@ numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 seg_len = zeros(TS_PF, 1);
 
+
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
 
 x_tagged = x(:, randomSharks);
 y_tagged = y(:, randomSharks);
 
-estimated = mean(p);
+estimated = mean(p); 
 
 
 for i = 1:TS_PF
@@ -44,17 +48,20 @@ for i = 1:TS_PF
     
     num_tag_covered(i) = N_inRange;
     
-    if ~mod(i, 100)
+    if ~mod(i, 100) % Display timestep periodically
         disp(i)
     end
     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
     numshark_old(:,1) = p(:,5);
     
+%     Move and Resample Particles
     p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);   
     w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
+    
     p_mean = computeParticleMean(p,w)
     seg_len(i) = dist(p_mean(1), p_mean(2), p_mean(3), p_mean(4));
+
     
     % Move Robot
     robots = moveRobots(robots, x_range, y_range, ...
@@ -64,6 +71,7 @@ for i = 1:TS_PF
     y_robots(:,i) = robots(:,2);
     
     
+    % Calculate Sum of Distance for actual and estimated line
     est_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
     act_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
 

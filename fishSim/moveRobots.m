@@ -12,9 +12,9 @@ K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
+% Initialize States
 N_robots = size(robots,1);
 N_range = size(x_range,2);
-
 x_robots = robots(:,1);
 y_robots = robots(:,2);
 t_robots = robots(:,3);
@@ -23,26 +23,26 @@ t_robots = robots(:,3);
 for f=1:N_robots
 
     % Check for robots (Repulsive)
-%     x_rep = 0; y_rep = 0;
-%     for g=1:N_robots
-%         dist = sqrt((x_robots(f)-x_robots(g))^2 + (y_robots(f)-y_robots(g))^2);
-%         if dist < robotInteractionRadius && g ~= f
-%             mag = (1/dist - 1/robotInteractionRadius)^2;
-%             x_rep = x_rep+mag*(x_robots(f)-x_robots(g));
-%             y_rep = y_rep+mag*(y_robots(f)-y_robots(g));     
-%         end
-%     end
-
-% %     Check for in-range fish
     x_rep = 0; y_rep = 0;
-    for g=1:N_range
-        dist = sqrt((x_robots(f)-x_range(g))^2 + (y_robots(f)-y_range(g))^2);
-        if dist < robotInteractionRadius
+    for g=1:N_robots
+        dist = sqrt((x_robots(f)-x_robots(g))^2 + (y_robots(f)-y_robots(g))^2);
+        if dist < robotInteractionRadius && g ~= f
             mag = (1/dist - 1/robotInteractionRadius)^2;
-            x_rep = x_rep+mag*(x_robots(f)-x_range(g));
-            y_rep = y_rep+mag*(y_robots(f)-y_range(g));     
+            x_rep = x_rep+mag*(x_robots(f)-x_robots(g));
+            y_rep = y_rep+mag*(y_robots(f)-y_robots(g));     
         end
     end
+
+% %     Check for in-range fish
+%     x_rep = 0; y_rep = 0;
+%     for g=1:N_range
+%         dist = sqrt((x_robots(f)-x_range(g))^2 + (y_robots(f)-y_range(g))^2);
+%         if dist < robotInteractionRadius
+%             mag = (1/dist - 1/robotInteractionRadius)^2;
+%             x_rep = x_rep+mag*(x_robots(f)-x_range(g));
+%             y_rep = y_rep+mag*(y_robots(f)-y_range(g));     
+%         end
+%     end
 
 %     % Determine attraction to habitat (closest point on line)
     closest_pt = project_point_to_line_segment(att_line_start, att_line_end, [x_robots(f), y_robots(f)]);

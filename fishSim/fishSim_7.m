@@ -1,11 +1,5 @@
 % Simulate shark trajectories using an attraction line model
 
-
-% clear
-% Declare Vars
-% N_tags = 10;
-% N_fish = 100;
-
 function [x,y, t] = fishSim_7(N_fish, seg_length)
 
 maxTime = 3000;

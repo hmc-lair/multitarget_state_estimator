@@ -1,5 +1,5 @@
 function error = pfError(x_sharks, y_sharks, act_start, act_end, est_start, est_end, N_sharks)
-    
+% Calculate PF error between estimated and actual line
 error_sum = 0;
 
 for s=1:size(x_sharks, 2)
