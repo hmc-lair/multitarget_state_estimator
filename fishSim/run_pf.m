@@ -7,8 +7,8 @@ clf
 
 N_trial = 3;
 
-tag_list = [100];
-ts_pf = 500;
+tag_list = [20 40 60 80 100];
+ts_pf = 2000;
 N_fish = 100;
 
 

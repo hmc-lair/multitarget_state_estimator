@@ -8,6 +8,7 @@ function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_f
     numshark = p(5);
     seg_len = dist(x1, y1, x2, y2);
     
+    cost_factor = 0.2;
     % Line Fit Correction
     line_error = zeros(size(x_sharks, 2), 1);
     for s=1:size(x_sharks, 2)
