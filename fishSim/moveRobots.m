@@ -12,9 +12,9 @@ K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
+% Initialize States
 N_robots = size(robots,1);
 N_range = size(x_range,2);
-
 x_robots = robots(:,1);
 y_robots = robots(:,2);
 t_robots = robots(:,3);
