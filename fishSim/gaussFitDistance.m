@@ -23,7 +23,7 @@ parfor i = 1:seg_list_len
     for j = 1:numshark_len
         N_fish = numshark_list(j)
 %         sum_dist = zeros(N_trial, 2000);
-        max_dens = zeros(N_trial, 2000);
+        area = zeros(N_trial, 2000);
         
         for k = 1:N_trial
                   
@@ -37,15 +37,14 @@ parfor i = 1:seg_list_len
                 for f=1:N_fish % Loop through all fish
                     dist_list(f) = abs(point_to_line( x(ts,f), y(ts,f), LINE_START, LINE_END));
                 end
-                area = max(dist_list) * seg_length;
-                max_dens(k,ts) = N_fish/area;
+                upper_bound = prctile(dist_list, 90)
+                area(k, ts) = upper_bound * seg_length;
             end
         end
         
-        max_dens = max_dens(:);
-%         sum_dist = sum_dist(:);
+        area = area(:);
         
-        [muhat_max, sigmahat_max] = normfit(max_dens);
+        [muhat_max, sigmahat_max] = normfit(area);
         muhat_list_max_area(i,j) = muhat_max
         sigmahat_list_max_area(i,j)= sigmahat_max;
 % 
@@ -63,7 +62,7 @@ toc
 figure
 subplot(2,1,1)
 plot(numshark_list, muhat_list_max_area, 'x');
-title('Gaussian fit of Max Area') 
+title('Gaussian fit of 90th Percentile Max Area') 
 ylabel('Mean from Gaussian Fit')
 legend(cellstr(num2str([10 20 30 50 70 100 200]')))
 subplot(2,1,2)

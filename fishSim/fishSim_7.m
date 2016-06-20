@@ -39,6 +39,8 @@ x(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
 y(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
 closeToNeighbor = zeros(maxTime,N_fish);
 
+
+tic
 %loop over time
 for time=2:maxTime;
 
@@ -85,6 +87,7 @@ for time=2:maxTime;
     end
     
 end
+toc
 
 t = t(1001:end, :);
 x = x(1001:end, :);
