@@ -1,14 +1,18 @@
 % Graphs histogram from fishSimData.mat and actual data. Used to compare
 % gain.
 clf
-load fishSimData.mat
+% load fishSimData.mat
 % load Data/distLine_actual.mat distLine
 
-x_resized = reshape(x, [4000*N_fish, 1]);
-y_resized = reshape(y, [4000*N_fish, 1]);
+x_resized = reshape(x, [2000*N_fish, 1]);
+y_resized = reshape(y, [2000*N_fish, 1]);
 N_resized = size(x_resized, 1);
 
 dist = zeros(N_resized, 1);
+seg_length = 28;
+
+LINE_START = [-seg_length/2 0];
+LINE_END = [seg_length/2 0];
 
 for i = 1: N_resized
     is_above = isAbove(x_resized(i), y_resized(i), LINE_START, LINE_END);
