@@ -7,9 +7,9 @@ clf
 
 N_trial = 3;
 
-tag_list = [40 50];
-ts_pf = 2000;
-N_fish = 50;
+tag_list = [60 80 100];
+ts_pf = 1000;
+N_fish = 100;
 
 
 tag_list_size = size(tag_list, 2);
@@ -76,7 +76,7 @@ hold on
 plot([0 ts_pf], [N_fish N_fish]);
 plot(numshark_est_list, '.');
 % ylim([0 200]);
-legend('Actual Line','20 Tagged', '30', '40', '50')
+legend('Actual Line','60', '80', '100')
 title({'Comparison of Actual', 'and Estimated Number of Sharks'})
 xlabel('Number of Steps')
 hold off
@@ -86,7 +86,7 @@ hold on
 plot([0 ts_pf], [seg_length seg_length]);
 plot(seglen_list, '.');
 % ylim([0 200]);
-legend('Actual Line','20 Tagged', '30', '40', '50')
+legend('Actual Line','60', '80', '100')
 title({'Comparison of Actual','and Estimated Segment Length'})
 xlabel('Number of Steps')
 hold off
@@ -95,7 +95,7 @@ subplot(2,2,4)
 hold on
 plot(tagrange_list, '.');
 % ylim([0 200]);
-legend('20 Tagged', '30', '40', '50')
+legend('60', '80', '100')
 title({'Number of Tags', 'in Range'})
 xlabel('Number of Steps')
 hold off

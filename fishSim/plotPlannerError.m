@@ -5,14 +5,14 @@ clf
 
 % ts_pf = size(x_robots,2);
 ts_pf = 1000;
-LINE_START = [-50 0];
-LINE_END = [50 0];
-N_fish = size(x,2);
+LINE_START = [-10 2.28];
+LINE_END = [15 -3.139];
+N_fish = 112;
 N_tag = N_fish;
 
 
 [act_error, est_error, error, numshark_est, x_robots, y_robots, numtag_range, seg_len] = ...
-    att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf, false)
+    att_pf(x', y', t', N_tag, LINE_START, LINE_END, ts_pf, false)
 
 subplot(3,2,[1 2]);
 hold on

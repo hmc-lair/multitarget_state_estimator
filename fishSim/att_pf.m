@@ -7,7 +7,7 @@ function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag
 Height = 10;
 Width = 30;
 N_part = 100;
-Sigma_mean = 1;
+Sigma_mean = 5;
 N_fish = size(x,2);
 
 N_robots = 10;
