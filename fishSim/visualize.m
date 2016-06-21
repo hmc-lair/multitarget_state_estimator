@@ -16,6 +16,7 @@ for time=1:maxTime;
        plot(x(time,f),y(time,f),'o'); 
        plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]); 
     end
+
    
 
     % Plot attraction line
@@ -23,6 +24,8 @@ for time=1:maxTime;
     width = 60;
     scale = 0.5;
     axis(scale*[-width width -width width]);
+
+
   
     pause(0.0001); 
     disp(time)

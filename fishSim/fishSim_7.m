@@ -3,11 +3,11 @@
 function [x,y, t] = fishSim_7(N_fish, seg_length)
 
 maxTime = 3000;
-v=1.0;
-deltaT = 0.1;
+v=0.3;
+deltaT = 1/30;
 fishInteractionRadius = 1.5;
 K_con = 0.05;
-K_rep = 1e5;
+K_rep = 5e6;
 K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
