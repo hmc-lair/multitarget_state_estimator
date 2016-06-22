@@ -2,15 +2,14 @@
 
 % Independent Variables
 seg_list = [10 20 30 50 70 100 200];
-numshark_list = [10 30 50 80 100 200];
+numshark_list = [10 30 60 100 150 200];
+% numshark_list = [10 100];
 
 % Initialize States
 seg_list_len = size(seg_list,2);
 numshark_len = size(numshark_list,2);
 muhat_list_max_area = zeros(seg_list_len,numshark_len);
 sigmahat_list_max_area = zeros(seg_list_len,numshark_len);
-muhat_list_sum = zeros(seg_list_len,numshark_len);
-sigmahat_list_sum = zeros(seg_list_len,numshark_len);
 N_trial = 3;
 clf
 
@@ -33,14 +32,14 @@ parfor i = 1:seg_list_len
             [x,y,t] = fishSim_7(N_fish,seg_length);
             for ts = 1:size(x,1)
 
-                sum_shark_dist = totalSharkDistance(x(ts,:), y(ts,:), LINE_START, LINE_END);
-                sum_dist(k,ts) = sum_shark_dist;
+%                 sum_shark_dist = totalSharkDistance(x(ts,:), y(ts,:), LINE_START, LINE_END);
+%                 sum_dist(k,ts) = sum_shark_dist;
 
                 dist_list = zeros(N_fish, 1); % Initialize distance list for timestep
                 for f=1:N_fish % Loop through all fish
                     dist_list(f) = abs(point_to_line( x(ts,f), y(ts,f), LINE_START, LINE_END));
                 end
-                upper_bound = prctile(dist_list, 90)
+                upper_bound = prctile(dist_list, 90);
                 area(k, ts) = upper_bound * seg_length;
             end
         end
@@ -52,10 +51,10 @@ parfor i = 1:seg_list_len
         muhat_list_max_area(i,j) = muhat_max
         sigmahat_list_max_area(i,j)= sigmahat_max;
 % 
-        [muhat_sum, sigmahat_sum] = normfit(sum_dist);
-        muhat_list_sum(i,j) = muhat_sum;
-        sigmahat_list_sum(i,j)= sigmahat_sum;
-    
+%         [muhat_sum, sigmahat_sum] = normfit(sum_dist);
+%         muhat_list_sum(i,j) = muhat_sum;
+%         sigmahat_list_sum(i,j)= sigmahat_sum;
+%     
     end
     
     disp(i)
@@ -67,7 +66,7 @@ toc
 figure
 subplot(2,1,1)
 plot(numshark_list, muhat_list_max_area, 'x');
-title('Gaussian fit of 90th Percentile Max Area') 
+title('Gaussian fit of 90th Percentile Max Dist') 
 ylabel('Mean from Gaussian Fit')
 legend(cellstr(num2str([10 20 30 50 70 100 200]')))
 subplot(2,1,2)
@@ -76,14 +75,14 @@ xlabel('Number of Sharks')
 ylabel('Sigma from Gaussian Fit')
 legend(cellstr(num2str([10 20 30 50 70 100 200]')))
 
-figure
-subplot(2,1,1)
-plot(numshark_list, muhat_list_sum, 'x');
-title('Gaussian fit of Sum Distance') 
-ylabel('Mean from Gaussian Fit')
-legend(cellstr(num2str([10 20 30 50 70 100 200]')))
-subplot(2,1,2)
-plot(numshark_list, sigmahat_list_sum, 'x')
-xlabel('Number of Sharks')
-ylabel('Sigma from Gaussian Fit')
-legend(cellstr(num2str([10 20 30 50 70 100 200]')))
+% figure
+% subplot(2,1,1)
+% plot(numshark_list, muhat_list_sum, 'x');
+% title('Gaussian fit of Sum Distance') 
+% ylabel('Mean from Gaussian Fit')
+% legend(cellstr(num2str([10 20 30 50 70 100 200]')))
+% subplot(2,1,2)
+% plot(numshark_list, sigmahat_list_sum, 'x')
+% xlabel('Number of Sharks')
+% ylabel('Sigma from Gaussian Fit')
+% legend(cellstr(num2str([10 20 30 50 70 100 200]')))

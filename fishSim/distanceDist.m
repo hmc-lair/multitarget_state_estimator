@@ -4,17 +4,26 @@ clf
 % load fishSimData.mat
 % load Data/distLine_actual.mat distLine
 
-x_resized = reshape(x, [2000*N_fish, 1]);
-y_resized = reshape(y, [2000*N_fish, 1]);
+N_trial = 3;
+x = zeros(2000,N_fish, N_trial); y = zeros(2000,N_fish,N_trial); t = zeros(2000,N_fish,N_trial);
+parfor j=1:N_trial
+    [x1,y1,t1] = fishSim_7(112,25);
+    x(:,:,j) = x1;
+    y(:,:,j) = y1;
+    t(:,:,j) = t1;
+end
+
+x_resized = reshape(x, [N_trial*2000*N_fish, 1]);
+y_resized = reshape(y, [N_trial*2000*N_fish, 1]);
 N_resized = size(x_resized, 1);
 
 dist = zeros(N_resized, 1);
-seg_length = 28;
+seg_length = 25;
 
 LINE_START = [-seg_length/2 0];
 LINE_END = [seg_length/2 0];
 
-for i = 1: N_resized
+parfor i = 1: N_resized
     is_above = isAbove(x_resized(i), y_resized(i), LINE_START, LINE_END);
     dist(i) = is_above * point_to_line(x_resized(i), y_resized(i), LINE_START, LINE_END);
 end

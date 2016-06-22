@@ -1,38 +1,37 @@
 % Generate Transition Matrix Based on Simulation Data
+% States are distance away from line
 % Structure based on Kevin Smith's code
 
 
-% Constants
-N = 50; % Number of nodes
-
-% load fit_max_area.mat
-% 90_area = fit_90_area(seg_len, ns);
 
 % Discretize location to node number
-ts_len = length(x); % Number of ts
-ns = size(x,2);
-dist = zeros(ts_len, ns);
 
-for i = 1:ts_len
-    for j = 1:ns
-%         is_above = isAbove(x(i,j), y(i,j), [-25 0], [25 0]);
-%         dist(i,j) = is_above * point_to_line(x(i,j), y(i,j), [-25 0], [25 0]);
-        dist(i,j) = y(i,j);
-    end
-end
-
-
-% ts_len = length(x_sharks); % Number of ts
-% ns = size(x_sharks,2);
+%% For Simulation Data
+% ts_len = length(x); % Number of ts
+% ns = size(x,2);
 % dist = zeros(ts_len, ns);
-% dist = distLine;
+% 
+% for i = 1:ts_len
+%     for j = 1:ns
+% %         is_above = isAbove(x(i,j), y(i,j), [-25 0], [25 0]);
+% %         dist(i,j) = is_above * point_to_line(x(i,j), y(i,j), [-25 0], [25 0]);
+%         dist(i,j) = y(i,j);
+%     end
+% end
+
+%% For Actual Data
+ts_len = length(x_sharks); % Number of ts
+ns = size(x_sharks,2);
+dist = zeros(ts_len, ns);
+dist = distLine;
 % 
 max_dist = max(abs(dist(:)))
 max_dist = 7;
-edges = linspace(-max_dist, max_dist, N); % Create hist bin edges
+edges = -max_dist:0.25:max_dist; % Create hist bin edges
+N = length(edges);
 Y_node = discretize(dist,edges); % Location to discretized index
 
-% Compute transition matrix (only for one shark)
+%% Compute transition matrix (only for one shark)
 T = zeros(N, N);
 
 for ts = 1 : ts_len - 1

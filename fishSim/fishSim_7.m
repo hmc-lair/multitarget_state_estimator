@@ -2,12 +2,12 @@
 
 function [x,y, t] = fishSim_7(N_fish, seg_length)
 
-maxTime = 5000;
+maxTime = 7000;
 v=0.3;
 deltaT = 1/30;
 fishInteractionRadius = 1.5;
-K_con = 0.02;
-K_rep = 1e6;
+K_con = 0.019;
+K_rep = 3e6;
 K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
@@ -28,9 +28,10 @@ LINE_END = [seg_length/2 0];
 t=zeros(maxTime,N_fish);
 x=t;
 y=t;
+height = 1;
 t(1,1:N_fish) = -ones(N_fish,1)*pi+rand([N_fish,1])*2*pi;
 x(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
-y(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
+y(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
 closeToNeighbor = zeros(maxTime,N_fish);
 
 
@@ -83,9 +84,9 @@ for time=2:maxTime;
 end
 toc
 
-t = t(3001:end, :);
-x = x(3001:end, :);
-y = y(3001:end, :);
+t = t(5001:end, :);
+x = x(5001:end, :);
+y = y(5001:end, :);
 
 % % Store the data
 % save fishSimData.mat ...

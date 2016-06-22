@@ -11,7 +11,7 @@ Sigma_mean = 5;
 N_fish = size(x,2);
 
 N_robots = 10;
-range = 10;
+range = 100;
 
 numshark_sd = 0.65;
 
@@ -59,8 +59,10 @@ for i = 1:TS_PF
     w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
     
+     
     p_mean = computeParticleMean(p,w)
     seg_len(i) = dist(p_mean(1), p_mean(2), p_mean(3), p_mean(4));
+    max_area = max(abs(y(i,:))) * seg_len(i)
 
     
     % Move Robot
