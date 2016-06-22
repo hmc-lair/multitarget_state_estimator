@@ -6,7 +6,7 @@ clf
 
 maxTime = size(x,1);
 N_fish = size(x,2);
-for time=1:maxTime;
+for time=1:30:maxTime;
 %     loop over fish to plot
     arrowSize = 1.5;
     fig = figure(1);

@@ -26,9 +26,9 @@ end
 % ns = size(x_sharks,2);
 % dist = zeros(ts_len, ns);
 % dist = distLine;
-
+% 
 max_dist = max(abs(dist(:)))
-max_dist = 6.5;
+max_dist = 7;
 edges = linspace(-max_dist, max_dist, N); % Create hist bin edges
 Y_node = discretize(dist,edges); % Location to discretized index
 
