@@ -18,20 +18,15 @@ hold off
 subplot(2,2,2)
 % Attraction Line: y = -0.2168x + 0.113
 hold on
-a1 = plot(x_sharks, y_sharks,'.')
-xLine = linspace(-15, 15, 100);
-yLine = -0.2168*xLin+0.113;
+a1 = plot(xRot, yRot,'.')
+a2 = plot([-12.5 12.5], [0 0], 'LineWidth', 2, 'Color','Black')
+grid on
+set(gca,'ytick',state)
+ax = gca;
+ax.XGrid ='off'
+xlabel('x (m)')
+ylabel('y (m)')
 
-actual_start = [-11.67, 2.642];
-actual_end = [11.97, -2.482];
-a2 = plot([actual_start(1), actual_end(1)],[actual_start(2), actual_end(2)],...
-    'LineWidth', 1, 'Color','Black');
-% hi = dist(actual_start(1), actual_start(2),actual_end(1), actual_end(2))
-for diff = state
-    xLine = linspace(-15, 15, 100);
-    yLine = -0.2168*xLin+0.113+diff;
-    plot(xLine,yLine,'.','Color','Black','MarkerSize',1)
-end
 title('Actual Shark Trajectory')
 hold off
 
