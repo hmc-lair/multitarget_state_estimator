@@ -3,8 +3,7 @@
 % Structure based on Kevin Smith's code
 
 
-
-% Discretize location to node number
+function T = transitionMatrix(x1, y1, increment)
 
 %% For Simulation Data
 ts_len = length(x1); % Number of ts
@@ -27,7 +26,7 @@ vert_dist = y1;
 % 
 max_vert_dist = max(abs(vert_dist(:)))
 max_vert_dist = 7;
-y_edges = -max_vert_dist:0.1:max_vert_dist; % Create hist bin edges
+y_edges = -max_vert_dist:increment:max_vert_dist; % Create hist bin edges
 N_y = length(y_edges);
 % N_y = 1; % Debug
 Y_node = discretize(vert_dist,y_edges); % Location to discretized index
@@ -42,6 +41,7 @@ node = Y_node;
 
 %% Compute transition matrix (only for one shark)
 T = zeros(N_y, N_y);
+
 
 for ts = 1 : ts_len - 1
     for shark = 1:ns
@@ -61,6 +61,8 @@ for from = 1:N_y
         T(:,from) = zeros([1 N_y]);
     end
     
+end
+
 end
 
 
