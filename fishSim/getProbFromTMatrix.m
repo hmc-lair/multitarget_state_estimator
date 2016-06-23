@@ -2,7 +2,7 @@
 
 function prob = getProbFromTMatrix(T,prob, ts)
     max_vert_dist = 7;
-    increment = 0.05;
+    increment = 0.1;
     x = -max_vert_dist:increment:max_vert_dist;
     for i = 1:ts
         prob = T * prob;
