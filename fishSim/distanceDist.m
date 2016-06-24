@@ -7,15 +7,15 @@ clf
 % Get fish simulation data
 N_trial = 10;
 N_fish = 112;
-x = zeros(7000,N_fish, N_trial); y = zeros(7000,N_fish,N_trial); t = zeros(7000,N_fish,N_trial);
+x_sim = zeros(7000,N_fish, N_trial); y_sim = zeros(7000,N_fish,N_trial); t_sim = zeros(7000,N_fish,N_trial);
 parfor j=1:N_trial
     [x1,y1,t1] = fishSim_7(112,25);
-    x(:,:,j) = x1;
-    y(:,:,j) = y1;
-    t(:,:,j) = t1;
+    x_sim(:,:,j) = x1;
+    y_sim(:,:,j) = y1;
+    t_sim(:,:,j) = t1;
 end
-% 
-% % Resize vectors to fit histogram
+
+% Resize vectors to fit histogram
 % x_resized = reshape(x, [N_trial*7000*N_fish, 1]);
 % y_resized = reshape(y, [N_trial*7000*N_fish, 1]);
 % N_resized = size(x_resized, 1);
@@ -27,11 +27,12 @@ end
 % LINE_END = [seg_length/2 0];
 % 
 % % Calculate +/- distance
-% parfor i = 1: N_resized
-%     is_above = isAbove(x_resized(i), y_resized(i), LINE_START, LINE_END);
-%     dist_list(i) = is_above * point_to_line(x_resized(i), y_resized(i), LINE_START, LINE_END);
-% end
-% 
+% tic
+% % parfor i = 1: N_resized
+% %     is_above = isAbove(x_resized(i), y_resized(i), LINE_START, LINE_END);
+% %     dist_list(i) = is_above * point_to_line(x_resized(i), y_resized(i), LINE_START, LINE_END);
+% % end
+% toc
 % % Build Histogram
 % figure
 %    
