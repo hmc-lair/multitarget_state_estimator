@@ -7,6 +7,7 @@ function T = transitionMatrix(x, y, increment)
 % x: (ts, shark, N_trial)
 % y: (ts, shark, N_trial) y location data
 % increment: increment between states (distance from line)
+
 %% For Simulation Data
 N_trial = size(x,3);
 
@@ -23,14 +24,6 @@ for trial = 1:N_trial
     ts_len = length(x1); % Number of ts
     ns = size(x1,2);
     vert_dist = y1;
-
-    %% For Actual Data
-    % ts_len = length(x_rot); % Number of ts
-    % ns = size(x_rot,2);
-    % vert_dist = zeros(ts_len, ns);
-    % vert_dist = distLine;
-    % 
-%     max_vert_dist = max(abs(vert_dist(:)))
 
     Y_node = discretize(vert_dist,y_edges); % Location to discretized index
 
@@ -52,15 +45,15 @@ T = sum(T,3); % Sum Instances from multiple trials
 
 % Normalize transition matrix
 
-    for from = 1:N_y
-        sum_from = sum(T(:,from));
-        T(:,from) = T(:,from)/sum(T(:,from));
+for from = 1:N_y
+    sum_from = sum(T(:,from));
+    T(:,from) = T(:,from)/sum(T(:,from));
 
-        if sum_from == 0
-            T(:,from) = zeros([1 N_y]);
-        end
-
+    if sum_from == 0
+        T(:,from) = zeros([1 N_y]);
     end
+
+end
     
 end
 
