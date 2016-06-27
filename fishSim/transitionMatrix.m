@@ -1,58 +1,70 @@
 % Generate Transition Matrix Based on Simulation Data
+% States are distance away from line
 % Structure based on Kevin Smith's code
 
 
-% Constants
-N = 50; % Number of nodes
+function T = transitionMatrix(x, y, increment)
+% x: (ts, shark, N_trial)
+% y: (ts, shark, N_trial) y location data
+% increment: increment between states (distance from line)
 
-% load fit_max_area.mat
-% 90_area = fit_90_area(seg_len, ns);
+%% For Simulation Data
+N_trial = size(x,3);
 
-% Discretize location to node number
-ts_len = length(x); % Number of ts
-ns = size(x,2);
-dist = zeros(ts_len, ns);
+% Set up states
+max_vert_dist = 10;
+% y_edges = -max_vert_dist:increment:max_vert_dist; % Create hist bin edges
 
-for i = 1:ts_len
-    for j = 1:ns
-%         is_above = isAbove(x(i,j), y(i,j), [-25 0], [25 0]);
-%         dist(i,j) = is_above * point_to_line(x(i,j), y(i,j), [-25 0], [25 0]);
-        dist(i,j) = y(i,j);
+y_edges = [-max_vert_dist:increment:max_vert_dist] ;
+% neg_y_edges = -max_vert_dist:increment:0;
+% pos_y_edges = 0:increment:max_vert_dist;
+
+N_ybins = length(y_edges)-1;
+
+T = zeros(N_ybins, N_ybins,N_trial); % Initialize Transition Matrix
+
+for trial = 1:N_trial
+    x1 = x(:,:,trial);
+    y1 = y(:,:,trial);
+    ts_len = length(x1); % Number of ts
+    ns = size(x1,2);
+    vert_dist = y1;
+
+    Y_node = discretize(vert_dist,y_edges); % Location to discretized index
+
+    node = Y_node;
+
+    %% Compute transition matrix
+
+
+    for ts = 1 : ts_len - 1
+        for shark = 1:ns
+            old_node = node(ts, shark);
+            new_node = node(ts+1, shark);
+            T(old_node, new_node, trial) = T(old_node, new_node,trial) + 1;
+        end
     end
 end
 
-
-% ts_len = length(x_sharks); % Number of ts
-% ns = size(x_sharks,2);
-% dist = zeros(ts_len, ns);
-% dist = distLine;
-
-max_dist = max(abs(dist(:)))
-max_dist = 6.5;
-edges = linspace(-max_dist, max_dist, N); % Create hist bin edges
-Y_node = discretize(dist,edges); % Location to discretized index
-
-% Compute transition matrix (only for one shark)
-T = zeros(N, N);
-
-for ts = 1 : ts_len - 1
-    for shark = 1:ns
-        old_node = Y_node(ts, shark);
-        new_node = Y_node(ts+1, shark);
-        T(new_node, old_node) = T(new_node, old_node) + 1;
-    end
-end
+T = sum(T,3); % Sum Instances from multiple trials
 
 % Normalize transition matrix
 
-for from = 1:N
-    sum_from = sum(T(:,from));
-    T(:,from) = T(:,from)/sum(T(:,from));
+for from = 1:N_ybins
+%     sum_to = sum(T(:,to));
     
-    if sum_from == 0
-        T(:,from) = zeros([1 N]);
+    sum_from = sum(T(from,:));
+%     T(from,:) = T(from,:)/sum_from;
+
+    if sum_from ~= 0
+%         T(:,to) = T(:,to)/sum_to;
+        T(from,:) = T(from,:)/sum_from;
     end
+
+end
     
 end
+
+    
 
 

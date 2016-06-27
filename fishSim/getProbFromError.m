@@ -30,12 +30,13 @@ function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_f
     
 
     % Number of Shark Correction
-    max_area_sd = 50;
+    max_area_sd = 100;
 %     line_error_90 = prctile(line_error, 90);
     max_area = max(line_error) * seg_len;
 %     max_area = line_error_90 * seg_len;
     model_max_area = fit_90_area(seg_len, numshark);
     prob_ns = exp(- (max_area - model_max_area)^2/max_area_sd^2);
+%     prob_ns = 1;
     
     prob = prob_line * prob_ns;
     
