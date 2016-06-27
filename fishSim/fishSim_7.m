@@ -2,15 +2,15 @@
 
 function [x,y, t] = fishSim_7(N_fish, seg_length)
 
-maxTime = 3000;
+maxTime = 10000;
 v=0.3;
 deltaT = 1/30;
-fishInteractionRadius = 1;
-K_con = 0.05;
-K_rep = 1e7;
+fishInteractionRadius = 1.5;
+K_con = 0.03;
+K_rep = 1e9;
 K_att = 1e3;
 K_rand = 0.1;
-K_temp_att = 1e7;
+K_temp_att = 1e6;
 sigmaRand = 0.1;
 
 % Same as actual line length
@@ -26,7 +26,7 @@ t=zeros(maxTime,N_fish);
 x=t;
 y=t;
 t(1,1:N_fish) = -ones(N_fish,1)*pi+rand([N_fish,1])*2*pi;
-x(1,1:N_fish) = -ones(N_fish,1)*seg_length/2+rand([N_fish,1])*seg_length;
+x(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
 y(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
 closeToNeighbor = zeros(maxTime,N_fish);
 
@@ -41,23 +41,25 @@ for time=2:maxTime;
 
         % Check for neighbors
         x_rep = 0; y_rep = 0; x_att = 0; y_att = 0;
-        for g=1:N_fish % Fish Schooling Dynamics
-            dist = sqrt((x(time-1,f)-x(time,g))^2 + (y(time-1,f)-y(time-1,g))^2);
-            if dist < fishInteractionRadius && g ~= f % Repulsed
+        dist_list = sqrt((x(time-1,f)-x(time,:)).^2 + (y(time-1,f)-y(time-1,:)).^2);
+        [dist, min_ind] = min(dist_list([1:f-1,f+1:end]));
+%         for g=1:N_fish % Fish Schooling Dynamics
+%             dist = sqrt((x(time-1,f)-x(time,g))^2 + (y(time-1,f)-y(time-1,g))^2);
+            if dist < fishInteractionRadius % Repulsed
                 mag = (1/dist - 1/fishInteractionRadius)^2;
-                x_rep = x_rep+mag*(x(time-1,f)-x(time-1,g));
-                y_rep = y_rep+mag*(y(time-1,f)-y(time-1,g));     
+                x_rep = x_rep+mag*(x(time-1,f)-x(time-1,min_ind));
+                y_rep = y_rep+mag*(y(time-1,f)-y(time-1,min_ind));     
             end
-            if dist > fishInteractionRadius && g ~= f % Attracted
+            if dist > fishInteractionRadius % Attracted
                 mag = dist^2;
-                x_att = x_att+mag*(x(time-1,g)-x(time-1,f));
-                y_att = y_att+mag*(y(time-1,g)-y(time-1,f));     
+                x_att = x_att+mag*(x(time-1,min_ind)-x(time-1,f));
+                y_att = y_att+mag*(y(time-1,min_ind)-y(time-1,f));     
             end
-        end
+%         end
         
         % Determine attraction to habitat
         closest_pt = project_point_to_line_segment(LINE_START, LINE_END, [x(time-1,f), y(time-1,f)]);
-%         dist = sqrt((x(time-1,f)-closest_pt(1))^2 + (y(time-1,f)-closest_pt(1))^2);
+        dist = sqrt((x(time-1,f)-closest_pt(1))^2 + (y(time-1,f)-closest_pt(1))^2);
         mag = (closest_pt(1) -x(time-1,f))^2 + (closest_pt(2)-y(time-1,f))^2;
         x_temp_att = mag*(closest_pt(1)-x(time-1,f));
         y_temp_att = mag*(closest_pt(2)-y(time-1,f));
@@ -84,9 +86,9 @@ for time=2:maxTime;
 end
 toc
 
-t = t(1001:end, :);
-x = x(1001:end, :);
-y = y(1001:end, :);
+t = t(5001:end, :);
+x = x(5001:end, :);
+y = y(5001:end, :);
 
 % % Store the data
 % save fishSimData.mat ...
