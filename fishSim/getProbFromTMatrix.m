@@ -1,11 +1,12 @@
 % Get equilibrium (normalized) Probability of states from Transition Matrix
 
-function prob = getProbFromTMatrix(T,prob, ts)
+function prob = getProbFromTMatrix(T,prob, ts, increment)
     max_vert_dist = 10;
-    increment = 0.05;
-    x = -max_vert_dist:increment:max_vert_dist;
+    x = [-max_vert_dist:increment:-increment, ...
+        increment:increment:max_vert_dist]';
     for i = 1:ts
-        prob = T * prob;
+        prob = prob * T;
+        prob = prob/sum(prob); % Normalize Probabilities
         
         if ~mod(i,10000)
             clf;

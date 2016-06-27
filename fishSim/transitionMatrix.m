@@ -13,10 +13,15 @@ N_trial = size(x,3);
 
 % Set up states
 max_vert_dist = 10;
-y_edges = -max_vert_dist:increment:max_vert_dist; % Create hist bin edges
-N_y = length(y_edges);
+% y_edges = -max_vert_dist:increment:max_vert_dist; % Create hist bin edges
 
-T = zeros(N_y, N_y,N_trial); % Initialize Transition Matrix
+y_edges = [-max_vert_dist:increment:max_vert_dist] ;
+% neg_y_edges = -max_vert_dist:increment:0;
+% pos_y_edges = 0:increment:max_vert_dist;
+
+N_ybins = length(y_edges)-1;
+
+T = zeros(N_ybins, N_ybins,N_trial); % Initialize Transition Matrix
 
 for trial = 1:N_trial
     x1 = x(:,:,trial);
@@ -29,14 +34,14 @@ for trial = 1:N_trial
 
     node = Y_node;
 
-    %% Compute transition matrix (only for one shark)
+    %% Compute transition matrix
 
 
     for ts = 1 : ts_len - 1
         for shark = 1:ns
             old_node = node(ts, shark);
             new_node = node(ts+1, shark);
-            T(new_node, old_node, trial) = T(new_node, old_node,trial) + 1;
+            T(old_node, new_node, trial) = T(old_node, new_node,trial) + 1;
         end
     end
 end
@@ -45,12 +50,15 @@ T = sum(T,3); % Sum Instances from multiple trials
 
 % Normalize transition matrix
 
-for from = 1:N_y
-    sum_from = sum(T(:,from));
-    T(:,from) = T(:,from)/sum(T(:,from));
+for from = 1:N_ybins
+%     sum_to = sum(T(:,to));
+    
+    sum_from = sum(T(from,:));
+%     T(from,:) = T(from,:)/sum_from;
 
-    if sum_from == 0
-        T(:,from) = zeros([1 N_y]);
+    if sum_from ~= 0
+%         T(:,to) = T(:,to)/sum_to;
+        T(from,:) = T(from,:)/sum_from;
     end
 
 end

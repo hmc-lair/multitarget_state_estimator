@@ -5,9 +5,9 @@ clf
 % load Data/distLine_actual.mat distLine
 
 % Get fish simulation data
-N_trial = 10;
+N_trial = 5;
 N_fish = 112;
-x_sim = zeros(7000,N_fish, N_trial); y_sim = zeros(7000,N_fish,N_trial); t_sim = zeros(7000,N_fish,N_trial);
+x_sim = zeros(12000,N_fish, N_trial); y_sim = zeros(12000,N_fish,N_trial); t_sim = zeros(12000,N_fish,N_trial);
 parfor j=1:N_trial
     [x1,y1,t1] = fishSim_7(112,25);
     x_sim(:,:,j) = x1;
