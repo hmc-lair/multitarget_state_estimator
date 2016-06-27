@@ -6,21 +6,22 @@ clf
 
 % Get fish simulation data
 N_trial = 5;
-N_fish = 112;
-x_sim = zeros(12000,N_fish, N_trial); y_sim = zeros(12000,N_fish,N_trial); t_sim = zeros(12000,N_fish,N_trial);
+N_fish = 25;
+x_sim = zeros(10000,N_fish, N_trial); y_sim = zeros(10000,N_fish,N_trial); t_sim = zeros(10000,N_fish,N_trial);
 parfor j=1:N_trial
-    [x1,y1,t1] = fishSim_7(112,25);
+    [x1,y1,t1] = fishSim_7(N_fish,25);
     x_sim(:,:,j) = x1;
     y_sim(:,:,j) = y1;
     t_sim(:,:,j) = t1;
 end
-
-% Resize vectors to fit histogram
-% x_resized = reshape(x, [N_trial*7000*N_fish, 1]);
-% y_resized = reshape(y, [N_trial*7000*N_fish, 1]);
+% 
+% % Resize vectors to fit histogram
+% x_resized = reshape(xsim, [N_trial*5000*N_fish, 1]);
+% y_resized = reshape(ysim, [N_trial*5000*N_fish, 1]);
 % N_resized = size(x_resized, 1);
 % 
 % dist_list = zeros(N_resized, 1);
+% dist_list = y_resized;
 % seg_length = 25;
 % 
 % LINE_START = [-seg_length/2 0];
@@ -36,9 +37,9 @@ end
 % % Build Histogram
 % figure
 %    
-% h1 = histogram(dist_list, 500);
+% h1 = histogram(dist_list, 100);
 % hold on
-% h2 = histogram(distLine, 500);
+% h2 = histogram(distLine, 100);
 % h1.Normalization = 'probability';
 % h1.BinWidth = 0.05;
 % h2.Normalization = 'probability';
