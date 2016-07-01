@@ -14,11 +14,12 @@ function [x_sim, y_sim, t_sim] = distanceDist(N_fish, N_trial)
         y_sim(:,:,j) = y1;
         t_sim(:,:,j) = t1;
     end
-end
+% end
+% ts = size(x_sim,1);
 % 
 % % Resize vectors to fit histogram
-% x_resized = reshape(xsim, [N_trial*5000*N_fish, 1]);
-% y_resized = reshape(ysim, [N_trial*5000*N_fish, 1]);
+% x_resized = reshape(x_sim, [N_trial*ts*N_fish, 1]);
+% y_resized = reshape(y_sim, [N_trial*ts*N_fish, 1]);
 % N_resized = size(x_resized, 1);
 % 
 % dist_list = zeros(N_resized, 1);
