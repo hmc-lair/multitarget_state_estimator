@@ -1,18 +1,19 @@
 % Graphs histogram from fishSimData.mat and actual data. Used to compare
 % gain.
-clf
-% load fishSimData.mat
-% load Data/distLine_actual.mat distLine
+% clf
 
 % Get fish simulation data
-N_trial = 5;
-N_fish = 25;
-x_sim = zeros(10000,N_fish, N_trial); y_sim = zeros(10000,N_fish,N_trial); t_sim = zeros(10000,N_fish,N_trial);
-parfor j=1:N_trial
-    [x1,y1,t1] = fishSim_7(N_fish,25);
-    x_sim(:,:,j) = x1;
-    y_sim(:,:,j) = y1;
-    t_sim(:,:,j) = t1;
+
+function [x_sim, y_sim, t_sim] = distanceDist(N_fish, N_trial)
+%     N_trial = 5;
+%     N_fish = 25;
+    x_sim = zeros(10000,N_fish, N_trial); y_sim = zeros(10000,N_fish,N_trial); t_sim = zeros(10000,N_fish,N_trial);
+    parfor j=1:N_trial
+        [x1,y1,t1] = fishSim_7(N_fish,25);
+        x_sim(:,:,j) = x1;
+        y_sim(:,:,j) = y1;
+        t_sim(:,:,j) = t1;
+    end
 end
 % 
 % % Resize vectors to fit histogram
