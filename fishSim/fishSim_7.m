@@ -5,11 +5,11 @@ maxTime = 6000;
 v=0.3;
 deltaT = 1/30;
 fishInteractionRadius = 1.5;
-% K_con = 0.03;
-% K_rep = 1e9;
-% K_att = 1e3;
+% K_con = 0.031109;
+% K_rep = 1.0126e9;
+% K_att = 1.0126e3;
+% K_temp_att = 1.01226e6;
 K_rand = 0.1;
-% K_temp_att = 1e6;
 sigmaRand = 0.1;
 
 % Same as actual line length

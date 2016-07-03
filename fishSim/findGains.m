@@ -1,6 +1,6 @@
-% Function to find attraction and repulsion gains with fminsearch/fmincon
+% Function to find attraction and repulsion gains with GA
 
-function [diff] = findGains(T_act, att_gains)
+function [performance] = findGains(norm_act, att_gains)
 disp(att_gains)
 K_att = att_gains(1);
 K_temp_att = att_gains(2);
@@ -18,12 +18,23 @@ parfor j=1:N_trial
 end
 toc
 
-T_sim = transitionMatrix(x_sim, y_sim, 0.05);
+% Build Histogram
+max_vert_dist = 10;
+increment = 0.1;
+hist_edges = [-max_vert_dist:increment:max_vert_dist] ;
+
+[fhist,xhist] = hist(y_sim(:),hist_edges);
+norm_sim = fhist/(sum(fhist));
+% norm_act = fhist_act/(sum(fhist_act));
+
+performance = sum(abs((norm_sim - norm_act).*hist_edges));
+
+% T_sim = transitionMatrix(x_sim, y_sim, 0.05);
 % T_act = transitionMatrix(xRot, yRot, 0.05);
 % load('T_act.mat')
-T_diff = abs(T_act - T_sim); % Get Difference
-
-diff = sum(T_diff(:))
+% T_diff = abs(T_act - T_sim); % Get Difference
+% 
+% diff = sum(T_diff(:))
 
 end
 

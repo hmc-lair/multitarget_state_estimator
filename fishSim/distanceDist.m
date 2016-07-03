@@ -5,7 +5,7 @@
 % Get fish simulation data
 
 % function [x_sim, y_sim, t_sim] = distanceDist(N_fish, N_trial)
-N_trial = 5;
+N_trial = 2;
 N_fish = 112;
 x_sim = zeros(1000,N_fish, N_trial); y_sim = zeros(1000,N_fish,N_trial); t_sim = zeros(1000,N_fish,N_trial);
 parfor j=1:N_trial
@@ -28,25 +28,31 @@ seg_length = 25;
 LINE_START = [-seg_length/2 0];
 LINE_END = [seg_length/2 0];
 
-% Calculate +/- distance
-tic
-% parfor i = 1: N_resized
-%     is_above = isAbove(x_resized(i), y_resized(i), LINE_START, LINE_END);
-%     dist_list(i) = is_above * point_to_line(x_resized(i), y_resized(i), LINE_START, LINE_END);
-% end
-toc
 % Build Histogram
 figure
-   
-h1 = histogram(dist_list, 100);
+max_vert_dist = 10;
+increment = 0.1;
+hist_edges = [-max_vert_dist:increment:max_vert_dist] ;
+
+[fhist,xhist] = hist(dist_list(:),hist_edges);
+[fhist_act,xhist_act] = hist(distLine(:),hist_edges);
+
+norm_sim = fhist/(sum(fhist));
+norm_act = fhist_act/(sum(fhist_act));
+
 hold on
-h2 = histogram(distLine, 100);
-h1.Normalization = 'probability';
-h1.BinWidth = 0.05;
-h2.Normalization = 'probability';
-h2.BinWidth = 0.05;
-legend('Simulation', 'Actual')
-xlabel('Distance to Attraction Line')
-ylabel('Number of Occurences')
-title(sprintf('Histogram of Shark Distance to Att Line (Katt=%d and Krep=%d)',K_att, K_rep));
-hold off
+plot(xhist, norm_sim, '.','DisplayName', 'Simulation');
+plot(xhist_act, norm_act,'.','DisplayName','Actual')
+hold off 
+% h1 = histogram(dist_list, edges);
+% hold on
+% h2 = histogram(distLine, edges);
+% h1.Normalization = 'probability';
+% h1.BinWidth = 0.05;
+% h2.Normalization = 'probability';
+% h2.BinWidth = 0.05;
+% legend('Simulation', 'Actual')
+% xlabel('Distance to Attraction Line')
+% ylabel('Number of Occurences')
+% title('Histogram of Shark Distance to Att Line');
+% hold off

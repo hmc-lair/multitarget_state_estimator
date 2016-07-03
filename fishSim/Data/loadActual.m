@@ -14,6 +14,14 @@ y_sharks = y_sharks(1:873,norm);
 t_sharks = t_sharks(1:873,norm);
 distLine = distLine(1:873,norm);
 
+% Rotate Data
+rotAngle = 0.213503;
+xRot     = x_sharks*cos(rotAngle) - y_sharks*sin(rotAngle);
+yRot     = x_sharks*sin(rotAngle) + y_sharks*cos(rotAngle);
+plot(xRot,yRot,'.');
+axis([-15 15 -15 15])
+
+
 
 
 
