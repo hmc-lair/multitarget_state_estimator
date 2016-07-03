@@ -1,6 +1,6 @@
 % Function to find attraction and repulsion gains with GA
 
-function [performance] = findGains(norm_act, att_gains)
+function [performance] = findGains(att_gains)
 disp(att_gains)
 K_att = att_gains(1);
 K_temp_att = att_gains(2);
@@ -26,6 +26,8 @@ hist_edges = [-max_vert_dist:increment:max_vert_dist] ;
 [fhist,xhist] = hist(y_sim(:),hist_edges);
 norm_sim = fhist/(sum(fhist));
 % norm_act = fhist_act/(sum(fhist_act));
+
+load('norm_act.mat')
 
 performance = sum(abs((norm_sim - norm_act).*hist_edges));
 
