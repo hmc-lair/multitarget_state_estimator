@@ -2,10 +2,10 @@
 
 function [performance] = findGains(att_gains)
 disp(att_gains)
-K_att = att_gains(1);
-K_temp_att = att_gains(2);
-K_rep = att_gains(3);
-K_con = att_gains(4);
+K_att = 10^(att_gains(1))
+K_temp_att = 10^(att_gains(2))
+K_rep = 10^(att_gains(3))
+K_con = 10^(att_gains(4))
 % Get Simulation Data
 tic
 N_trial = 3;
@@ -29,7 +29,8 @@ norm_sim = fhist/(sum(fhist));
 
 load('norm_act.mat')
 
-performance = sum(abs((norm_sim - norm_act).*hist_edges));
+
+performance = sum(abs((norm_sim - norm_act).*hist_edges))
 
 % T_sim = transitionMatrix(x_sim, y_sim, 0.05);
 % T_act = transitionMatrix(xRot, yRot, 0.05);
