@@ -5,4 +5,4 @@ clc
 close all
 
 opts = optimoptions(@ga,'PlotFcn',{@gaplotbestf,@gaplotstopping});
-[x,fval] = ga(@findGains,4,[],[],[],[],[],[],[],opts); % variables 2 and 3 are integers
+[x,fval] = ga(@findGains,3,[],[],[],[],[],[],[],opts); % variables 2 and 3 are integers

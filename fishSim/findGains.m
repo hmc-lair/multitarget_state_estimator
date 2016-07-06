@@ -5,7 +5,6 @@ disp(att_gains)
 K_att = 10^(att_gains(1))
 K_temp_att = 10^(att_gains(2))
 K_rep = 10^(att_gains(3))
-K_con = 10^(att_gains(4))
 % Get Simulation Data
 tic
 N_trial = 3;

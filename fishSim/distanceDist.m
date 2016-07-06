@@ -5,11 +5,12 @@
 % Get fish simulation data
 
 % function [x_sim, y_sim, t_sim] = distanceDist(N_fish, N_trial)
-N_trial = 2;
+N_trial = 3;
 N_fish = 112;
-x_sim = zeros(1000,N_fish, N_trial); y_sim = zeros(1000,N_fish,N_trial); t_sim = zeros(1000,N_fish,N_trial);
-parfor j=1:N_trial
-    [x1,y1,t1] = fishSim_7(N_fish,25, 1e3, 1e6, 1e9, 0.03);
+x_sim = zeros(5000,N_fish, N_trial); y_sim = zeros(5000,N_fish,N_trial); t_sim = zeros(5000,N_fish,N_trial);
+for j=1:N_trial
+%     [x1,y1,t1] = fishSim_7(N_fish,25, 1e3, 1e6, 1e9);
+    [x1,y1,t1] = fishSim_7(N_fish,25, 1.873e-5, 1.49e-5, 0.0313);
     x_sim(:,:,j) = x1;
     y_sim(:,:,j) = y1;
     t_sim(:,:,j) = t1;
@@ -44,15 +45,15 @@ hold on
 plot(xhist, norm_sim, '.','DisplayName', 'Simulation');
 plot(xhist_act, norm_act,'.','DisplayName','Actual')
 hold off 
-% h1 = histogram(dist_list, edges);
-% hold on
-% h2 = histogram(distLine, edges);
-% h1.Normalization = 'probability';
-% h1.BinWidth = 0.05;
-% h2.Normalization = 'probability';
-% h2.BinWidth = 0.05;
-% legend('Simulation', 'Actual')
-% xlabel('Distance to Attraction Line')
-% ylabel('Number of Occurences')
-% title('Histogram of Shark Distance to Att Line');
-% hold off
+h1 = histogram(dist_list, hist_edges);
+hold on
+h2 = histogram(distLine, hist_edges);
+h1.Normalization = 'probability';
+h1.BinWidth = 0.05;
+h2.Normalization = 'probability';
+h2.BinWidth = 0.05;
+legend('Simulation', 'Actual')
+xlabel('Distance to Attraction Line')
+ylabel('Number of Occurences')
+title('Histogram of Shark Distance to Att Line');
+hold off
