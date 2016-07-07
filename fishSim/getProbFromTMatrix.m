@@ -8,7 +8,7 @@ function prob = getProbFromTMatrix(T,prob, ts, increment)
         prob = prob * T;
         prob = prob/sum(prob); % Normalize Probabilities
         
-        if ~mod(i,10000)
+        if ~mod(i,10000) % Display Periodicaly
             clf;
             plot(x,prob,'.');
             pause(0.0001); 

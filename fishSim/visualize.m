@@ -6,15 +6,17 @@ clf
 
 maxTime = size(x,1);
 N_fish = size(x,2);
+
 for time=1:30:maxTime;
 %     loop over fish to plot
     arrowSize = 1.5;
     fig = figure(1);
-    clf;
+%     clf;
     hold on;
-    parfor f=1:N_fish
-       plot(x(time,f),y(time,f),'o'); 
-       plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]); 
+    for f=1:N_fish
+       plot(x(time,f),y(time,f),'.'); 
+%        plot([x(time,f) x(time,f)+cos(t(time,f))*arrowSize],[y(time,f) y(time,f)+sin(t(time,f))*arrowSize]); 
+
     end
     % Plot attraction line
 %     plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)])
