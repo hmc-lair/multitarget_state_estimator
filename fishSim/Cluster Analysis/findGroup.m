@@ -3,28 +3,32 @@
 function clusters = findGroup(xRot, yRot)
 % Associate with specific clusters with timesteps it belongs in
 % (Continuous clusters)
+
     % Plot sharks and found cluster centers
     ts_act = 873;
     clusters = containers.Map;
     for i = 1:ts_act
-        P = [xRot(i,:) ; yRot(i,:)];
-        E = 0.25;
+%         s_ind = 
+        P = [xRot(i,:) ; yRot(i,:)]; % Array of points
+        E = 0.5; % Threshold Distance
         minPts = 2;
-        [C, ptsC, centres] = dbscan(P, E, minPts);
+        maxPts = 3;
+        [C, ptsC, centres] = dbscan(P, E, minPts, maxPts);
+     
 
         clusters = findGroupPerStep(clusters,C,i);
         
         % Visualize
-        clf
-        hold on
-        width = 30;
-        scale = 0.5;
-        axis(scale*[-width width -width width]);
-        plot(P(1,:),P(2,:),'.')
-        plot(centres(1,:),centres(2,:),'x')
-        pause(0.0001)
-        hold off
-        disp(i)
+%         clf
+%         hold on
+%         width = 30;
+%         scale = 0.5;
+%         axis(scale*[-width width -width width]);
+%         plot(P(1,:),P(2,:),'.')
+%         plot(centres(1,:),centres(2,:),'x')
+%         pause(0.0001)
+%         hold off
+%         disp(i)
 
     end
 end
