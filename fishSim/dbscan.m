@@ -87,6 +87,9 @@ function [C, ptsC, centres] = dbscan(P, E, minPts)
                        ptsC(nb) = Nc;
                    end
                    
+                   % Sort C for consistency
+                   C{Nc} = sort(C{Nc});
+                   
                    ind = ind + 1;  % Increment neighbour point index and process
                                    % next neighbour
                end
@@ -103,16 +106,6 @@ function [C, ptsC, centres] = dbscan(P, E, minPts)
         centres(:,n) = centres(:,n)/length(C{n});
     end
     
-    % Visualize
-    clf
-    hold on
-    width = 30;
-    scale = 0.5;
-    axis(scale*[-width width -width width]);
-    plot(P(1,:),P(2,:),'.')
-    plot(centres(1,:),centres(2,:),'x')
-    pause(0.0001)
-    hold off
 
 end % of dbscan    
     
