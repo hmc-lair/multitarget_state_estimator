@@ -1,6 +1,6 @@
 % Find Isolated Fish Groups to find gains
 
-function clusters = findGroup(x_sharks, y_sharks)
+function clusters = findGroup(x_sharks, y_sharks, visualization)
 % Associate with specific clusters with timesteps it belongs in
 % (Continuous clusters)
 
@@ -11,25 +11,26 @@ function clusters = findGroup(x_sharks, y_sharks)
     for i = 1:ts_act
 %         s_ind = 
         P = [x_sharks(i,:) ; y_sharks(i,:)]; % Array of points
-        E = 0.25; % Threshold Distance
+        E = 0.5; % Threshold Distance
         minPts = 2;
         maxPts = 3;
         [C, ptsC, centres] = dbscan(P, E, minPts, maxPts)
         clusters = findGroupPerStep(clusters,C,i);
         
         % Visualize
-        clf
-        hold on
-        width = 30;
-        height = 10;
-        scale = 0.5;
-        axis(scale*[-width width -height height]);
-        plot(P(1,:),P(2,:),'.', 'MarkerSize',12)
-        plot(centres(1,:),centres(2,:),'x', 'MarkerSize',12)
-        title(i)
-        pause(0.0001)
-     
-        hold off
+        if visualization
+            clf
+            hold on
+            width = 30;
+            height = 10;
+            scale = 0.5;
+            axis(scale*[-width width -height height]);
+            plot(P(1,:),P(2,:),'.', 'MarkerSize',12)
+            plot(centres(1,:),centres(2,:),'x', 'MarkerSize',12)
+            title(i)
+            pause(0.0001)
+            hold off
+        end
         
 
     end

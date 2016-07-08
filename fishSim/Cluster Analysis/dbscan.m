@@ -54,8 +54,6 @@ function [C, ptsC, centres] = dbscan(P, E, minPts, maxPts)
 
            if length(neighbourPts) < minPts-1  % Not enough points to form a cluster
                ptsC(n) = 0;                    % Mark point n as noise.
-           elseif length(neighbourPts) > 2
-               ptsC(n) = 0; % Not Isolated Enough
            
            else                % Form a cluster...
                Nc = Nc + 1;    % Increment number of clusters and process
@@ -77,7 +75,7 @@ function [C, ptsC, centres] = dbscan(P, E, minPts, maxPts)
                        % Find the neighbours of this neighbour and if it has
                        % enough neighbours and is isolated enough add them to the neighbourPts list
                        neighbourPtsP = regionQuery(P, nb, E);
-                       if length(neighbourPtsP) >= minPts && length(neighbourPtsP) < maxPts
+                       if length(neighbourPtsP) >= minPts
                            neighbourPts = [neighbourPts  neighbourPtsP];
                        end
                    end            
