@@ -5,7 +5,7 @@ function [av_speedF] = graphForce(clusters, x_sharks, y_sharks, t_sharks, max_fi
 % schooling fish" by Y. Katz
 
 % Make Grid
-max_dist = 1;
+max_dist = 2;
 increment = 0.05;
 edges = [-max_dist:increment:max_dist] ;
 N_xbins = length(edges);
@@ -17,7 +17,7 @@ speed_force = cell(N_xbins,N_ybins); % Initialize
 n_clusters = size(clusters,1);
 cluster_keys = keys(clusters);
 
-for clus = 1:n_clusters
+for clus = 1:1
     
     % Get shark state of cluster
     key = cluster_keys{clus};
@@ -77,8 +77,12 @@ end
 
 
 av_speedF = cellfun(@mean, speed_force);
+
+
+av_speedF(isnan(av_speedF)) = 0;
+% av_speedF(logical(abs(av_speedF)>100)) = 100;
 imagesc(edges, edges, av_speedF)
-title('Fish Density')
+title('Speed Force')
 xlabel('x Distance from focal fish (m)')
 ylabel('y Distance from focal fish (m)')
 colorbar

@@ -11,10 +11,10 @@ function clusters = findGroup(x_sharks, y_sharks, visualization)
     for i = 1:ts_act
 %         s_ind = 
         P = [x_sharks(i,:) ; y_sharks(i,:)]; % Array of points
-        E = 0.5; % Threshold Distance
+        E = 1; % Threshold Distance
         minPts = 2;
         maxPts = 3;
-        [C, ptsC, centres] = dbscan(P, E, minPts, maxPts)
+        [C, ptsC, centres] = dbscan(P, E, minPts, maxPts);
         clusters = findGroupPerStep(clusters,C,i);
         
         % Visualize
