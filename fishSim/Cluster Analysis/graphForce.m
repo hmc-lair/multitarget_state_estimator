@@ -17,7 +17,7 @@ speed_force = cell(N_xbins,N_ybins); % Initialize
 n_clusters = size(clusters,1);
 cluster_keys = keys(clusters);
 
-for clus = 1:1
+for clus = 1:n_clusters
     
     % Get shark state of cluster
     key = cluster_keys{clus};
@@ -47,10 +47,11 @@ for clus = 1:1
             t_nb = arrayfun(@angleDiff,t_nb); 
 
             % Velocity and Acceleration of focal fish
-            disp_x = diff(x_focal);
-            disp_y = diff(y_focal);
-            v = sqrt(disp_x.^2 + disp_y.^2)/ts;
-            a = diff(v)/ts;
+%             disp_x = diff(x_focal);
+%             disp_y = diff(y_focal);
+%             v = sqrt(disp_x.^2 + disp_y.^2)/ts;
+%             a = diff(v)/ts;
+            a = filtAcc(x_focal, y_focal);
 
             % Turning force
             w = diff(t_focal)/ts;
@@ -80,7 +81,7 @@ av_speedF = cellfun(@mean, speed_force);
 
 
 av_speedF(isnan(av_speedF)) = 0;
-% av_speedF(logical(abs(av_speedF)>100)) = 100;
+% av_speedF(logical(abs(av_speedF)<-5)) = -5;
 imagesc(edges, edges, av_speedF)
 title('Speed Force')
 xlabel('x Distance from focal fish (m)')
