@@ -20,7 +20,7 @@ T = zeros(N_ybins, N_ybins,N_trial); % Initialize Transition Matrix
 for trial = 1:N_trial
     x1 = x(:,:,trial);
     y1 = y(:,:,trial);
-    ts_len = length(x1); % Number of ts
+    ts_len = size(x1,1); % Number of ts
     ns = size(x1,2);
     vert_dist = y1;
 
