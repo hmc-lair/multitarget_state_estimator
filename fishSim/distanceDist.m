@@ -5,7 +5,7 @@
 % Get fish simulation data
 
 % function [x_sim, y_sim, t_sim] = distanceDist(N_fish, N_trial)
-N_trial = 10;
+N_trial = 3;
 N_fish = 112;
 fishSim_ts = 5000;
 x_sim = zeros(fishSim_ts,N_fish, N_trial); y_sim = zeros(fishSim_ts,N_fish,N_trial); t_sim = zeros(fishSim_ts,N_fish,N_trial);

@@ -1,0 +1,13 @@
+#PBS -l nodes=4:ppn=2
+#PBS -l walltime=00:10:00
+#PBS -N matlab_test
+#PBS -S /bin/bash
+cd $PBS_O_WORKDIR
+source /etc/profile.d/modules.sh
+module load matlab
+module load gnu-parallel
+PROCS=$(cat $PBS_NODEFILE | wc -l)
+nname=`hostname -s`
+echo starting Matlab jobs at `date`
+parallel -j0 --sshloginfile $PBS_NODEFILE --workdir $PBS_O_WORKDIR --env PATH --arg-file msizes 'matlab -nojvm -nodisplay -r "msize={};pid=$$;program" >/dev/null'
+echo finished Matlab jobs at `date`

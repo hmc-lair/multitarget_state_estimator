@@ -1,0 +1,17 @@
+
+#!/bin/bash
+#PBS -q normal
+#PBS -l nodes=2:ppn=16:native
+#PBS -l walltime=1:00:00
+#PBS -N matlabtest
+#PBS -o my_matlab.out
+#PBS -e my_matlab.err
+#PBS -A TG-TRA120022
+#PBS -M chho@g.hmc.edu
+#PBS -m abe
+#PBS -V
+# Start of user commands - comments start with a hash sign (#)
+cd $PBS_O_WORKDIR
+module purge
+module load matlab
+matlab -nojvm < testparscript.m
