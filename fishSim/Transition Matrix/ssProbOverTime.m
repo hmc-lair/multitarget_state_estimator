@@ -19,11 +19,12 @@ p_fin_pop = getProbFromTMatrix(T,p_int,100000,increment);
 
 
 for i = 1:nTag_len
+    i
     nTag = nTag_list(i);
     tag_ind = randperm(ns,nTag);
     
-    for j = 1:end_ts_len
-        j
+    tic
+    parfor j = 1:end_ts_len
         % Get ss probs
         end_ts = round(end_ts_list(j));
 
@@ -46,6 +47,7 @@ for i = 1:nTag_len
     %     hold off
     %     pause(0.00001)
     end
+    toc
 end
 % Graph tagged shark traj
 % figure
@@ -53,11 +55,11 @@ end
 % plot(x(:,tag_ind),y(:,tag_ind),'.');
 % xlabel('x (m)')
 % ylabel('y (m)')
-figure 
-title('Tagged SS prob error over time')
-xlabel('Timestep')
-ylabel('Error')
-plot(error,'.')
+% figure 
+% title('Tagged SS prob error over time')
+% xlabel('Timestep')
+% ylabel('Error')
+% plot(error,'.')
 
 
 end
