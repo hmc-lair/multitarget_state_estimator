@@ -33,7 +33,7 @@ LINE_END = [seg_length/2 0];
 % Build Histogram
 figure
 max_vert_dist = 10;
-increment = 0.1;
+increment = 1;
 hist_edges = [-max_vert_dist:increment:max_vert_dist] ;
 
 [fhist,xhist] = hist(dist_list(:),hist_edges);
@@ -50,9 +50,9 @@ h1 = histogram(dist_list, hist_edges);
 hold on
 h2 = histogram(distLine, hist_edges);
 h1.Normalization = 'probability';
-h1.BinWidth = 0.05;
+h1.BinWidth = 0.2;
 h2.Normalization = 'probability';
-h2.BinWidth = 0.05;
+h2.BinWidth = 0.2;
 legend('Simulation', 'Actual')
 xlabel('Distance to Attraction Line')
 ylabel('Number of Occurences')

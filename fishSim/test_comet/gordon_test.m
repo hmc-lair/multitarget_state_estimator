@@ -8,7 +8,7 @@ time='00:59:00'
 DataLocation='/Users/cherieho/multitarget_state_estimator/fishSim/test_comet'
 RemoteDataLocation='/home/hocherie/matlab/data'
 keyfile='/Users/cherieho/.ssh/id_rsa'
-matlabRoot='/opt/matlab/2014b'
+matlabRoot='/opt/matlab/2016a'
 cluster = getCluster(username,account,clusterHost,ppn,queue,time,DataLocation, ...
      RemoteDataLocation,keyfile,matlabRoot);
 j = createCommunicatingJob(cluster);
