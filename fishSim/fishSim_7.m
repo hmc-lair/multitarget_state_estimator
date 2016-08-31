@@ -31,7 +31,6 @@ y(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
 closeToNeighbor = zeros(maxTime,N_fish);
 
 
-tic
 %loop over time
 for time=2:maxTime;
 
@@ -84,7 +83,6 @@ for time=2:maxTime;
     end
     
 end
-toc
 
 t = t(5001:end, :);
 x = x(5001:end, :);

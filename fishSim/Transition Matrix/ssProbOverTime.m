@@ -1,5 +1,6 @@
 function [error] = ssProbOverTime(x,y, nTag_list)
-% Graph steady state probability from T matrix constructed over time
+% Graph steady state probability from T matrix constructed over time for a
+% given list of  Ntags
 increment = 1;
 max_vert_dist = 10;
 ts_total = size(x,1);

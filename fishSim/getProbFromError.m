@@ -1,6 +1,6 @@
 function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_fit, numshark_sd)
 % Get error measurement and corresponding probability from Gaussian
-    load fit_max_area.mat % loads max area fit function
+    load d90_fit.mat % loads d90 fit function
     x1 = p(1);
     y1 = p(2);
     x2 = p(3);
@@ -22,21 +22,19 @@ function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_f
     cost = seg_len * cost_factor;
     Z_line = Z_line + cost;
     
-    point_mu = point_mu_fit(numshark);
-%     point_sd = point_sd_fit(numshark);
-    point_sd = 100;
+%     point_mu = point_mu_fit(numshark);
+    point_mu = 0;
+    point_sd = 10;
     
     prob_line = normpdf(Z_line, 0, point_sd);
     
 
     % Number of Shark Correction
-    max_area_sd = 100;
-%     line_error_90 = prctile(line_error, 90);
-    max_area = max(line_error) * seg_len;
-%     max_area = line_error_90 * seg_len;
-    model_max_area = fit_90_area(seg_len, numshark);
-    prob_ns = exp(- (max_area - model_max_area)^2/max_area_sd^2);
-%     prob_ns = 1;
+    d90_sd = 0.75;
+    d90_actual = prctile(line_error, 95); % Spatial dimension of actual data
+    model_d90 = d90_fit(numshark, seg_len);
+    prob_ns = exp(- (d90_actual - model_d90)^2/d90_sd^2);
+    prob_ns = 1;
     
     prob = prob_line * prob_ns;
     

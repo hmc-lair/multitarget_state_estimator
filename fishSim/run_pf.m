@@ -1,17 +1,14 @@
-% Run att_pf and graph performance
+% Script to Run Particle Filter and Graphs Resulting Performance
 clf
 
-% load actual_tracks.mat ...
-%     x y t
-% 
-
-N_trial = 3;
-
-tag_list = [60 80 100];
+% Experiment Constants
+N_trial = 1;
+tag_list = 100;
 ts_pf = 1000;
 N_fish = 100;
+seg_length = 50;
 
-
+% Preallocate Lists
 tag_list_size = size(tag_list, 2);
 act_error_list = zeros(ts_pf, 1);
 est_error_list = zeros(ts_pf, tag_list_size);
@@ -33,13 +30,13 @@ for i = 1:tag_list_size
     N_tag = tag_list(i);
     
     for j = 1:N_trial
-        seg_length = 50;
-        [x,y,t] = fishSim_7(N_fish,seg_length);
+        [x,y,t] = fishSim_7(N_fish,seg_length,1e3,1e6,1e9);
         LINE_START = [-seg_length/2 0];
         LINE_END = [seg_length/2 0];
         [act_error, est_error, error, numshark_est, x_robots, y_robots, numtag_range, seg_len] = ...
     att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf, false)
       
+        % Assign
         act_error_tag(:,j) = act_error;
         est_error_tag(:,j) = est_error;
         error_tag(:,j) = error;
@@ -69,14 +66,14 @@ end
 subplot(2,2,1)
 plot(error_list, '.')
 title({'Performance Error','(\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2/numshark)))'})
-legend('20 Tagged', '30', '40', '50')
+% legend('20 Tagged', '30', '40', '50')
 
 subplot(2,2,2)
 hold on
 plot([0 ts_pf], [N_fish N_fish]);
 plot(numshark_est_list, '.');
 % ylim([0 200]);
-legend('Actual Line','60', '80', '100')
+% legend('Actual Line','60', '80', '100')
 title({'Comparison of Actual', 'and Estimated Number of Sharks'})
 xlabel('Number of Steps')
 hold off
@@ -86,7 +83,7 @@ hold on
 plot([0 ts_pf], [seg_length seg_length]);
 plot(seglen_list, '.');
 % ylim([0 200]);
-legend('Actual Line','60', '80', '100')
+% legend('Actual Line','60', '80', '100')
 title({'Comparison of Actual','and Estimated Segment Length'})
 xlabel('Number of Steps')
 hold off
@@ -95,7 +92,7 @@ subplot(2,2,4)
 hold on
 plot(tagrange_list, '.');
 % ylim([0 200]);
-legend('60', '80', '100')
+% legend('60', '80', '100')
 title({'Number of Tags', 'in Range'})
 xlabel('Number of Steps')
 hold off

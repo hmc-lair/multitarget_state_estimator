@@ -7,17 +7,16 @@ function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag
 Height = 10;
 Width = 30;
 N_part = 100;
-Sigma_mean = 5;
+Sigma_mean = 1;
 N_fish = size(x,2);
 
+% AUV Constants
 N_robots = 10;
 range = 100;
 
 numshark_sd = 0.65;
 
 randomSharks = randperm(N_fish, N_tagged); % Randomize Selection of Sharks
-
-
 
 % Initialize States
 robots = initRobots(50,N_robots);
@@ -61,8 +60,20 @@ for i = 1:TS_PF
     
      
     p_mean = computeParticleMean(p,w)
+    
+    % TODO: Line Fit Correction
+    line_error = zeros(size(x, 2), 1);
+    for s=1:size(x, 2)
+        line_error(s) = point_to_line(x(s), y(s), [p_mean(1), p_mean(2)],...
+            [p_mean(3), p_mean(4)]);
+    end
+
+    Z_line = sum(line_error) % Sum of distance
+    prob_line = normpdf(Z_line, 0, 200)
+    
+    % Calculate Segment Length
     seg_len(i) = dist(p_mean(1), p_mean(2), p_mean(3), p_mean(4));
-    max_area = max(abs(y(i,:))) * seg_len(i)
+%     max_area = max(abs(y(i,:))) * seg_len(i)
 
     
     % Move Robot
@@ -110,13 +121,12 @@ for i = 1:TS_PF
         end
         
         % Plot Robots
-        for r = 1 : N_robots
-            plot(robots(r,1),robots(r,2),'square',...
-                'MarkerSize',20, 'MarkerFaceColor', [.49 1 .63]);
-            plot([robots(r,1) robots(r,1)+cos(robots(r,3))*arrowSize],[robots(r,2) robots(r,2)+sin(robots(r,3))*arrowSize]); 
-            circle(robots(r,1),robots(r,2), range);
-            
-        end
+%         for r = 1 : N_robots
+%             plot(robots(r,1),robots(r,2),'square',...
+%                 'MarkerSize',20, 'MarkerFaceColor', [.49 1 .63]);
+%             plot([robots(r,1) robots(r,1)+cos(robots(r,3))*arrowSize],[robots(r,2) robots(r,2)+sin(robots(r,3))*arrowSize]); 
+%             circle(robots(r,1),robots(r,2), range);   
+%         end
 
         % Plot Particles
         for h=1:N_part
