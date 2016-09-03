@@ -8,7 +8,7 @@
 
 function [x,y, t] = fishSim_7(N_fish, seg_length)
 
-maxTime = 3000;
+maxTime = 5300;
 v=1.0;
 deltaT = 0.1;
 fishInteractionRadius = 1.5;
@@ -17,6 +17,12 @@ K_rep = 1e5;
 K_att = 1e3;
 K_rand = 0.1;
 sigmaRand = 0.1;
+
+v = 0.3;
+deltaT = 1/30;
+K_att = 1e3;
+K_temp_att = 1e5;
+K_rep = 1e9;
 
 % LINE_START = [-25 5.533]; % Actual Line
 % LINE_END = [25 -5.3070];
@@ -86,9 +92,9 @@ for time=2:maxTime;
     
 end
 
-t = t(1001:end, :);
-x = x(1001:end, :);
-y = y(1001:end, :);
+t = t(5001:end, :);
+x = x(5001:end, :);
+y = y(5001:end, :);
 
 % % Store the data
 % save fishSimData.mat ...
