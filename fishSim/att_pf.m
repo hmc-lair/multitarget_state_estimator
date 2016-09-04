@@ -1,5 +1,5 @@
 
-function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
+function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, d90_list] = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
 Height = 10;
@@ -25,6 +25,7 @@ num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 seg_len = zeros(TS_PF,1);
+d90_list = zeros(TS_PF,1);
 
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
@@ -67,9 +68,16 @@ for i = 1:TS_PF
     
     % Segment Length
     seg_len(i) = dist(p_mean(1),p_mean(2),p_mean(3),p_mean(4));
+    
+    % d90
+    line_error = zeros(size(x, 2), 1);
+    for s=1:size(x, 2)
+        line_error(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
+    end
+    d90_list(i) = prctile(line_error, 95);
 
     % Visualize Sharks and Particles
-
+        
     if show_visualization
 
         arrowSize = 1.5;

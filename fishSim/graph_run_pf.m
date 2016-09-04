@@ -34,3 +34,12 @@ legend('Actual','40 Tagged', '70', '100')
 title('Comparison of Actual and Estimated Segment Length')
 xlabel('Number of Steps')
 hold off
+
+subplot(2,2,4)
+hold on
+plot(d90_est_tag, '.');
+% ylim([0 200]);
+legend('40 Tagged', '70', '100')
+title('Estimated d90')
+xlabel('Number of Steps')
+hold off
