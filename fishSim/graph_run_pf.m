@@ -9,28 +9,28 @@
 
 clf
 
-subplot(2,1,1)
+subplot(2,2,1)
 plot(error_list, '.')
 title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2/numshark)))')
-legend('Actual Line', '40 Tagged', '70', '100')
+legend('Actual Line', '50 Tagged', '100')
 
-subplot(2,1,2)
+subplot(2,2,2)
 hold on
 plot([0 ts_pf], [N_fish N_fish]);
 plot(numshark_est_list, '.');
 % ylim([0 200]);
-legend('Actual','40 Tagged', '70', '100')
+legend('Actual Line', '50 Tagged', '100')
 title('Comparison of Actual and Estimated Number of Sharks')
 xlabel('Number of Steps')
 hold off
 
 % 
-% subplot(2,2,3)
-% hold on
-% plot([0 ts_pf], [N_fish N_fish]);
-% plot(seg_len_est, '.');
-% % ylim([0 200]);
-% legend('Actual','40 Tagged', '70', '100')
-% title('Comparison of Actual and Estimated Segment Length')
-% xlabel('Number of Steps')
-% hold off
+subplot(2,2,3)
+hold on
+plot([0 ts_pf], [seg_length]);
+plot(seglen_est_tag, '.');
+% ylim([0 200]);
+legend('Actual','40 Tagged', '70', '100')
+title('Comparison of Actual and Estimated Segment Length')
+xlabel('Number of Steps')
+hold off

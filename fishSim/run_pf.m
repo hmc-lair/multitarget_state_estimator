@@ -6,8 +6,8 @@ clf
 % 
 
 N_trial = 3;
-tag_list = [40,70,100];
-ts_pf = 300;
+tag_list = [50, 100];
+ts_pf = 1000;
 N_fish = 100;
 seg_length = 50;
 
@@ -32,7 +32,7 @@ for i = 1:tag_list_size
     
     for j = 1:N_trial
         
-        [x,y,t] = fishSim_7(N_fish,seg_length);
+        [x,y,t] = fishSim_7(N_fish,seg_length, 1e3, 1e6, 1e9);
         LINE_START = [-seg_length/2 0];
         LINE_END = [seg_length/2 0];
         [act_error, est_error, error, numshark_est, x_robots, y_robots, numtag_range, seg_len_est] = att_pf(x, y, t, LINE_START, LINE_END, ts_pf, false);
