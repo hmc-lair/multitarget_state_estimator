@@ -1,3 +1,0 @@
-    
-string = strcat('att_numsharks_',i*1);
-M = csvread(string, 2, 0);
