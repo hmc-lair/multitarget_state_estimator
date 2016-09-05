@@ -26,6 +26,7 @@ num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 seg_len = zeros(TS_PF,1);
+shark_dist_cum_list = zeros(TS_PF,N_fish); % keeps track of all shark distance
 d90_est_list = zeros(TS_PF,1);
 d90_act_list = zeros(TS_PF,1);
 
@@ -48,10 +49,13 @@ for i = 1:TS_PF
     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
     numshark_old(:,1) = p(:,5);
     
-    p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);   
-    w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
+    p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);  
+    
+    w = getParticleWeights(p, x_range, y_range, shark_dist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
+    shark_dist_cum_list(i,:) = ... % Update cumulative shark distance list
+        points_to_line(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
     
     % Move Robot
     robots = moveRobots(robots, x_range, y_range, ...

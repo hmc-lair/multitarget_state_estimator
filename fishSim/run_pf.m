@@ -5,9 +5,9 @@ clf
 %     x y t
 % 
 
-N_trial = 3;
-tag_list = 20:20:100;
-ts_pf = 1000;
+N_trial = 1;
+tag_list = 100;
+ts_pf = 100;
 N_fish = 100;
 seg_length = 50;
 

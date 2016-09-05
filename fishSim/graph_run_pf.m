@@ -29,27 +29,27 @@ xlabel('Number of Steps')
 hold off
 
 % 
-subplot(2,2,3)
-hold on
-plot([0 ts_pf], [seg_length, seg_length]);
-plot(seglen_list, '.');
-% ylim([0 200]);
-legend('Actual Line', '80 Tagged', '100')
-title('Comparison of Actual and Estimated Attraction Line Length')
-ylabel('Attraction Line Length (m)')
-xlabel('Number of Steps')
-hold off
-
-subplot(2,2,4)
-d90_model = d90_fit(N_fish, seg_length);
-hold on
-plot([0 ts_pf], [d90_model, d90_model]);
-plot(d90_est_tag, '.');
-plot(d90_act_tag, '-');
-% ylim([0 200]);
-
-legend('Model', '80 Tagged', '100')
-title('Estimated d90')'
-ylabel('90th Percentile Distance from Estimated Line (m)')
-xlabel('Number of Steps')
-hold off
+% subplot(2,2,3)
+% hold on
+% plot([0 ts_pf], [seg_length, seg_length]);
+% plot(seglen_list, '.');
+% % ylim([0 200]);
+% legend('Actual Line', '80 Tagged', '100')
+% title('Comparison of Actual and Estimated Attraction Line Length')
+% ylabel('Attraction Line Length (m)')
+% xlabel('Number of Steps')
+% hold off
+% 
+% subplot(2,2,4)
+% d90_model = d90_fit(N_fish, seg_length);
+% hold on
+% plot([0 ts_pf], [d90_model, d90_model]);
+% plot(d90_est_tag, '.');
+% plot(d90_act_tag, '-');
+% % ylim([0 200]);
+% 
+% legend('Model', '80 Tagged', '100')
+% title('Estimated d90')'
+% ylabel('90th Percentile Distance from Estimated Line (m)')
+% xlabel('Number of Steps')
+% hold off
