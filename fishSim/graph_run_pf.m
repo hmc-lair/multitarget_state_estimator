@@ -6,7 +6,6 @@
 % legend('Actual Line', '40', '70', '100')
 % title(sprintf('Comparison of Sum of Distance to Act and Est Line for %d Sharks with sigma=1 and uni(0,5)', N_fish));
 % hold off
-
 clf
 load d90_fit.mat
 
@@ -44,11 +43,11 @@ subplot(2,2,4)
 d90_model = d90_fit(N_fish, seg_length);
 hold on
 plot([0 ts_pf], [d90_model, d90_model]);
-plot(d90_est_tag, '.');
-plot(d90_act_tag, '-');
+plot(d90_list_act, '.');
+plot(d90_list_est, '-');
 % ylim([0 200]);
 
-legend('Model', '80 Tagged', '100')
+legend('Model', '80 Tagged (Actual Line)', '100 (Actual)', '80 (Estimated Line)','100 (Estimated)')
 title('Estimated d90')'
 ylabel('90th Percentile Distance from Estimated Line (m)')
 xlabel('Number of Steps')

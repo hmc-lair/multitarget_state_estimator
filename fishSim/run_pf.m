@@ -6,7 +6,7 @@ clf
 % 
 
 N_trial = 3;
-tag_list = 20:20:100;
+tag_list = [30,100];
 ts_pf = 1000;
 N_fish = 100;
 seg_length = 50;
@@ -62,7 +62,7 @@ for i = 1:tag_list_size
 end
 
 save('pf_line.mat', 'act_error_list', 'est_error_list', 'error_list','numshark_est_list',...
-    'ts_pf','N_fish','tag_list','seglen_list', 'd90_list_est', 'd90_list_act')
+    'ts_pf','N_fish','tag_list','seglen_list', 'd90_list_est', 'd90_list_act','seg_length')
 %
 % % Plot Performance of attraction line PF
 % subplot(3,1,1)

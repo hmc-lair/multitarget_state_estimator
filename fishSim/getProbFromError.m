@@ -28,7 +28,7 @@ function prob = getProbFromError(p, x_sharks, y_sharks, point_sd_fit, point_mu_f
     
 %     Number of Shark Correction
     d90_sd = 0.75;
-    d90_actual = prctile(line_error, 95);
+    d90_actual = prctile(line_error, 90);
     model_d90 = d90_fit(numshark, seg_len);
     prob_ns = exp(- (d90_actual - model_d90)^2/d90_sd^2);
 %     prob_ns = 1;

@@ -76,14 +76,14 @@ for i = 1:TS_PF
     for s=1:size(x, 2)
         line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
     end
-    d90_est_list(i) = prctile(line_error_est, 95);
+    d90_est_list(i) = prctile(line_error_est, 90);
     
     % d90_actual (with actual attraction line)
     line_error_act = zeros(size(x, 2), 1);
     for s=1:size(x, 2)
         line_error_act(s) = point_to_line(x(i,s), y(i,s), [LINE_START(1),LINE_START(2)], [LINE_END(1),LINE_END(2)]);
     end
-    d90_act_list(i) = prctile(line_error_act, 95);
+    d90_act_list(i) = prctile(line_error_act, 90);
 
     % Visualize Sharks and Particles
         
