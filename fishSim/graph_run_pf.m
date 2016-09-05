@@ -1,11 +1,4 @@
 % Plot Performance of attraction line PF
-% subplot(2,2,1)
-% hold on
-% plot(act_error_list(:,1), '.')
-% plot(est_error_list, '.')
-% legend('Actual Line', '40', '70', '100')
-% title(sprintf('Comparison of Sum of Distance to Act and Est Line for %d Sharks with sigma=1 and uni(0,5)', N_fish));
-% hold off
 clf
 load d90_fit.mat
 
