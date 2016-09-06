@@ -8,7 +8,7 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_dist, point_sd_fit, 
     y2 = p(4);
     numshark = p(5);
     seg_len = dist(x1, y1, x2, y2);
-    cost_factor = 1;
+    cost_factor = 0;
     
     % Line Fit Correction
     line_error = zeros(size(x_sharks, 2), 1);
@@ -28,11 +28,10 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_dist, point_sd_fit, 
     prob_line = normpdf(Z_line, 0, point_sd);
     
 %     Number of Shark Correction
-    d90_sd = 0.75;
+    d90_sd = 1.5;
     d90_actual = prctile([cum_dist(:);line_error], 95); % Use cumulative distance
     model_d90 = d90_fit(numshark, seg_len);
     prob_ns = exp(- (d90_actual - model_d90)^2/d90_sd^2);
-%     prob_ns = 1;
     
     prob = prob_line * prob_ns;
 %     prob = prob_line;

@@ -26,10 +26,9 @@ num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 seg_len = zeros(TS_PF,1);
-shark_dist_cum_list = zeros(TS_PF,N_fish); % keeps track of all shark distance
 d90_est_list = zeros(TS_PF,1);
 d90_act_list = zeros(TS_PF,1);
-
+shark_dist_cum_list = zeros(TS_PF,N_fish); % keeps track of all shark distance
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
 
