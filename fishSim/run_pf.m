@@ -1,10 +1,10 @@
 % Run att_pf and graph performance
 clf
 
-N_trial = 2;
-tag_list = [40, 70, 100];
+N_trial = 3;
+tag_list = [25,50];
 ts_pf = 1000;
-N_fish = 100;
+N_fish = 50;
 seg_length = 50;
 
 % Preallocate List
