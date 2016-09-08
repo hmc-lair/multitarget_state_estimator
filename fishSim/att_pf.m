@@ -1,5 +1,5 @@
 
-function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, d90_est_list, d90_act_list] ...
+function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, d90_est_list, d90_act_list, seg_len_dist] ...
     = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
@@ -26,6 +26,7 @@ num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 seg_len = zeros(TS_PF,1);
+seg_len_dist = zeros(TS_PF,1);
 d90_est_list = zeros(TS_PF,1);
 d90_act_list = zeros(TS_PF,1);
 shark_dist_cum_list = zeros(TS_PF,N_fish); % keeps track of all shark distance
@@ -74,6 +75,10 @@ for i = 1:TS_PF
     % Segment Length
     seg_len(i) = dist(p_mean(1),p_mean(2),p_mean(3),p_mean(4));
     
+    % Estimated Segment Length based on distance
+    seg_len_dist_i = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)])
+    seg_len_dist(i) = seg_len_dist_i;
+    
     % d90_estimated (with PF estimated line)
     line_error_est = zeros(size(x, 2), 1);
     for s=1:size(x, 2)
@@ -102,6 +107,7 @@ for i = 1:TS_PF
            plot(x(i,f),y(i,f),'x'); 
            plot([x(i,f) x(i,f)+cos(t(i,f))*arrowSize],[y(i,f) y(i,f)+sin(t(i,f))*arrowSize]); 
         end
+       
         
 %         % Plot Tagged Sharks
 %         for f=1:N_tagged
@@ -138,6 +144,7 @@ for i = 1:TS_PF
         % Plot Attraction Line
         plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)], 'black');
 
+        title(seg_len_dist_i)
         pause(0.0001); 
     end
 end
