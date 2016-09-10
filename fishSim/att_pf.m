@@ -1,6 +1,6 @@
 
 function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, d90_est_list, d90_act_list, seg_len_dist] ...
-    = att_pf(x, y, t, LINE_START, LINE_END, TS_PF, show_visualization)
+    = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
 Height = 10;
@@ -13,6 +13,10 @@ N_robots = 5;
 range = 50;
 
 numshark_sd = 0.65;
+
+randomSharks = randperm(N_fish, N_tagged);
+x_tagged = x(:, randomSharks);
+y_tagged = y(:, randomSharks);
 
 
 
@@ -38,10 +42,12 @@ estimated = mean(p);
 
 for i = 1:TS_PF
     % Find tagged shark in range of robot
-    [i_range, x_range, y_range] = getNearbyTags(robots,range, x(i,:),y(i,:));
-    N_inRange = size(i_range, 2);
-    
-    num_tag_covered(i) = N_inRange;
+    x_range = x_tagged(i,:);
+    y_range = y_tagged(i,:);
+%     [i_range, x_range, y_range] = getNearbyTags(robots,range, x(i,:),y(i,:));
+%     N_inRange = size(i_range, 2);
+%     
+%     num_tag_covered(i) = N_inRange;
     
     if ~mod(i, 100)
         disp(i)
@@ -54,8 +60,10 @@ for i = 1:TS_PF
     w = getParticleWeights(p, x_range, y_range, shark_dist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
+    current_points_to_line = points_to_line(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+    size(current_points_to_line)
     shark_dist_cum_list(i,:) = ... % Update cumulative shark distance list
-        points_to_line(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+        current_points_to_line;
     
     % Move Robot
     robots = moveRobots(robots, x_range, y_range, ...
@@ -76,7 +84,7 @@ for i = 1:TS_PF
     seg_len(i) = dist(p_mean(1),p_mean(2),p_mean(3),p_mean(4));
     
     % Estimated Segment Length based on distance
-    seg_len_dist_i = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)])
+    seg_len_dist_i = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)]);
     seg_len_dist(i) = seg_len_dist_i;
     
     % d90_estimated (with PF estimated line)
