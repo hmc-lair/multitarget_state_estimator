@@ -2,10 +2,10 @@
 clf
 
 N_trial = 3;
-tag_list = [50,100];
-ts_pf = 100;
-N_fish = 100;
-seg_length = 50;
+tag_list = 50;
+ts_pf = 500;
+N_fish = 50;
+seg_length = 20;
 
 % Preallocate List
 tag_list_size = size(tag_list, 2);
@@ -38,9 +38,10 @@ for i = 1:tag_list_size
         LINE_START = [-seg_length/2 0];
         LINE_END = [seg_length/2 0];
         [act_error, est_error, error, numshark_est, x_robots, y_robots, numtag_range, seg_len_est, d90_est, d90_act,seg_len_dist_est] ...
-            = att_pf(x, y, t, LINE_START, LINE_END, ts_pf, false);
+            = att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf, false);
         
         % Assign to lists
+        size(act_error)
         act_error_tag(:,j) = act_error;
         est_error_tag(:,j) = est_error;
         error_tag(:,j) = error;
