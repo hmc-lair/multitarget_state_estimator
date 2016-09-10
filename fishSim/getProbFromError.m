@@ -28,10 +28,13 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_dist, point_sd_fit, 
     
     prob_line = normpdf(Z_line, 0, point_sd);
     
+    % Seg_len based on edge sharks of line
+    seg_len_edge = measureEdgeDistance(x_sharks,y_sharks,[x1,y1],[x2,y2]);
+    
 %     Number of Shark Correction
     d90_sd = 0.75;
     d90_actual = prctile([cum_dist(:);line_error], 95); % Use cumulative distance
-    model_d90 = d90_fit(numshark, seg_len);
+    model_d90 = d90_fit(numshark, seg_len_edge);
     prob_ns = exp(- (d90_actual - model_d90)^2/d90_sd^2);
     
     prob = prob_line * prob_ns;
