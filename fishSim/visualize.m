@@ -1,8 +1,8 @@
 %% Visualize fish trajectories from fishSim_7
 
-function [] = visualize(x, y, t)
+
+function [] = visualize(x, y)
 clf
-% load fishSimData.mat 
 
 maxTime = size(x,1);
 N_fish = size(x,2);

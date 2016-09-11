@@ -1,7 +1,3 @@
-% x=1:.01:2;
-% y=sin(2*pi*x);
-% plot(y,x,'k*');
-% hold on;
 clf
 hold on
 % plot(x_sharks,y_sharks,'.');

@@ -1,5 +1,5 @@
-
-function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len] = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
+function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, d90_est_list, d90_act_list, seg_len_dist] ...
+    = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
 % Particle filter to estimate attraction line and number of
 % fish in the fish swarm
 
@@ -17,6 +17,8 @@ range = 100;
 numshark_sd = 0.65;
 
 randomSharks = randperm(N_fish, N_tagged); % Randomize Selection of Sharks
+x_tagged = x(:, randomSharks);
+y_tagged = y(:, randomSharks);
 
 % Initialize States
 robots = initRobots(50,N_robots);
@@ -28,8 +30,11 @@ error = zeros(TS_PF,1);
 num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
-seg_len = zeros(TS_PF, 1);
-
+seg_len = zeros(TS_PF,1);
+seg_len_dist = zeros(TS_PF,1);
+d90_est_list = zeros(TS_PF,1);
+d90_act_list = zeros(TS_PF,1);
+shark_dist_cum_list = zeros(TS_PF,N_fish); % keeps track of all shark distance
 
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
@@ -42,10 +47,13 @@ estimated = mean(p);
 
 for i = 1:TS_PF
     % Find tagged shark in range of robot
-    [i_range, x_range, y_range] = getNearbyTags(robots,range, x_tagged(i,:),y_tagged(i,:));
+    [i_range, x_range, y_range] = getNearbyTags(robots,range, x(i,:),y(i,:));
     N_inRange = size(i_range, 2);
-    
     num_tag_covered(i) = N_inRange;
+    
+    % TODO: implement tag
+    x_range = x_tagged(i,:);
+    y_range = y_tagged(i,:);
     
     if ~mod(i, 100) % Display timestep periodically
         disp(i)
@@ -53,13 +61,14 @@ for i = 1:TS_PF
     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
     numshark_old(:,1) = p(:,5);
     
-%     Move and Resample Particles
-    p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);   
-    w = getParticleWeights(p, x_range, y_range, @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
+    p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);  
+    w = getParticleWeights(p, x_range, y_range, shark_dist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
-    
-     
     p_mean = computeParticleMean(p,w)
+    current_points_to_line = points_to_line(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+    size(current_points_to_line)
+    shark_dist_cum_list(i,:) = ... % Update cumulative shark distance list
+        current_points_to_line;
     
     % TODO: Line Fit Correction
     line_error = zeros(size(x, 2), 1);
@@ -91,9 +100,30 @@ for i = 1:TS_PF
     % Performance Error: Error between actual and estimated line
     error(i) = pfError(x(i,:), y(i,:), LINE_START, LINE_END, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)], N_fish);
     numshark_est(i) = p_mean(5);
+    
+    % Segment Length
+    seg_len(i) = dist(p_mean(1),p_mean(2),p_mean(3),p_mean(4));
+    
+    % Estimated Segment Length based on distance
+    seg_len_dist_i = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)]);
+    seg_len_dist(i) = seg_len_dist_i;
+    
+    % d90_estimated (with PF estimated line)
+    line_error_est = zeros(size(x, 2), 1);
+    for s=1:size(x, 2)
+        line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
+    end
+    d90_est_list(i) = prctile(line_error_est, 90);
+    
+    % d90_actual (with actual attraction line)
+    line_error_act = zeros(size(x, 2), 1);
+    for s=1:size(x, 2)
+        line_error_act(s) = point_to_line(x(i,s), y(i,s), [LINE_START(1),LINE_START(2)], [LINE_END(1),LINE_END(2)]);
+    end
+    d90_act_list(i) = prctile(line_error_act, 90);
 
     % Visualize Sharks and Particles
-
+        
     if show_visualization
 
         arrowSize = 1.5;
@@ -106,6 +136,7 @@ for i = 1:TS_PF
            plot(x(i,f),y(i,f),'x'); 
            plot([x(i,f) x(i,f)+cos(t(i,f))*arrowSize],[y(i,f) y(i,f)+sin(t(i,f))*arrowSize]); 
         end
+       
         
 %         % Plot Tagged Sharks
 %         for f=1:N_tagged
@@ -141,6 +172,7 @@ for i = 1:TS_PF
         % Plot Attraction Line
         plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)], 'black');
 
+        title(seg_len_dist_i)
         pause(0.0001); 
     end
 end

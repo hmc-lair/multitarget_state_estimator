@@ -1,14 +1,11 @@
 % Simulate shark trajectories using an attraction line model
 
 function [x,y, t] = fishSim_7(N_fish, seg_length, K_att, K_temp_att, K_rep)
-maxTime = 10000;
+maxTime = 6000;
 v=0.3;
 deltaT = 1/30;
 fishInteractionRadius = 1.5;
 K_con = 0.031109;
-% K_rep = 1.0126e9;
-% K_att = 1.0126e3;
-% K_temp_att = 1.01226e6;
 K_rand = 0.1;
 sigmaRand = 0.1;
 
@@ -93,7 +90,3 @@ y = y(5001:end, :);
 %     t x y N_fish LINE_START LINE_END
 
 end
-
-
-
-
