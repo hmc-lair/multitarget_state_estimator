@@ -2,10 +2,6 @@
 % Independent Variables
 seg_list = 10:5:50;
 numshark_list = 10:10:150;
-% 
-% seg_list = 10;
-% numshark_list = [10 15];
-
 % Initialize States
 seg_list_len = size(seg_list,2);
 numshark_len = size(numshark_list,2);
@@ -53,27 +49,3 @@ toc
 save('gaussFitd90_3Trial.mat', 'muhat_list_d90', 'sigmahat_list_d90', 'muhat_list_x90','sigmahat_list_x90', ...
     'seg_list', 'numshark_list')
 
-% Plot Gaussian Fit
-% 
-figure
-subplot(2,2,1)
-plot(numshark_list, muhat_list_d90, 'x');
-title('Gaussian fit of 90th Percentile Max Dist') 
-ylabel('Mean from Gaussian Fit')
-legend(cellstr(num2str(seg_list', 'L=%-d')))
-subplot(2,2,3)
-plot(numshark_list, sigmahat_list_d90, 'x')
-xlabel('Number of Sharks')
-ylabel('Sigma from Gaussian Fit')
-legend(cellstr(num2str(seg_list', 'L=%-d')))
-
-subplot(2,2,2)
-plot(numshark_list, muhat_list_x90, 'x');
-title('Gaussian fit of 90th Percentile x Dist') 
-ylabel('Mean from Gaussian Fit')
-legend(cellstr(num2str(seg_list', 'L=%-d')))
-subplot(2,2,4)
-plot(numshark_list, sigmahat_list_x90, 'x')
-xlabel('Number of Sharks')
-ylabel('Sigma from Gaussian Fit')
-legend(cellstr(num2str(seg_list', 'L=%-d')))
