@@ -1,8 +1,8 @@
 % Plot Performance of attraction line PF
 clf
-load d90_fit.mat
+load d90x90fit.mat
 
-subplot(2,2,1)
+subplot(3,2,1)
 plot(error_list, '.')
 title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2)/numshark)')
 xlabel('Number of Steps')
@@ -10,7 +10,7 @@ ylabel('Error (m/shark)')
 legendCell = [cellstr(num2str(tag_list', 'm=%-d'))]
 legend(legendCell)
 
-subplot(2,2,2)
+subplot(3,2,2)
 hold on
 plot([0 ts_pf], [N_fish N_fish]);
 plot(numshark_est_list, '.');
@@ -35,7 +35,7 @@ hold off
 % xlabel('Number of Steps')
 % hold off
 
-subplot(2,2,3)
+subplot(3,2,3)
 hold on
 plot([0 ts_pf], [seg_length, seg_length]);
 plot(seglendist_list, '.');
@@ -47,15 +47,26 @@ ylabel('Attraction Line Length, estimated from furthest point (m)')
 xlabel('Number of Steps')
 hold off
 
-subplot(2,2,4)
-d90_model = d90_fit(N_fish, seg_length);
+subplot(3,2,4)
+x90_model = d90_fit(N_fish, seg_length);
 hold on
-plot([0 ts_pf], [d90_model, d90_model]);
+plot([0 ts_pf], [x90_model, x90_model]);
 plot(d90_list_act, '.');
-plot(d90_list_est, '-');
-legendCell = ['Model '; cellstr(num2str(tag_list', '%-d (Actual Line)'));cellstr(num2str(tag_list', '%-d (Estimated Line)'))]
+legendCell = ['Model '; cellstr(num2str(tag_list', '%-d (Actual Line)'));]
 legend(legendCell)
-title('Estimated d90')'
-ylabel('90th Percentile Distance from Estimated Line (m)')
+title('Estimated d90 \rho_{90}')'
+ylabel('\rho_{90} (m)')
+xlabel('Number of Steps')
+hold off
+
+subplot(3,2,5)
+x90_model = x90_fit(N_fish, seg_length);
+hold on
+plot([0 ts_pf], [x90_model, x90_model]);
+plot(x90_list_act, '.');
+legendCell = ['Model '; cellstr(num2str(tag_list', '%-d (Actual Line)'));]
+legend(legendCell)
+title('Estimated \phi_{90}')'
+ylabel('\phi_{90} (m)')
 xlabel('Number of Steps')
 hold off

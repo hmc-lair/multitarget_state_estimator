@@ -1,5 +1,5 @@
 
-function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, d90_est_list, d90_act_list, seg_len_dist] ...
+function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, x90_act_list, d90_act_list, seg_len_dist] ...
     = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
 
 % PF Constants
@@ -31,7 +31,7 @@ numshark_est = zeros(TS_PF,1);
 numshark_old = zeros(N_part, 2);
 seg_len = zeros(TS_PF,1);
 seg_len_dist = zeros(TS_PF,1);
-d90_est_list = zeros(TS_PF,1);
+x90_act_list = zeros(TS_PF,1);
 d90_act_list = zeros(TS_PF,1);
 shark_dist_cum_list = zeros(TS_PF,N_fish); % keeps track of all shark distance
 x_robots = zeros(N_robots, TS_PF);
@@ -41,13 +41,9 @@ estimated = mean(p);
 
 
 for i = 1:TS_PF
-    % Find tagged shark in range of robot
+    % Find tagged shark in range of robot. TODO: Everything is tagged now!!
     x_range = x_tagged(i,:);
     y_range = y_tagged(i,:);
-%     [i_range, x_range, y_range] = getNearbyTags(robots,range, x(i,:),y(i,:));
-%     N_inRange = size(i_range, 2);
-%     
-%     num_tag_covered(i) = N_inRange;
     
     if ~mod(i, 100)
         disp(i)
@@ -81,18 +77,19 @@ for i = 1:TS_PF
     numshark_est(i) = p_mean(5);
     
     % Segment Length
-    seg_len(i) = dist(p_mean(1),p_mean(2),p_mean(3),p_mean(4));
+%     seg_len(i) = dist(p_mean(1),p_mean(2),p_mean(3),p_mean(4));
+    seg_len(i) = p_mean(6);
     
     % Estimated Segment Length based on distance
-    seg_len_dist_i = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)]);
+    [x90_act,~,seg_len_dist_i] = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)]);
     seg_len_dist(i) = seg_len_dist_i;
     
-    % d90_estimated (with PF estimated line)
-    line_error_est = zeros(size(x, 2), 1);
-    for s=1:size(x, 2)
-        line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
-    end
-    d90_est_list(i) = prctile(line_error_est, 90);
+    % x90_estimated
+%     line_error_est = zeros(size(x, 2), 1);
+%     for s=1:size(x, 2)
+%         line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
+%     end
+    x90_act_list(i) = x90_act;
     
     % d90_actual (with actual attraction line)
     line_error_act = zeros(size(x, 2), 1);
