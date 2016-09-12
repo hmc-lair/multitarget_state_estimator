@@ -1,0 +1,39 @@
+% % Get d90 vs. att_lin_len and numsharks from T Matrix
+% addpath('/Users/cherieho/multitarget_state_estimator/fishSim')
+% 
+% [xsim,ysim,tsim]=fishSim_7(100,25, 1e3, 1e6, 1e9); % Simulated 100 Sharks, 25m att line
+
+function [x_90, d_90] = tMatrix_d90(xsim,ysim)
+ % Get d90 from T Matrix given x and y trajectories
+x_increment = 5;
+y_increment = 1;
+[T_x, T_y] = transitionMatrix(xsim,ysim,x_increment, y_increment); % T Matrix
+
+% SS Prob
+nBins_y = length(T_y);
+p_int_y = 1/nBins_y * ones(1,nBins_y);
+p_fin_y = getProbFromTMatrix(T_y,p_int_y,100000,y_increment);
+
+nBins_x = length(T_x);
+p_int_x = 1/nBins_x * ones(1,nBins_x);
+p_fin_x = getProbFromTMatrix(T_x,p_int_x,100000,x_increment);
+
+% Probability x axis
+max_vert_dist = 10;
+hist_edges_y = -max_vert_dist:y_increment:max_vert_dist-y_increment;
+
+max_hor_dist = 30;
+hist_edges_x = -max_hor_dist:x_increment:max_hor_dist-x_increment;
+
+hold on
+plot(hist_edges_x, p_fin_x, 'x')
+plot(hist_edges_y, p_fin_y,'.')
+hold off
+
+% Find d_90 (90th percentile, one sided)
+cu_sum_y = cumsum(p_fin_y);
+d_90 = hist_edges_y(find(cu_sum_y > 0.95,1));
+
+cu_sum_x = cumsum(p_fin_x);
+x_90 = hist_edges_x(find(cu_sum_x > 0.95,1));
+end
