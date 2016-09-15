@@ -25,7 +25,7 @@ hist_edges_y = -max_vert_dist:y_increment:max_vert_dist-y_increment;
 max_hor_dist = 30;
 hist_edges_x = -max_hor_dist:x_increment:max_hor_dist-x_increment;
 
-figure
+figure('Visible','off')
 % hold on
 plot(hist_edges_x, p_fin_x,'x')
 title('Steady State Probability')
@@ -34,6 +34,8 @@ title('Steady State Probability')
 % hold off
 xlabel('Distance from Center of line')
 ylabel('Probability')
+
+saveas(gcf,sprintf('ss_prob_xinc_%d.png',x_increment))
 
 % Find d_90 (90th percentile, one sided)
 cu_sum_y = cumsum(p_fin_y);
