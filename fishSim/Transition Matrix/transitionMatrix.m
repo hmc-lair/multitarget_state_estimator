@@ -46,6 +46,21 @@ for trial = 1:N_trial
         end
     end
 end
+% 
+clf
+figure
+for i = 0:4
+    figure
+    for j = 1:12
+        subplot(4,3,j)
+        index = i*12 + j;
+        bar(T_x(index,:))
+        title(sprintf('From State: %d', index))
+        xlim([index-2,index+2])
+        set(gca, 'YScale', 'log') % this screws the bar series
+    end
+    saveas(gcf,sprintf('T_mat_%d.png',i))
+end
 
 T_y = sum(T_y,3); % Sum Instances from multiple trials
 T_x = sum(T_x,3); % Sum Instances from multiple trials

@@ -8,6 +8,7 @@ title('Performance Error (\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2)/numshark)
 xlabel('Number of Steps')
 ylabel('Error (m/shark)')
 legendCell = [cellstr(num2str(tag_list', 'm=%-d'))]
+ylim([0 1])
 legend(legendCell)
 
 subplot(3,2,2)

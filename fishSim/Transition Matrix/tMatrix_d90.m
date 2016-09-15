@@ -3,9 +3,9 @@
 % 
 % [xsim,ysim,tsim]=fishSim_7(100,25, 1e3, 1e6, 1e9); % Simulated 100 Sharks, 25m att line
 
-function [x_90, d_90] = tMatrix_d90(xsim,ysim)
+function [x_90, d_90] = tMatrix_d90(xsim,ysim, x_increment)
  % Get d90 from T Matrix given x and y trajectories
-x_increment = 5;
+% x_increment = 5;
 y_increment = 1;
 [T_x, T_y] = transitionMatrix(xsim,ysim,x_increment, y_increment); % T Matrix
 
@@ -25,10 +25,15 @@ hist_edges_y = -max_vert_dist:y_increment:max_vert_dist-y_increment;
 max_hor_dist = 30;
 hist_edges_x = -max_hor_dist:x_increment:max_hor_dist-x_increment;
 
-hold on
-plot(hist_edges_x, p_fin_x, 'x')
-plot(hist_edges_y, p_fin_y,'.')
-hold off
+figure
+% hold on
+plot(hist_edges_x, p_fin_x,'x')
+title('Steady State Probability')
+% hist(xsim(:),50)
+% plot(hist_edges_y, p_fin_y,'.')
+% hold off
+xlabel('Distance from Center of line')
+ylabel('Probability')
 
 % Find d_90 (90th percentile, one sided)
 cu_sum_y = cumsum(p_fin_y);

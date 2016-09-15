@@ -27,22 +27,22 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_dist, point_sd_fit, 
 %     seg_len_edge = measureEdgeDistance(x_sharks,y_sharks,[x1,y1],[x2,y2]);
 
     % Get Phi, 90% Distance along line from center
-    x90_sd = 50;
+    x90_sd = 5;
     [x90_actual, ~,~] = measureEdgeDistance(x_sharks,y_sharks,[x1,y1],[x2,y2]);
     x90_actual_bin = floor(x90_actual/5)*5;
     model_x90 = x90_fit(numshark,L);
     prob_x90 = normpdf(x90_actual_bin, model_x90, x90_sd);
     
     
-%     Number of Shark Correction
-    d90_sd = 0.75;
+    % Number of Shark Correction
+    d90_sd = 1;
     d90_actual = prctile([cum_dist(:);line_error], 90); % Use cumulative distance
     d90_actual_bin = floor(d90_actual); % Put into bin that matches model
     model_d90 = d90_fit(numshark, L);
     prob_d90 = normpdf(d90_actual_bin, model_d90, d90_sd);
-    prob_d90 = 1;
     
     prob = prob_line * prob_d90 * prob_x90;
-%     prob = prob_line;
+%     prob = prob_d90 * prob_x90;
+%       prob = prob_line * prob_d90;
     
 end
