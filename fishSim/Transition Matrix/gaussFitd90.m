@@ -9,7 +9,7 @@ muhat_list_d90 = zeros(seg_list_len,numshark_len);
 sigmahat_list_d90 = zeros(seg_list_len,numshark_len);
 muhat_list_x90 = zeros(seg_list_len,numshark_len);
 sigmahat_list_x90 = zeros(seg_list_len,numshark_len);
-N_trial = 3;
+N_trial = 2;
 clf
 
 
@@ -46,6 +46,6 @@ end
 toc
 
 
-save('gaussFitd90_3Trial.mat', 'muhat_list_d90', 'sigmahat_list_d90', 'muhat_list_x90','sigmahat_list_x90', ...
+save('gaussFitd90_2Trial.mat', 'muhat_list_d90', 'sigmahat_list_d90', 'muhat_list_x90','sigmahat_list_x90', ...
     'seg_list', 'numshark_list')
 

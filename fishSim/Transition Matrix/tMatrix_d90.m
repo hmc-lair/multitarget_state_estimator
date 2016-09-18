@@ -3,10 +3,10 @@
 % 
 % [xsim,ysim,tsim]=fishSim_7(100,25, 1e3, 1e6, 1e9); % Simulated 100 Sharks, 25m att line
 
-function [x_90, d_90] = tMatrix_d90(xsim,ysim, x_increment)
+function [x_90, d_90] = tMatrix_d90(xsim,ysim)
  % Get d90 from T Matrix given x and y trajectories
-% x_increment = 5;
-y_increment = 1;
+x_increment = 1;
+y_increment = 0.5;
 [T_x, T_y] = transitionMatrix(xsim,ysim,x_increment, y_increment); % T Matrix
 
 % SS Prob
@@ -22,18 +22,20 @@ p_fin_x = getProbFromTMatrix(T_x,p_int_x,100000,x_increment);
 max_vert_dist = 10;
 hist_edges_y = -max_vert_dist:y_increment:max_vert_dist-y_increment;
 
-max_hor_dist = 30;
+max_hor_dist = 35;
 hist_edges_x = -max_hor_dist:x_increment:max_hor_dist-x_increment;
-
-figure
+% 
+% figure
 % hold on
-plot(hist_edges_x, p_fin_x,'x')
-title('Steady State Probability')
-% hist(xsim(:),50)
-% plot(hist_edges_y, p_fin_y,'.')
+% plot(hist_edges_x, p_fin_x,'x','DisplayName','Distance Along line')
+% title('Steady State Probability')
+% % hist(xsim(:),50)
+% % plot(hist_edges_y, p_fin_y,'.','DisplayName','Distance From Line')
 % hold off
-xlabel('Distance from Center of line')
-ylabel('Probability')
+% xlabel('Distance (m)')
+% ylabel('Probability')
+% legend('show')
+% saveas(gcf,sprintf('ssprob.png',i))
 
 % Find d_90 (90th percentile, one sided)
 cu_sum_y = cumsum(p_fin_y);
