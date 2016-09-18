@@ -2,10 +2,10 @@
 clf
 
 N_trial = 1;
-tag_list = 100;
-ts_pf = 500;
-N_fish = 100;
-seg_length = 50;
+tag_list = 50;
+ts_pf = 1000;
+N_fish = 50;
+seg_length = 25;
 
 % Preallocate List
 tag_list_size = size(tag_list, 2);

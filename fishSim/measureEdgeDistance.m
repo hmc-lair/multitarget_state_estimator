@@ -12,8 +12,8 @@ topmost = max(yRot(:));
 bottommost = min(yRot(:));
 
 % dist_x = rightmost - leftmost;
-x90 = prctile(xRot,90) - prctile(xRot,50);
-d90 = prctile(yRot,90);
+x90 = prctile(xRot,95) - prctile(xRot,50);
+d90 = prctile(yRot,95);
 seg_len = rightmost - leftmost;
 
 end

@@ -39,7 +39,7 @@ hold off
 subplot(3,2,3)
 hold on
 plot([0 ts_pf], [seg_length, seg_length]);
-plot(seglendist_list, '.');
+plot(seglen_list, '.');
 % ylim([0 200]);
 legendCell = ['Actual'; cellstr(num2str(tag_list', 'm=%-d'))]
 legend(legendCell)

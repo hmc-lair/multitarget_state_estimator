@@ -77,7 +77,6 @@ for i = 1:TS_PF
     numshark_est(i) = p_mean(5);
     
     % Segment Length
-%     seg_len(i) = dist(p_mean(1),p_mean(2),p_mean(3),p_mean(4));
     seg_len(i) = p_mean(6);
     
     % Estimated Segment Length based on distance
@@ -89,14 +88,19 @@ for i = 1:TS_PF
 %     for s=1:size(x, 2)
 %         line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
 %     end
-    x90_act_list(i) = x90_act;
+    bin_size_x = 1;
+    x90_actual_bin = floor(x90_act/bin_size_x)*bin_size_x;
+    x90_act_list(i) = x90_actual_bin;
     
     % d90_actual (with actual attraction line)
     line_error_act = zeros(size(x, 2), 1);
     for s=1:size(x, 2)
         line_error_act(s) = point_to_line(x(i,s), y(i,s), [LINE_START(1),LINE_START(2)], [LINE_END(1),LINE_END(2)]);
     end
-    d90_act_list(i) = prctile(line_error_act, 90);
+    bin_size_y = 0.5;
+    d90_act = prctile(line_error_act,95);
+    d90_actual_bin = floor(d90_act/bin_size_y)*bin_size_y;
+    d90_act_list(i) = d90_actual_bin;
 
     % Visualize Sharks and Particles
         

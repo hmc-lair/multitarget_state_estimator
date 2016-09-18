@@ -8,20 +8,19 @@ function p = propagate(p, sigma_mean, ns_t2, LINE_START, LINE_END)
         x2 = p(indi_p, 3) + normrnd(0, sigma_mean);
         y2 = p(indi_p, 4) + normrnd(0, sigma_mean);  
        
-%         x1 = -25;
-%         y1 = 0;
-%         x2 = 25;
-%         y2 = 0;
-% %         
         num_shark = p(indi_p, 5) + sigma*(p(indi_p,5) - ns_t2(indi_p))...
             + normrnd(0,1); % TODO: currently using uniform
         
         if num_shark < 0
-            num_shark = randi([0, 100]);
+            num_shark = 1;
         end
-%         num_shark = 100;
+        
         L = p(indi_p, 6) + normrnd(0, 5); 
-        L = 50;
+        if L < 0
+            L = randi([0,100]);
+        end
+        
+%         L = 50;
         p(indi_p, :) = [x1, y1, x2, y2, num_shark,L];
         
     end

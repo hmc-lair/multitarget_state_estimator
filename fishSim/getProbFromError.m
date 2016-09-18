@@ -17,15 +17,13 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_dist, point_sd_fit, 
     
 %     Add cost for segment length
     Z_line = sum(line_error);
-   
     point_mu = 0;
     point_sd = 100;
-    
     prob_line = normpdf(Z_line, point_mu, point_sd);
    
 
     % Get Phi, 90% Distance along line from center
-    x90_sd = 5;
+    x90_sd = 10;
     bin_size_x = 1;
     [x90_actual, ~,~] = measureEdgeDistance(x_sharks,y_sharks,[x1,y1],[x2,y2]);
     x90_actual_bin = floor(x90_actual/bin_size_x)*bin_size_x;
