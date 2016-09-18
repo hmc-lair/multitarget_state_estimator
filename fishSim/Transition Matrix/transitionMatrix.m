@@ -16,7 +16,7 @@ y_edges = [-max_vert_dist:y_increment:max_vert_dist] ;
 N_ybins = length(y_edges)-1;
 T_y = zeros(N_ybins, N_ybins,N_trial); % Initialize Transition Matrix
 
-max_hor_dist = 30;
+max_hor_dist = 35;
 x_edges = [-max_hor_dist:x_increment:max_hor_dist];
 N_xbins = length(x_edges)-1;
 T_x = zeros(N_xbins, N_xbins,N_trial); % Initialize Transition Matrix
@@ -46,20 +46,20 @@ for trial = 1:N_trial
         end
     end
 end
-% 
-clf
-for i = 0:4
-    figure('Visible','off')
-    for j = 1:12
-        subplot(4,3,j)
-        index = i*12 + j;
-        bar(T_x(index,:))
-        title(sprintf('From State: %d', index))
-        xlim([index-2,index+2])
-        set(gca, 'YScale', 'log') % this screws the bar series
-    end
-    saveas(gcf,sprintf('T_mat_%d_xinc%d.png',i,x_increment))
-end
+% clf
+% figure
+% for i = 0:4
+%     figure
+%     for j = 1:12
+%         subplot(4,3,j)
+%         index = i*12 + j;
+%         bar(T_x(index,:))
+%         title(sprintf('From State: %d', index))
+%         xlim([index-2,index+2])
+%         set(gca, 'YScale', 'log') % this screws the bar series
+%     end
+%     saveas(gcf,sprintf('T_mat_%d.png',i))
+% end
 
 T_y = sum(T_y,3); % Sum Instances from multiple trials
 T_x = sum(T_x,3); % Sum Instances from multiple trials
