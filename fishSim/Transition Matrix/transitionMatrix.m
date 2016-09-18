@@ -46,7 +46,6 @@ for trial = 1:N_trial
         end
     end
 end
-% 
 % clf
 % figure
 % for i = 0:4
