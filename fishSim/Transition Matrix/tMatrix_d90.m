@@ -26,12 +26,17 @@ max_hor_dist = 30;
 hist_edges_x = -max_hor_dist:x_increment:max_hor_dist-x_increment;
 
 figure('Visible','off')
-% hold on
-plot(hist_edges_x, p_fin_x,'x')
+hold on
+plot(hist_edges_x, p_fin_x,'x','DisplayName','Probability from T Matrix')
+
+%  Histogram
+[fhist,xhist] = hist(xsim(:),hist_edges_x);
+delta_x = xhist(2) - xhist(1);
+plot(xhist, fhist/(sum(fhist)),'-o','DisplayName','Probability from Histogram')
+
+hold off
 title('Steady State Probability')
-% hist(xsim(:),50)
-% plot(hist_edges_y, p_fin_y,'.')
-% hold off
+legend('show')
 xlabel('Distance from Center of line')
 ylabel('Probability')
 
