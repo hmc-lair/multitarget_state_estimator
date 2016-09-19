@@ -33,7 +33,8 @@ seg_len = zeros(TS_PF,1);
 seg_len_dist = zeros(TS_PF,1);
 x90_act_list = zeros(TS_PF,1);
 d90_act_list = zeros(TS_PF,1);
-shark_dist_cum_list = zeros(TS_PF,N_fish); % keeps track of all shark distance
+shark_ydist_cum_list = zeros(TS_PF,N_fish); % keeps track of all y shark distance
+shark_xdist_cum_list = zeros(TS_PF,N_fish); % keeps track of all x shark distance
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
 
@@ -44,6 +45,7 @@ for i = 1:TS_PF
     % Find tagged shark in range of robot. TODO: Everything is tagged now!!
     x_range = x_tagged(i,:);
     y_range = y_tagged(i,:);
+    i_range = 1:N_fish;
     
     if ~mod(i, 100)
         disp(i)
@@ -53,12 +55,15 @@ for i = 1:TS_PF
     
     p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);  
     
-    w = getParticleWeights(p, x_range, y_range, shark_dist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
+    w = getParticleWeights(p, x_range, y_range, shark_ydist_cum_list(1:i-1,:), shark_xdist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);
     p_mean = computeParticleMean(p,w)
+    
+    % Accumulate psi_90 and rho_90
+    [x90_current, ~,~] = measureEdgeDistance(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
+    shark_xdist_cum_list(i,:) = x90_current;
     current_points_to_line = points_to_line(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
-    size(current_points_to_line)
-    shark_dist_cum_list(i,:) = ... % Update cumulative shark distance list
+    shark_ydist_cum_list(i,:) = ... % Update cumulative shark distance list
         current_points_to_line;
     
     % Move Robot
@@ -80,7 +85,7 @@ for i = 1:TS_PF
     seg_len(i) = p_mean(6);
     
     % Estimated Segment Length based on distance
-    [x90_act,~,seg_len_dist_i] = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)]);
+    [~,~,seg_len_dist_i] = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)]);
     seg_len_dist(i) = seg_len_dist_i;
     
     % x90_estimated
@@ -89,17 +94,18 @@ for i = 1:TS_PF
 %         line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
 %     end
     bin_size_x = 1;
-    x90_actual_bin = floor(x90_act/bin_size_x)*bin_size_x;
+    x90_act = prctile(reshape(shark_xdist_cum_list(1:i-1,:),[],1),95);
+    x90_actual_bin = floor(x90_act/bin_size_x)*bin_size_x
     x90_act_list(i) = x90_actual_bin;
     
     % d90_actual (with actual attraction line)
-    line_error_act = zeros(size(x, 2), 1);
-    for s=1:size(x, 2)
-        line_error_act(s) = point_to_line(x(i,s), y(i,s), [LINE_START(1),LINE_START(2)], [LINE_END(1),LINE_END(2)]);
-    end
+%     line_error_act = zeros(size(x, 2), 1);
+%     for s=1:size(x, 2)
+%         line_error_act(s) = point_to_line(x(i,s), y(i,s), [LINE_START(1),LINE_START(2)], [LINE_END(1),LINE_END(2)]);
+%     end
     bin_size_y = 0.5;
-    d90_act = prctile(line_error_act,95);
-    d90_actual_bin = floor(d90_act/bin_size_y)*bin_size_y;
+    d90_act = prctile(reshape(shark_ydist_cum_list(1:i-1,:),[],1),95);
+    d90_actual_bin = floor(d90_act/bin_size_y)*bin_size_y
     d90_act_list(i) = d90_actual_bin;
 
     % Visualize Sharks and Particles
@@ -153,7 +159,7 @@ for i = 1:TS_PF
         % Plot Attraction Line
         plot([LINE_START(1), LINE_END(1)],[LINE_START(2), LINE_END(2)], 'black');
 
-        title(seg_len_dist_i)
+        title(x90_act)
         pause(0.0001); 
     end
 end

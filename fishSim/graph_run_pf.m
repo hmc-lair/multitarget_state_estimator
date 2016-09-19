@@ -46,6 +46,7 @@ plot([0 ts_pf], [x90_model, x90_model]);
 plot(d90_list_act, '.');
 legendCell = ['Model '; cellstr(num2str(tag_list', 'm = %-d (Actual Line)'));]
 legend(legendCell)
+ylim([x90_model-1 x90_model+1])
 title('Estimated d90 \rho_{90}')'
 ylabel('\rho_{90} (m)')
 xlabel('Number of Steps')

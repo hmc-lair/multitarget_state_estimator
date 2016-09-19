@@ -3,7 +3,7 @@ clf
 
 N_trial = 3;
 tag_list = 50;
-ts_pf = 1000;
+ts_pf = 500;
 N_fish = 50;
 seg_length = 25;
 
@@ -34,7 +34,10 @@ for i = 1:tag_list_size
     
     for j = 1:N_trial
         
-        [x,y,t] = fishSim_7(N_fish,seg_length, 1e3, 1e6, 1e9);
+%         [x,y,t] = fishSim_7(N_fish,seg_length, 1e3, 1e6, 1e9);
+        x = xsim;
+        y = ysim;
+        t = tsim;
         LINE_START = [-seg_length/2 0];
         LINE_END = [seg_length/2 0];
         [act_error, est_error, error, numshark_est, x_robots, y_robots, numtag_range, seg_len_est, x90_act, d90_act,seg_len_dist_est] ...
