@@ -16,8 +16,8 @@ function p = propagate(p, sigma_mean, ns_t2, LINE_START, LINE_END)
         end
         
         L = p(indi_p, 6) + normrnd(0, 5); 
-        if L < 0
-            L = randi([0,100]);
+        if L < 0 || L > 50
+            L = 0;
         end
         
 %         L = 50;

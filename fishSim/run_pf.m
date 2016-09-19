@@ -1,7 +1,7 @@
 % Run att_pf and graph performance
 clf
 
-N_trial = 1;
+N_trial = 3;
 tag_list = 50;
 ts_pf = 1000;
 N_fish = 50;
