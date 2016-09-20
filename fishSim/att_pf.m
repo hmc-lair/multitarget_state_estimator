@@ -1,6 +1,6 @@
 
 function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, x90_act_list, d90_act_list, seg_len_dist] ...
-    = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization)
+    = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization, known_line)
 
 % PF Constants
 Height = 10;
@@ -53,7 +53,7 @@ for i = 1:TS_PF
     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
     numshark_old(:,1) = p(:,5);
     
-    p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END);  
+    p = propagate(p, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END,known_line);  
     
     w = getParticleWeights(p, x_range, y_range, shark_ydist_cum_list(1:i-1,:), shark_xdist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
     p = resample(p,w);

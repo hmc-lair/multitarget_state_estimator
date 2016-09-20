@@ -2,9 +2,9 @@
 
 % Constants
 TS_PF = 1000;
-N_fish = 100;
-N_sim = 20;
-seg_length = 50;
+N_fish = 50;
+N_sim = 3;
+seg_length = 25;
 x_fish_sim = zeros(TS_PF, N_fish, N_sim);
 y_fish_sim = zeros(TS_PF, N_fish, N_sim);
 
