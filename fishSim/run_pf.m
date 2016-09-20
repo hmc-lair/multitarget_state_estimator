@@ -2,10 +2,10 @@
 clf
 
 N_trial = 3;
-tag_list = 50;
+tag_list = 100;
 ts_pf = 500;
-N_fish = 50;
-seg_length = 25;
+N_fish = 100;
+seg_length = 40;
 
 % Preallocate List
 tag_list_size = size(tag_list, 2);
@@ -32,17 +32,17 @@ for i = 1:tag_list_size
     
     N_tag = tag_list(i);
     
+    
     for j = 1:N_trial
         
         % Obtain Starting Parameters for Att_PF
-%         [x,y,t] = fishSim_7(N_fish,seg_length, 1e3, 1e6, 1e9);
-        load fishSim_1e3_1e6_1e9.mat
+        load fishSim_1e3_1e6_1e9_n100_L40.mat
         x = x_fish_sim(:,:,j);
         y = y_fish_sim(:,:,j);
         LINE_START = [-seg_length/2 0];
         LINE_END = [seg_length/2 0];
         show_visualization = false;
-        known_line = false;
+        known_line = true;
         
         [act_error, est_error, error, numshark_est, x_robots, y_robots, numtag_range, seg_len_est, x90_act, d90_act,seg_len_dist_est] ...
             = att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf, show_visualization, known_line);
@@ -70,5 +70,5 @@ for i = 1:tag_list_size
     d90_list_act(:,i) = mean(d90_act_tag, 2);
 end
 
-save('pf_line_false.mat', 'act_error_list', 'est_error_list', 'error_list','numshark_est_list',...
+save('pf_line_true.mat', 'act_error_list', 'est_error_list', 'error_list','numshark_est_list',...
     'ts_pf','N_fish','tag_list','seglen_list', 'x90_list_act', 'd90_list_act','seg_length','seglendist_list')
