@@ -11,8 +11,8 @@ function p_mean = computeParticleMean(p, w)
         m_y1 = m_y1 + p(i,2)* w(i);
         m_x2 = m_x2 + p(i,3)* w(i);
         m_y2 = m_y2 + p(i,4)* w(i);
-        m_ns = m_ns + p(i,5)* w(i);
-        m_L = m_L + p(i,6)* w(i);
+%         m_ns = m_ns + p(i,5)* w(i);
+%         m_L = m_L + p(i,6)* w(i);
     end
     
     p_mean = [m_x1/w_tot, m_y1/w_tot, m_x2/w_tot, m_y2/w_tot, m_ns/w_tot, m_L/w_tot];

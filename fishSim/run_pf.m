@@ -45,7 +45,7 @@ for i = 1:tag_list_size
         known_line = false;
         
         [act_error, est_error, error, numshark_est, x_robots, y_robots, numtag_range, seg_len_est, x90_act, d90_act,seg_len_dist_est] ...
-            = att_pf(x, y, t, N_tag, LINE_START, LINE_END, ts_pf, show_visualization, known_line);
+            = att_pf(x, y, N_tag, LINE_START, LINE_END, ts_pf, show_visualization, known_line);
         
         % Assign to lists
         size(act_error)
@@ -70,5 +70,5 @@ for i = 1:tag_list_size
     d90_list_act(:,i) = mean(d90_act_tag, 2);
 end
 
-save('pf_line_false_pf200.mat', 'act_error_list', 'est_error_list', 'error_list','numshark_est_list',...
-    'ts_pf','N_fish','tag_list','seglen_list', 'x90_list_act', 'd90_list_act','seg_length','seglendist_list')
+% save('pf_line_false_pf200.mat', 'act_error_list', 'est_error_list', 'error_list','numshark_est_list',...
+%     'ts_pf','N_fish','tag_list','seglen_list', 'x90_list_act', 'd90_list_act','seg_length','seglendist_list')

@@ -9,16 +9,16 @@ load(false_knownline_filename)
 subplot(3,2,1)
 hold on
 plot([0 ts_pf], [0.1 0.1])
-load(false_knownline_filename)
+% load(false_knownline_filename)
 plot(error_list, '.')
-load(true_knownline_filename)
-plot(error_list, '.')
+% load(true_knownline_filename)
+% plot(error_list, '.')
 title({'Performance Error', '(\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2)/numshark)'})
 xlabel('Number of Steps')
 ylabel('Error (m/shark)')
-legendCell = ['Benchmark'; cellstr(num2str(tag_list', 'm=%-d (Unknown Line)')); cellstr(num2str(tag_list', 'm=%-d (Known Line)'))]
+% legendCell = ['Benchmark'; cellstr(num2str(tag_list', 'm=%-d (Unknown Line)')); cellstr(num2str(tag_list', 'm=%-d (Known Line)'))]
 ylim([0 0.5])
-legend(legendCell)
+% legend(legendCell)
 
 
 subplot(3,2,2)
