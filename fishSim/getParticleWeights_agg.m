@@ -6,6 +6,7 @@ function w = getParticleWeights_agg(p, x_sharks, y_sharks, cum_ydist, cum_xdist,
     w = zeros(N_part,1);
     
     parfor i=1:N_part
+        w(i) = getProbFromError_agg(p(i,:), x_sharks, y_sharks, cum_ydist, cum_xdist, ...
             point_sd_fit, point_mu_fit, numshark_sd, est_start, est_end);
     end
 end
