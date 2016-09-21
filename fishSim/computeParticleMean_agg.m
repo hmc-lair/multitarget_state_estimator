@@ -1,4 +1,4 @@
-function p_mean = computeParticleMean(p, w)
+function p_mean = computeParticleMean_line(p, w)
 % Compute mean particle based on weighting
 
     m_x1 = 0; m_y1 = 0; m_x2 = 0; m_y2 = 0; m_ns = 0; m_L = 0;
@@ -14,8 +14,8 @@ function p_mean = computeParticleMean(p, w)
 %         m_ns = m_ns + p(i,5)* w(i);
 %         m_L = m_L + p(i,6)* w(i);
     end
-    
-    p_mean = [m_x1/w_tot, m_y1/w_tot, m_x2/w_tot, m_y2/w_tot, m_ns/w_tot, m_L/w_tot];
+    p_mean = [m_x1/w_tot, m_y1/w_tot, m_x2/w_tot, m_y2/w_tot];
+%     p_mean = [m_x1/w_tot, m_y1/w_tot, m_x2/w_tot, m_y2/w_tot, m_ns/w_tot, m_L/w_tot];
 end
 
         

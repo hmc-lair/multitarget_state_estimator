@@ -25,7 +25,7 @@ y_tagged = y(:, randomSharks);
 
 % Initialize States
 robots = initRobots(50,N_robots);
-% p_agg = initParticles(Height, Width, N_part); % Initialize Particles
+p_agg = initParticles(Height, Width, N_part); % Initialize Particles
 p_line = initParticles_Line(Height, Width, N_part_line);
 
 est_error = zeros(TS_PF,1);
