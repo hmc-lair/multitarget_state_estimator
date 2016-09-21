@@ -1,6 +1,7 @@
 function prob = getProbFromError(p, x_sharks, y_sharks, cum_ydist, cum_xdist,point_sd_fit, point_mu_fit, numshark_sd)
 % Get error measurement and corresponding probability from Gaussian
 % Cum_dist: Cumulative distance of shark away from estimated line
+    
     load d90x90fit.mat
     x1 = p(1);
     y1 = p(2);
@@ -12,10 +13,9 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_ydist, cum_xdist,poi
     % Line Fit Correction
     line_yerror = zeros(size(x_sharks, 2), 1);
     for s=1:size(x_sharks, 2)
-        line_yerror(s) = point_to_line(x_sharks(s), y_sharks(s), [x1, y1], [x2, y2]);
+        line_yerror(s) = dist_to_line(x_sharks(s), y_sharks(s), [x1, y1], [x2, y2]);
     end
-    
-%     Add cost for segment length
+   
     Z_line = sum(line_yerror);
     point_mu = 0;
     point_sd = 100;
@@ -35,7 +35,7 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_ydist, cum_xdist,poi
     % Number of Shark Correction
     d90_sd = 1;
     bin_size_y = 0.5;
-    d90_actual = prctile([cum_ydist(:);line_yerror], 95); % Use cumulative distance
+    d90_actual = prctile([cum_ydist(:);line_yerror], 90); % Use cumulative distance
     d90_actual_bin = floor(d90_actual/bin_size_y) * bin_size_y; % Put into bin that matches model
     model_d90 = d90_fit(numshark, L);
     prob_d90 = normpdf(d90_actual_bin, model_d90, d90_sd);

@@ -1,6 +1,8 @@
 
 function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag_covered, seg_len, x90_act_list, d90_act_list, seg_len_dist] ...
     = att_pf(x, y, t, N_tagged, LINE_START, LINE_END, TS_PF, show_visualization, known_line)
+% Top level particle filter for aggregation
+% Two-step PF to (1) estimate line orientation, (2) estimate n and L.
 
 % PF Constants
 Height = 10;

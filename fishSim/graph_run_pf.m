@@ -2,7 +2,7 @@
 clf
 load d90x90fit.mat
 
-true_knownline_filename = '9-18/accumXandY/pf_line_trueknownline_n100_n40.mat'
+true_knownline_filename = '9-18/accumXandY/pf_line_false_pf200.mat'
 false_knownline_filename = '9-18/accumXandY/pf_line_falseknownline_n100_n40.mat'
 load(false_knownline_filename)
 
@@ -16,7 +16,7 @@ plot(error_list, '.')
 title({'Performance Error', '(\Sigma sqrt((dist\_act\_i - dist\_est\_i)^2)/numshark)'})
 xlabel('Number of Steps')
 ylabel('Error (m/shark)')
-legendCell = ['Benchmark', cellstr(num2str(tag_list', 'm=%-d'))]
+legendCell = ['Benchmark'; cellstr(num2str(tag_list', 'm=%-d (Unknown Line)')); cellstr(num2str(tag_list', 'm=%-d (Known Line)'))]
 ylim([0 0.5])
 legend(legendCell)
 
