@@ -1,7 +1,7 @@
 % Run att_pf and graph performance
 clf
 
-N_trial = 3;
+N_trial = 1;
 tag_list = 100;
 ts_pf = 500;
 N_fish = 100;
@@ -70,5 +70,5 @@ for i = 1:tag_list_size
     d90_list_act(:,i) = mean(d90_act_tag, 2);
 end
 
-% save('pf_line_false_pf200.mat', 'act_error_list', 'est_error_list', 'error_list','numshark_est_list',...
-%     'ts_pf','N_fish','tag_list','seglen_list', 'x90_list_act', 'd90_list_act','seg_length','seglendist_list')
+save('pf_line.mat', 'act_error_list', 'est_error_list', 'error_list','numshark_est_list',...
+    'ts_pf','N_fish','tag_list','seglen_list', 'x90_list_act', 'd90_list_act','seg_length','seglendist_list')

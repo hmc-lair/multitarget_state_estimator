@@ -7,8 +7,8 @@ function [act_error, est_error, error, numshark_est, x_robots, y_robots, num_tag
 % PF Constants
 Height = 10;
 Width = 30;
-N_part = 50;
 N_part_line = 50;
+N_part_agg = 50;
 Sigma_mean = 1;
 N_fish = size(x,2);
 
@@ -24,16 +24,16 @@ y_tagged = y(:, randomSharks);
 
 
 % Initialize States
-robots = initRobots(50,N_robots);
-% p_agg = initParticles(Height, Width, N_part); % Initialize Particles
+p_agg = initParticles_agg(N_part_agg); % Initialize Particles
 p_line = initParticles_Line(Height, Width, N_part_line);
 
+robots = initRobots(50,N_robots);
 est_error = zeros(TS_PF,1);
 act_error = zeros(TS_PF,1);
 error = zeros(TS_PF,1);
 num_tag_covered = zeros(TS_PF,1);
 numshark_est = zeros(TS_PF,1);
-numshark_old = zeros(N_part, 2);
+numshark_old = zeros(N_part_agg, 2);
 seg_len = zeros(TS_PF,1);
 seg_len_dist = zeros(TS_PF,1);
 x90_act_list = zeros(TS_PF,1);
@@ -52,70 +52,70 @@ for i = 1:TS_PF
     y_range = y_tagged(i,:);
     i_range = 1:N_fish;
     
-    % Line PF
+    %% Line PF
     p_line = propagate_line(p_line, Sigma_mean,known_line); 
     w_line = getParticleWeights_line(p_line, x_range, y_range);
     p_line = resample(p_line, w_line);
-    p_mean_line = computeParticleMean_line(p_line, w_line)
+    pm_line = computeParticleMean_line(p_line, w_line); % Particle Mean
+    est_start = [pm_line(1), pm_line(2)]; % PF Estiamted End Points
+    est_end = [pm_line(3), pm_line(4)];
     
-%     % n, L PF
-%     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
-%     numshark_old(:,1) = p_agg(:,5);
-%     
-%     p_agg = propagate(p_agg, Sigma_mean, numshark_old(:,2), LINE_START, LINE_END,known_line);  
+    %% Aggregation PF
+    numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
+    numshark_old(:,1) = p_agg(:,1);
+    p_agg = propagate_agg(p_agg);  
+    w_agg = ...
+        getParticleWeights_agg(p_agg, x_range, y_range, shark_ydist_cum_list(1:i-1,:), shark_xdist_cum_list(1:i-1,:),...
+        @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd, est_start, est_end);
+    p_agg = resample(p_agg, w_agg);
+    pm_agg = computeParticleMean_agg(p_agg, w_agg);
+    
+    disp([pm_line, pm_agg])
 %     
 %     w = getParticleWeights(p_agg, x_range, y_range, shark_ydist_cum_list(1:i-1,:), shark_xdist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
 %     p_agg = resample(p_agg,w);
 %     p_mean = computeParticleMean(p_agg,w)
 %     
-%     % Accumulate psi_90 and rho_90
-%     [x90_current, ~,~] = measureEdgeDistance(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
-%     shark_xdist_cum_list(i,:) = x90_current;
-%     current_points_to_line = points_to_line(x_range, y_range, [p_mean(1), p_mean(2)], [p_mean(3), p_mean(4)]);
-%     shark_ydist_cum_list(i,:) = ... % Update cumulative shark distance list
-%         current_points_to_line;
+    % Accumulate psi_90 and rho_90
+    [x90_current, ~,~] = measureEdgeDistance(x_range, y_range, est_start, est_end);
+    shark_xdist_cum_list(i,:) = x90_current;
+    current_points_to_line = points_to_line(x_range, y_range, est_start, est_end);
+    shark_ydist_cum_list(i,:) = ... % Update cumulative shark distance list
+        current_points_to_line;
 %     
-%     % Move Robot
-%     robots = moveRobots(robots, x_range, y_range, ...
-%         [p_mean(1) p_mean(2)], [p_mean(3) p_mean(4)]);
-%     
-%     x_robots(:,i) = robots(:,1);
-%     y_robots(:,i) = robots(:,2);
-%     
-%     
-%     est_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
-% %     act_error(i) = totalSharkDistance(x(i,:), y(i,:), LINE_START, LINE_END);
-% 
-%     % Performance Error: Error between actual and estimated line
-    error(i) = pfError(x(i,:), y(i,:), LINE_START, LINE_END, [p_mean_line(1), p_mean_line(2)], [p_mean_line(3), p_mean_line(4)], N_fish);
-%     numshark_est(i) = p_mean(5);
-%     
-%     % Segment Length
-%     seg_len(i) = p_mean(6);
-%     
-%     % Estimated Segment Length based on distance
-%     [~,~,seg_len_dist_i] = measureEdgeDistance(x(i,:),y(i,:),[p_mean(1),p_mean(2)],[p_mean(3),p_mean(4)]);
-%     seg_len_dist(i) = seg_len_dist_i;
+    % Move Robot
+    robots = moveRobots(robots, x_range, y_range, ...
+        est_start, est_end);
     
-% %     % x90_estimated
-% % %     line_error_est = zeros(size(x, 2), 1);
-% % %     for s=1:size(x, 2)
-% % %         line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
-% % %     end
-% %     bin_size_x = 1;
-% %     x90_act = prctile(reshape(shark_xdist_cum_list(1:i-1,:),[],1),95);
-% %     x90_actual_bin = floor(x90_act/bin_size_x)*bin_size_x
-% %     x90_act_list(i) = x90_actual_bin;
-%     
-%     % d90_actual (with actual attraction line)
-% %     line_error_act = zeros(size(x, 2), 1);
-% %     for s=1:size(x, 2)
-% %         line_error_act(s) = point_to_line(x(i,s), y(i,s), [LINE_START(1),LINE_START(2)], [LINE_END(1),LINE_END(2)]);
-% %     end
-%     bin_size_y = 0.5;
-%     d90_act = prctile(reshape(shark_ydist_cum_list(1:i-1,:),[],1),95);
-%     d90_actual_bin = floor(d90_act/bin_size_y)*bin_size_y
-%     d90_act_list(i) = d90_actual_bin;
+    x_robots(:,i) = robots(:,1);
+    y_robots(:,i) = robots(:,2);
+
+    %% For Graphing
+    % Performance Error: Error between actual and estimated line
+    error(i) = pfError(x(i,:), y(i,:), LINE_START, LINE_END, est_start, est_end, N_fish);
+    numshark_est(i) = pm_agg(1);   
+    % Segment Length
+    seg_len(i) = pm_agg(2);
+    
+    % x90_estimated
+%     line_error_est = zeros(size(x, 2), 1);
+%     for s=1:size(x, 2)
+%         line_error_est(s) = point_to_line(x(i,s), y(i,s), [p_mean(1),p_mean(2)], [p_mean(3),p_mean(4)]);
+%     end
+    bin_size_x = 1;
+    x90_act = prctile(reshape(shark_xdist_cum_list(1:i-1,:),[],1),95);
+    x90_actual_bin = floor(x90_act/bin_size_x)*bin_size_x
+    x90_act_list(i) = x90_actual_bin;
+    
+%     d90_actual (with actual attraction line)
+    line_error_act = zeros(size(x, 2), 1);
+    for s=1:size(x, 2)
+        line_error_act(s) = point_to_line(x(i,s), y(i,s), [LINE_START(1),LINE_START(2)], [LINE_END(1),LINE_END(2)]);
+    end
+    bin_size_y = 0.5;
+    d90_act = prctile(reshape(shark_ydist_cum_list(1:i-1,:),[],1),95);
+    d90_actual_bin = floor(d90_act/bin_size_y)*bin_size_y
+    d90_act_list(i) = d90_actual_bin;
 
     % Visualize Sharks and Particles
         
@@ -156,13 +156,13 @@ for i = 1:TS_PF
         end
 
         % Plot Particles
-        for h=1:N_part
+        for h=1:N_part_line
             plot(p_line(h, 1), p_line(h,2), '.', 'MarkerSize', 10);
             plot(p_line(h, 3), p_line(h,4), '.', 'MarkerSize', 10);
         end
 
         % Plot Particle Mean Line
-        plot([p_mean_line(1), p_mean_line(3)], [p_mean_line(2), p_mean_line(4)]);
+        plot([pm_line(1), pm_line(3)], [pm_line(2), pm_line(4)]);
  
 
         % Plot Attraction Line

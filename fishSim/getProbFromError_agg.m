@@ -1,31 +1,23 @@
-function prob = getProbFromError(p, x_sharks, y_sharks, cum_ydist, cum_xdist,point_sd_fit, point_mu_fit, numshark_sd)
+function prob = getProbFromError_agg(p_agg, x_sharks, y_sharks, cum_ydist, cum_xdist,...
+    point_sd_fit, point_mu_fit, numshark_sd, est_start, est_end)
 % Get error measurement and corresponding probability from Gaussian
 % Cum_dist: Cumulative distance of shark away from estimated line
     
     load d90x90fit.mat
-    x1 = p(1);
-    y1 = p(2);
-    x2 = p(3);
-    y2 = p(4);
-    numshark = p(5);
-    L = p(6);
+    numshark = p_agg(1);
+    L = p_agg(2);
     
     % Line Fit Correction
     line_yerror = zeros(size(x_sharks, 2), 1);
     for s=1:size(x_sharks, 2)
-        line_yerror(s) = dist_to_line(x_sharks(s), y_sharks(s), [x1, y1], [x2, y2]);
+        line_yerror(s) = dist_to_line(x_sharks(s), y_sharks(s), est_start, est_end);
     end
-   
-    Z_line = sum(line_yerror);
-    point_mu = 0;
-    point_sd = 100;
-    prob_line = normpdf(Z_line, point_mu, point_sd);
    
 
     % Get Phi, 90% Distance along line from center
     x90_sd = 2;
     bin_size_x = 1;
-    [x90_current, ~,~] = measureEdgeDistance(x_sharks,y_sharks,[x1,y1],[x2,y2]);
+    [x90_current, line_yerror,~] = measureEdgeDistance(x_sharks,y_sharks,est_start,est_end);
     x90_actual = prctile([cum_xdist(:);x90_current],95);
     x90_actual_bin = floor(x90_actual/bin_size_x)*bin_size_x;
     model_x90 = x90_fit(numshark,L);
@@ -40,6 +32,6 @@ function prob = getProbFromError(p, x_sharks, y_sharks, cum_ydist, cum_xdist,poi
     model_d90 = d90_fit(numshark, L);
     prob_d90 = normpdf(d90_actual_bin, model_d90, d90_sd);
     
-    prob = prob_line * prob_d90 * prob_x90;
+    prob = prob_d90 * prob_x90;
     
 end

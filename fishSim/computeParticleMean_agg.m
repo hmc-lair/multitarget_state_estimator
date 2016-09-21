@@ -1,7 +1,6 @@
-function p_mean = computeParticleMean_line(p, w)
-% Compute mean particle based on weighting
+% Compute mean particle based on weighting for agg PF.
 
-    m_x1 = 0; m_y1 = 0; m_x2 = 0; m_y2 = 0; m_ns = 0; m_L = 0;
+    m_ns = 0; m_L = 0;
     
     N_p = size(p,1);
     
