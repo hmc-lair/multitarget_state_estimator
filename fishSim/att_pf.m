@@ -25,7 +25,7 @@ y_tagged = y(:, randomSharks);
 
 % Initialize States
 robots = initRobots(50,N_robots);
-p_agg = initParticles(Height, Width, N_part); % Initialize Particles
+% p_agg = initParticles(Height, Width, N_part); % Initialize Particles
 p_line = initParticles_Line(Height, Width, N_part_line);
 
 est_error = zeros(TS_PF,1);
@@ -56,7 +56,7 @@ for i = 1:TS_PF
     p_line = propagate_line(p_line, Sigma_mean,known_line); 
     w_line = getParticleWeights_line(p_line, x_range, y_range);
     p_line = resample(p_line, w_line);
-    p_mean_line = computeParticleMean(p_line, w_line)
+    p_mean_line = computeParticleMean_line(p_line, w_line)
     
 %     % n, L PF
 %     numshark_old(:,2) = numshark_old(:,1); % keep track of n-2
