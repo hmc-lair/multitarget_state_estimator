@@ -13,8 +13,7 @@ bottommost = min(yRot(:));
 
 % dist_x = rightmost - leftmost;
 % x90 = prctile(xRot,95) - prctile(xRot,50);
-x90_list = (xRot - prctile(xRot,50))';
-d90 = prctile(yRot,95);
+x90_list = abs((xRot - mean(xRot)))';
 yRot = yRot';
 seg_len = rightmost - leftmost;
 

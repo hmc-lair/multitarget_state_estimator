@@ -77,11 +77,11 @@ for i = 1:TS_PF
 %     p_mean = computeParticleMean(p_agg,w)
 %     
     % Accumulate psi_90 and rho_90
-    [x90_current, ~,~] = measureEdgeDistance(x_range, y_range, est_start, est_end);
+    [x90_current, y90_current,~] = measureEdgeDistance(x_range, y_range, est_start, est_end);
     shark_xdist_cum_list(i,:) = x90_current;
     current_points_to_line = points_to_line(x_range, y_range, est_start, est_end);
     shark_ydist_cum_list(i,:) = ... % Update cumulative shark distance list
-        current_points_to_line;
+        y90_current;
 %     
     % Move Robot
     robots = moveRobots(robots, x_range, y_range, ...
