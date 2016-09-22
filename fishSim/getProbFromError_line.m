@@ -15,7 +15,7 @@ function prob_line = getProbFromError_line(p, x_sharks, y_sharks)
    
     Z_line = sum(line_yerror);
     point_mu = 0;
-    point_sd = 10;
+    point_sd = 50;
     prob_line = normpdf(Z_line, point_mu, point_sd);
   
     

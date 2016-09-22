@@ -15,6 +15,6 @@ parfor i = 1:N_sim
         fishSim_7(N_fish,seg_length, 1e3, 1e6, 1e9);
 end
 
-save('fishSim_1e3_1e6_1e9_n100_L40.mat','x_fish_sim','y_fish_sim','seg_length','N_fish','N_sim')
+save('fishSim_1e3_1e6_1e9_n50_L30.mat','x_fish_sim','y_fish_sim','seg_length','N_fish','N_sim')
 end
     
