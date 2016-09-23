@@ -1,0 +1,4 @@
+fig 2:
+100 sharks, 40m Line
+added new x90 for for L = 30:5:45 an n = 80:10:110;
+testing propagation: bin size (10 sharks)

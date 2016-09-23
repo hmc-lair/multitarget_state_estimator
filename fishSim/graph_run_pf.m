@@ -5,8 +5,8 @@ load d90x90fit.mat
 true_knownline_filename = '9-18/accumXandY/pf_line_false_pf200.mat'
 false_knownline_filename = '9-18/accumXandY/pf_line_falseknownline_n100_n40.mat'
 
-true_knownline_filename = 'pf_line_linesd_50'
-false_knownline_filename = 'pf_line_linesd_50'
+true_knownline_filename = 'pf_line_actual'
+false_knownline_filename = 'pf_line_actual'
 load(false_knownline_filename)
 
 subplot(3,2,1)

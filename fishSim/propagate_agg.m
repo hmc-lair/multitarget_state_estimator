@@ -4,7 +4,7 @@ function p = propagate_agg(p)
 
     for indi_p = 1:size(p,1)
         
-        num_shark = p(indi_p, 1) + normrnd(0,1); % TODO: currently using uniform
+        num_shark = p(indi_p, 1) + normrnd(0,5); % TODO: currently using uniform
         
         if num_shark < 0 || num_shark > 150 
             num_shark = 1;

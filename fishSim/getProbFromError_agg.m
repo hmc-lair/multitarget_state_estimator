@@ -3,7 +3,7 @@ function prob = getProbFromError_agg(p_agg, x_sharks, y_sharks, cum_ydist, cum_x
 % Get error measurement and corresponding probability from Gaussian
 % Cum_dist: Cumulative distance of shark away from estimated line
     
-    load d90x90fit.mat
+    load d90x90fit_additional.mat
     numshark = p_agg(1);
     L = p_agg(2);
     
