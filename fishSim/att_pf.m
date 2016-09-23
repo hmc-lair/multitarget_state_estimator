@@ -71,6 +71,9 @@ for i = 1:TS_PF
     pm_agg = computeParticleMean_agg(p_agg, w_agg);
     
     disp([pm_line, pm_agg])
+    
+    load d90x90fit_additional.mat
+    disp([x90_fit(pm_agg(1),pm_agg(2)), d90_fit(pm_agg(1),pm_agg(2))])
 %     
 %     w = getParticleWeights(p_agg, x_range, y_range, shark_ydist_cum_list(1:i-1,:), shark_xdist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);
 %     p_agg = resample(p_agg,w);
