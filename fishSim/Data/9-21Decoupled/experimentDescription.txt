@@ -1,4 +1,25 @@
-fig 2:
-100 sharks, 40m Line
-added new x90 for for L = 30:5:45 an n = 80:10:110;
-testing propagation: bin size (10 sharks)
+Exp 1:
+n = 100;
+L = 40;
+np = 50;
+x90_sd = 2;
+d90_sd = 1;
+point_sd = 10;
+- should increase point_sd, performance error sometime > 0.1m
+- regenerate model for close range
+
+pf_line_n100_L40_nprop_5_1000ts:
+n = 100;
+L = 40;
+np = 50;
+x90_sd = 2;
+d90_sd = 1;
+prop n = normrnd(5)
+trying roudning next, instead of floor
+
+fig4:
+comparing original model and new model
+original model (big increments)
+new model
+-n = 80:5:110;
+-L = 40:2.5:60;
