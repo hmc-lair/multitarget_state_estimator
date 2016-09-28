@@ -38,8 +38,8 @@ seg_len = zeros(TS_PF,1);
 seg_len_dist = zeros(TS_PF,1);
 x90_act_list = zeros(TS_PF,1);
 d90_act_list = zeros(TS_PF,1);
-shark_ydist_cum_list = zeros(TS_PF,N_fish); % keeps track of all y shark distance
-shark_xdist_cum_list = zeros(TS_PF,N_fish); % keeps track of all x shark distance
+shark_ydist_cum_list = zeros(TS_PF,N_tagged); % keeps track of all y shark distance
+shark_xdist_cum_list = zeros(TS_PF,N_tagged); % keeps track of all x shark distance
 x_robots = zeros(N_robots, TS_PF);
 y_robots = zeros(N_robots, TS_PF);
 
@@ -50,7 +50,7 @@ for i = 1:TS_PF
     % Find tagged shark in range of robot. TODO: Everything is tagged now!!
     x_range = x_tagged(i,:);
     y_range = y_tagged(i,:);
-    i_range = 1:N_fish;
+    i_range = 1:N_tagged;
     
     %% Line PF
     p_line = propagate_line(p_line, Sigma_mean,known_line); 
@@ -72,7 +72,7 @@ for i = 1:TS_PF
     
     disp([pm_line, pm_agg])
     
-    load d90x90fit_additional.mat
+    load d90x90fit.mat
     disp([x90_fit(pm_agg(1),pm_agg(2)), d90_fit(pm_agg(1),pm_agg(2))])
 %     
 %     w = getParticleWeights(p_agg, x_range, y_range, shark_ydist_cum_list(1:i-1,:), shark_xdist_cum_list(1:i-1,:), @fit_sumdist_sd, @fit_sumdist_mu, numshark_sd);

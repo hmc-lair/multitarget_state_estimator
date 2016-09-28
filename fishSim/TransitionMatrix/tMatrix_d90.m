@@ -5,7 +5,8 @@
 
 function [x_90, d_90] = tMatrix_d90(xsim,ysim)
 %% Get d90 from T Matrix given x and y trajectories
-x_increment = 1;
+tic
+x_increment = 0.5;
 y_increment = 0.5;
 [T_x, T_y] = transitionMatrix(xsim,ysim,x_increment, y_increment); % T Matrix
 
@@ -29,21 +30,28 @@ hist_edges_x = -max_hor_dist:x_increment:max_hor_dist-x_increment;
 % 
 % figure('Visible','off')
 
+% plot(hist_edges_x,p_fin_x,'-o','DisplayName','Probability from T Matrix')
+% [fhist,xhist] = hist(xsim(:),hist_edges_x);
+% plot(xhist, fhist/(sum(fhist)),'-o','DisplayName','Probability from Histogram')
+
 % hold on
 % plot(hist_edges_x, p_fin_x,'x','DisplayName','Distance Along line')
-% title('Steady State Probability')
-% % hist(xsim(:),50)
-% % plot(hist_edges_y, p_fin_y,'.','DisplayName','Distance From Line')
+title('Steady State Probability for Distance From Line')
+plot(hist_edges_y, p_fin_y,'.','DisplayName','Probability from T Matrix')
+hold on
+[fhist_y,xhist_y] = hist(ysim(:),hist_edges_y);
+plot(xhist_y, fhist_y/(sum(fhist_y)),'-o','DisplayName','Probability from Histogram')
 % hold off
-% xlabel('Distance (m)')
-% ylabel('Probability')
-% legend('show')
+xlabel('Distance (m)')
+ylabel('Probability')
+legend('show')
 % saveas(gcf,sprintf('ss_prob_xinc_%d.png',x_increment))
 
 %% Find d_90 (90th percentile, one sided)
 cu_sum_y = cumsum(p_fin_y);
-d_90 = hist_edges_y(find(cu_sum_y > 0.95,1));
+d_90 = hist_edges_y(find(cu_sum_y > 0.95,1)) - hist_edges_y(find(cu_sum_y > 0.5,1))
 
 cu_sum_x = cumsum(p_fin_x);
-x_90 = hist_edges_x(find(cu_sum_x > 0.95,1));
+x_90 = hist_edges_x(find(cu_sum_x > 0.95,1)) - hist_edges_x(find(cu_sum_x > 0.5,1))
+toc
 end
