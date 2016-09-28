@@ -1,7 +1,7 @@
 % Simulate shark trajectories using an attraction line model
 
 function [x,y, t] = fishSim_7(N_fish, seg_length, K_att, K_temp_att, K_rep)
-maxTime = 10000;
+maxTime = 50000;
 v=0.3;
 deltaT = 1/30;
 fishInteractionRadius = 1.5;
@@ -27,7 +27,9 @@ x(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
 y(1,1:N_fish) = -ones(N_fish,1)*height/2+rand([N_fish,1])*height;
 closeToNeighbor = zeros(maxTime,N_fish);
 
-
+r_rep = 2;
+r_align = 5;
+r_att = 10;
 %loop over time
 for time=2:maxTime;
 
@@ -35,28 +37,47 @@ for time=2:maxTime;
     %loop over fish to update state
     for f=1:N_fish
 
+        x_rep = 0; x_temp_att = 0; x_att = 0;
+        y_rep = 0; y_temp_att = 0; y_att = 0;
         % Check for neighbors
-        x_rep = 0; y_rep = 0; x_att = 0; y_att = 0;
-        dist_list = sqrt((x(time-1,f)-x(time,:)).^2 + (y(time-1,f)-y(time-1,:)).^2);
-        [dist, min_ind] = min(dist_list([1:f-1,f+1:end]));
-%         for g=1:N_fish % Fish Schooling Dynamics
-%             dist = sqrt((x(time-1,f)-x(time,g))^2 + (y(time-1,f)-y(time-1,g))^2);
-            if dist < fishInteractionRadius % Repulsed
-                mag = (1/dist - 1/fishInteractionRadius)^2;
-                x_rep = x_rep+mag*(x(time-1,f)-x(time-1,min_ind));
-                y_rep = y_rep+mag*(y(time-1,f)-y(time-1,min_ind));     
-            end
-            if dist > fishInteractionRadius % Attracted
-                mag = dist^2;
-                x_att = x_att+mag*(x(time-1,min_ind)-x(time-1,f));
-                y_att = y_att+mag*(y(time-1,min_ind)-y(time-1,f));     
-            end
-%         end
-        
-        % Determine attraction to habitat
+        for g=1:N_fish
+          dist = sqrt((x(time-1,f)-x(time-1,g)).^2 + (y(time-1,f)-y(time-1,g)).^2);
+          mag = 1/dist;
+          % Repulsion
+          if dist > 0 && dist < r_rep
+              x_rep = x_rep+(x(time-1,f)-x(time-1,g))*mag;
+              y_rep = y_rep+(y(time-1,f)-y(time-1,g))*mag;
+          end
+          
+          % Attraction
+          if dist > r_align && dist < r_att
+              x_att = x_att+(x(time-1,g)-x(time-1,f))*mag;
+              y_att = y_att+(y(time-1,g)-y(time-1,f))*mag;
+          end
+        end
+          
+          
+%         x_rep = 0; y_rep = 0; x_att = 0; y_att = 0;
+%         dist_list = sqrt((x(time-1,f)-x(time,:)).^2 + (y(time-1,f)-y(time-1,:)).^2);
+%         [dist, min_ind] = min(dist_list([1:f-1,f+1:end]));
+% %         for g=1:N_fish % Fish Schooling Dynamics
+% %             dist = sqrt((x(time-1,f)-x(time,g))^2 + (y(time-1,f)-y(time-1,g))^2);
+%             if dist < fishInteractionRadius % Repulsed
+%                 mag = (1/dist - 1/fishInteractionRadius)^2;
+%                 x_rep = x_rep+mag*(x(time-1,f)-x(time-1,min_ind));
+%                 y_rep = y_rep+mag*(y(time-1,f)-y(time-1,min_ind));     
+%             end
+%             if dist > fishInteractionRadius % Attracted
+%                 mag = dist^2;
+%                 x_att = x_att+mag*(x(time-1,min_ind)-x(time-1,f));
+%                 y_att = y_att+mag*(y(time-1,min_ind)-y(time-1,f));     
+%             end
+% %         end
+%         
+%         % Determine attraction to habitat
         closest_pt = project_point_to_line_segment(LINE_START, LINE_END, [x(time-1,f), y(time-1,f)]);
         dist = sqrt((x(time-1,f)-closest_pt(1))^2 + (y(time-1,f)-closest_pt(1))^2);
-        mag = (closest_pt(1) -x(time-1,f))^2 + (closest_pt(2)-y(time-1,f))^2;
+        mag = 1/dist;
         x_temp_att = mag*(closest_pt(1)-x(time-1,f));
         y_temp_att = mag*(closest_pt(2)-y(time-1,f));
    

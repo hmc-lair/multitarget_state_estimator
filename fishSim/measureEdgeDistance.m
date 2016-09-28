@@ -1,4 +1,4 @@
-function [x90_list, yRot, seg_len] = measureEdgeDistance(x_sharks, y_sharks, line_start, line_end)
+dfunction [x90_list, yRot, seg_len] = measureEdgeDistance(x_sharks, y_sharks, line_start, line_end)
 % Finds width of line given line and leftmost and rightmost fish
 
 rotAngle = atan2((line_end(2)-line_start(2)),(line_end(1)-line_start(1)));
@@ -12,8 +12,8 @@ topmost = max(yRot(:));
 bottommost = min(yRot(:));
 
 % dist_x = rightmost - leftmost;
-% x90 = prctile(xRot,95) - prctile(xRot,50);
-x90_list = abs((xRot - mean(xRot)))';
+x90_list = prctile(xRot,95) - prctile(xRot,50);
+% x90_list = abs((xRot - mean(xRot)))';
 yRot = yRot';
 seg_len = rightmost - leftmost;
 
